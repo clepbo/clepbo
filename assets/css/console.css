@@ -1405,3 +1405,20 @@ body.is-locked { overflow: hidden; }
   .case__step { gap: 0.8rem; }
   .case__n { width: 1.6rem; }
 }
+
+/* a card whose plate hides real screens behind it says so */
+.card { position: relative; }
+
+.card__frames {
+  position: absolute;
+  right: 0.75rem;
+  top: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(9, 11, 12, 0.78);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #E9E7E0;
+  pointer-events: none;
+}

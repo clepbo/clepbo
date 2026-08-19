@@ -29,6 +29,15 @@ const esc = (s) => String(s == null ? "" : s)
 const onChannel = (item, ch) => ch === 0 || item.ch.indexOf(ch) !== -1;
 const accentOf = (item) => CHANNELS[item.ch[0]].colour;
 const stillSrc = (name) => `assets/media/stills/${name}.jpg`;
+const markSrc = (name) => `assets/media/marks/${/\./.test(name) ? name : name + ".png"}`;
+
+/* Frames for the monitor: real screens if the project has them,
+   otherwise whatever the card was already showing. */
+function framesOf(item) {
+  if (item.shots && item.shots.length) return item.shots;
+  if (item.media.type === "still") return item.media.stills;
+  return [];
+}
 
 /* ---- 1. media ---------------------------------------------
    Four kinds of visual, one shape. A brand plate is deliberately
@@ -39,12 +48,24 @@ function mediaHTML(item, big) {
   const m = item.media;
   const cls = big ? "media media--big" : "media";
 
+  /* In the monitor the real screens win over the plate. */
+  if (big) {
+    const f = framesOf(item);
+    if (f.length) {
+      return `<span class="${cls} media--still">
+        <img class="shot" src="${stillSrc(f[0])}" alt="${esc(item.title)} — screen"
+             loading="lazy" decoding="async">
+      </span>`;
+    }
+  }
+
   if (m.type === "brand") {
-    const sw = (m.colors || []).map((c) =>
+    const bd = item.brand || {};
+    const sw = (bd.colors || []).map((c) =>
       `<span class="plate__swatch" style="background:${esc(c)}"><span class="plate__hex">${esc(c)}</span></span>`).join("");
-    return `<span class="${cls} media--brand${m.dark ? " is-dark" : ""}">
+    return `<span class="${cls} media--brand${bd.dark ? " is-dark" : ""}">
         <span class="plate">
-          <img class="plate__mark" src="assets/media/marks/${esc(m.mark)}.png"
+          <img class="plate__mark" src="${markSrc(bd.mark)}"
                alt="${esc(item.client)} logo" loading="lazy" decoding="async">
         </span>
         <span class="plate__swatches">${sw}</span>
@@ -56,9 +77,8 @@ function mediaHTML(item, big) {
     const n = m.stills.length;
     const badge = n > 1 ? `<span class="media__count">${n} frames</span>` : "";
     const play = m.video ? `<span class="media__play" aria-hidden="true"></span>` : "";
-    const alt = m.video ? `Frame from ${esc(item.title)}` : `${esc(item.title)} — screen`;
     return `<span class="${cls} media--still">
-        <img class="shot" src="${stillSrc(first)}" alt="${alt}"
+        <img class="shot" src="${stillSrc(first)}" alt="Frame from ${esc(item.title)}"
              loading="lazy" decoding="async">
         ${play}${badge}
       </span>`;
@@ -85,7 +105,8 @@ function renderWork() {
       <article class="${cls.join(" ")}" data-id="${esc(item.id)}"
                data-ch="${item.ch.join(" ")}" style="--card-accent:${accentOf(item)}">
         <button class="card__btn" type="button" aria-label="Open ${esc(item.title)}">
-          ${mediaHTML(item, false)}
+          ${mediaHTML(item, false)}${framesOf(item).length > 1 && item.media.type !== "still"
+            ? `<span class="card__frames">${framesOf(item).length} screens</span>` : ""}
           <span class="card__body">
             <span class="card__top">
               <span class="card__kind">${esc(item.kind)}</span>
@@ -197,8 +218,9 @@ function visibleWork() {
 
 function paintFrame() {
   const item = reel[reelAt];
-  if (item.media.type !== "still") return;
-  const name = item.media.stills[frameAt];
+  const f = framesOf(item);
+  if (!f.length) return;
+  const name = f[frameAt];
   const img = monScreen.querySelector(".shot");
   if (img) img.src = stillSrc(name);
   monStrip.querySelectorAll("button").forEach((b, i) => {
@@ -237,9 +259,10 @@ function paintMonitor() {
 
   monScreen.innerHTML = mediaHTML(item, true);
 
-  const many = item.media.type === "still" && item.media.stills.length > 1;
+  const frames = framesOf(item);
+  const many = frames.length > 1;
   monStrip.hidden = !many;
-  monStrip.innerHTML = many ? item.media.stills.map((s, i) =>
+  monStrip.innerHTML = many ? frames.map((s, i) =>
     `<button type="button" class="monitor__frame${i === 0 ? " is-on" : ""}" data-i="${i}"
        aria-label="Frame ${i + 1}"><img src="${stillSrc(s)}" alt="" loading="lazy"></button>`).join("") : "";
   if (many) {
@@ -262,7 +285,7 @@ function paintBrand(item) {
     <p class="case__head">Brand</p>
     <div class="brandbar__row">
       <span class="brandbar__mark${bd.dark ? " is-dark" : ""}">
-        <img src="assets/media/marks/${esc(bd.mark)}.png" alt="${esc(item.client)} logo" loading="lazy">
+        <img src="${markSrc(bd.mark)}" alt="${esc(item.client)} logo" loading="lazy">
       </span>
       <ul class="brandbar__sws">${sw}</ul>
       ${bd.type ? `<p class="brandbar__type"><span>Typeface</span>${esc(bd.type)}</p>` : ""}

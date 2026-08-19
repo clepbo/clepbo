@@ -34,11 +34,17 @@ const TOOLS = [
 
    ch      channels this belongs to (an array — work can sit on
            more than one, which is the point of the whole site)
-   media   { type: "still" }  real frames, stills: []
+   media   what the CARD shows
+           { type: "brand" }  the client's mark on a plate (reads
+                              mark/colors/dark from `brand` below)
+           { type: "still" }  a real frame, stills: []
            { type: "canvas" } a design-file canvas map
            { type: "plate" }  no image — a typographic plate
-   brand   optional — draws a brand strip in the case study:
-           the mark, the palette, the typeface
+   shots   what the MONITOR shows — real screenshots, filenames from
+           assets/media/stills without the extension. More than one
+           gives you a filmstrip. Falls back to `media` when absent.
+   brand   the mark, palette and typeface. Drives both the card plate
+           and the brand strip in the case study.
    case    optional — turns the monitor into a case study:
            problem, process steps, design decisions, outcome
    ------------------------------------------------------------ */
@@ -51,7 +57,8 @@ const WORK = [
     title: "Teasoo Consulting",
     line: "Six service lines, one clear route in.",
     story: "Teasoo helps organisations navigate complexity and mitigate risk. There is no product to photograph and six distinct service lines competing for the same attention, so the whole job was making an abstract advisory practice feel solid and easy to enter.",
-    media: { type: "still", stills: ["teasoo-site-1", "teasoo-site-2"] },
+    media: { type: "brand" },
+    shots: ["teasoo-site-1", "teasoo-site-2"],
     brand: { mark: "teasoo", colors: ["#e11b3f", "#41454f", "#eff1f6"], type: "Montserrat" },
     case: {
       problem: "An advisory firm sells judgement, not objects. Teasoo runs six service lines — from organisational development to digital transformation — and a visitor arriving cold cannot tell which one is theirs. The old route to a conversation was buried.",
@@ -78,7 +85,8 @@ const WORK = [
     title: "EHF Africa",
     line: "One site, three audiences that want different things.",
     story: "EHF works with vulnerable groups across Nigeria — anti-trafficking, education and outreach — alongside partners including NAPTIP. A foundation site carries a heavier job than a business one, because three very different people arrive expecting three different answers.",
-    media: { type: "still", stills: ["ehf-site-1", "ehf-site-2"] },
+    media: { type: "brand" },
+    shots: ["ehf-site-1", "ehf-site-2"],
     brand: { mark: "ehf", colors: ["#093f87", "#63e1e1", "#2d3f63"], type: "Roboto" },
     case: {
       problem: "A donor wants evidence the money moves. A partner organisation wants to know who else is at the table. A beneficiary wants to know whether they qualify and what to do next. One homepage, three incompatible reading orders.",
@@ -105,7 +113,8 @@ const WORK = [
     title: "Moatview Apartments",
     line: "A booking decision made in under a minute.",
     story: "Serviced apartments in GRA, Benin City. Somebody deciding where to sleep tonight is not going to dig — so the site is built around how fast it can answer where it is, what it's like, and how to book.",
-    media: { type: "still", stills: ["moatview-site-1"] },
+    media: { type: "brand" },
+    shots: ["moatview-site-1"],
     brand: { mark: "moatview", colors: ["#e18709", "#cf993f", "#1b1b1b"], type: "Poppins" },
     case: {
       problem: "Short-stay accommodation is chosen fast and on atmosphere. The three questions — where is it, what does it look like, how do I book — were all more than one click away, and a phone number that takes a click is a phone number nobody dials.",
@@ -132,7 +141,8 @@ const WORK = [
     title: "Shina Luwoye Foundation",
     line: "Two audiences, two doors, side by side.",
     story: "A foundation breaking financial barriers to education, running since 2024. Students need to apply; donors need a reason to give. The site refuses to make either one the secondary audience.",
-    media: { type: "still", stills: ["shinaluwoye-site-1", "shinaluwoye-site-2"] },
+    media: { type: "brand" },
+    shots: ["shinaluwoye-site-1", "shinaluwoye-site-2"],
     brand: { mark: "shinaluwoye", colors: ["#ff3f3f", "#0987bd", "#51bdbd"], type: "Poppins / Open Sans" },
     case: {
       problem: "Scholarship foundations usually pick a side. Lead with the students and donors get no case; lead with the donors and the students who need the money bounce off a brochure written for someone else.",
@@ -158,7 +168,8 @@ const WORK = [
     title: "The Thinking Room",
     line: "The argument is the hero.",
     story: "Not everything belongs on WordPress. A Next.js build on Vercel for a live conversation series about why unlimited access to information has left people less decisive, not more. It sells a seat, not a product — so the provocation had to do the selling.",
-    media: { type: "still", stills: ["thinkingroom-site-1", "thinkingroom-site-2"] },
+    media: { type: "brand" },
+    shots: ["thinkingroom-site-1", "thinkingroom-site-2"],
     brand: { mark: "thinkingroom", dark: true, colors: ["#e12d2d", "#0a0a0a", "#d1ff00"], type: "Anton / Inter" },
     case: {
       problem: "There is no product shot for an idea. The site had to make a stranger want a seat at a conversation happening on a specific Thursday evening — which means the thinking itself has to be visible above the fold, not buried in an about page.",
@@ -184,7 +195,8 @@ const WORK = [
     title: "MediaGiants",
     line: "A site that explains the work and takes the order.",
     story: "A creative agency doing social media management, photography, videography and graphic design. Most agency sites stop at explaining. This one had to close as well, so the storefront is built into the services rather than bolted on.",
-    media: { type: "still", stills: ["mediagiants-site-1", "mediagiants-site-2"] },
+    media: { type: "brand" },
+    shots: ["mediagiants-site-1", "mediagiants-site-2"],
     brand: { mark: "mediagiants", colors: ["#f3872d", "#991b09", "#cf8709"], type: "Roboto" },
     case: {
       problem: "Two jobs fighting each other. A brochure site explains but never closes; a bare storefront sells packages to people who don't yet know why they need them. Both failure modes lose the same client.",
@@ -210,7 +222,8 @@ const WORK = [
     title: "Thomas Emmanuel Ayodele",
     line: "Designing for a designer.",
     story: "A portfolio for a brand designer and illustrator — which is the hardest brief of the set, because the site needs a point of view of its own and still has to get out of the way of the work.",
-    media: { type: "still", stills: ["thomas-site-1"] },
+    media: { type: "brand" },
+    shots: ["thomas-site-1"],
     brand: { mark: "thomas", dark: true, colors: ["#f4f1ea", "#d8d3c8", "#0f0f0f"], type: "Playfair Display / Syne" },
     case: {
       problem: "A designer's portfolio has two failure modes. Too plain and it says the designer has no voice; too loud and it competes with the work it is meant to present. Thomas needed the site to read as designed without becoming the subject.",
@@ -238,7 +251,8 @@ const WORK = [
     title: "ESG Horizon",
     line: "Five kinds of risk, one comparable view.",
     story: "An ESG assessment and reporting platform: emissions, community incidents, worker safety, capital at risk and governance, all in one product. Designed end to end in Figma — flows, states, components and the dead ends you only find by drawing them.",
-    media: { type: "still", stills: ["esg-assessment", "esg-emissions", "esg-horizon-canvas"] },
+    media: { type: "brand" },
+    shots: ["esg-assessment", "esg-emissions", "esg-horizon-canvas"],
     brand: { mark: "esghorizon", dark: true, colors: ["#109b95", "#f9b233", "#3d9f56", "#b9cdc7"], type: "Poppins" },
     case: {
       problem: "ESG reporting spans five domains that share nothing. Emissions are measured in tonnes of CO₂e, community risk in incident counts, safety in injuries per 200,000 hours, business model exposure in naira at risk, governance in audit compliance. An executive needs to compare all five in one glance. A specialist needs to go all the way down into any one of them. Most ESG tools serve one of those two people and lose the other.",
@@ -267,7 +281,8 @@ const WORK = [
     title: "EventPlanna",
     line: "Event planning, from booking to run sheet.",
     story: "A 38 MB design file covering the planning side of events — the part organisers live in once the excitement wears off. Add your own account of the problem here; the file is in the repo.",
-    media: { type: "plate", glyph: "EP" },
+    media: { type: "brand" },
+    brand: { mark: "eventplanna.svg", colors: ["#7858F8", "#5848E8", "#182838"], type: "Set in the file" },
     case: {
       problem: "Write what was broken before this existed — the spreadsheet, the group chat, the thing that kept getting missed.",
       process: [
@@ -290,7 +305,8 @@ const WORK = [
     title: "Shedulr",
     line: "Scheduling, designed properly.",
     story: "The largest of the three files at 156 MB. Add the story here — what it schedules, who for, and the decision the design had to make easy.",
-    media: { type: "plate", glyph: "SH" },
+    media: { type: "brand" },
+    brand: { mark: "shedulr.svg", colors: ["#086868", "#78A8A8", "#B8C8C8"], type: "Set in the file" },
     case: {
       problem: "Describe the scheduling problem it solves and who was losing time to it.",
       process: [

@@ -42,17 +42,36 @@ which of the four visual treatments it gets.
 `video: true` puts the play badge on the card. Leave it off for
 screenshots, or a website will look like a video.
 
-### The four visuals
+### Card and monitor show different things
+
+This is the important bit. **`media` is what the card shows. `shots` is what
+the monitor shows.**
+
+```js
+media: { type: "brand" },              // card: the client's logo on a plate
+shots: ["teasoo-site-1", "teasoo-site-2"],  // monitor: the real screenshots
+brand: { mark: "teasoo", colors: ["#e11b3f", "#41454f"], type: "Montserrat" }
+```
+
+The homepage stays a clean wall of client marks; the real screens are the
+payoff when someone opens a project. A card with more than one `shot` gets
+a "2 screens" badge so people know there's something behind it.
+
+Leave `shots` off and the monitor just shows the card's visual bigger.
 
 | `media` | Looks like | Use it for |
 |---|---|---|
-| `{ type: "still", stills: ["a", "b"] }` | The frame, plus a filmstrip in the monitor when there's more than one | Video work |
-| `{ type: "brand", mark: "teasoo", colors: ["#e11b3f", …] }` | A brand plate — logo on a light card with a palette bar | An alternative to a screenshot |
-| `{ type: "canvas", src: "assets/media/stills/x.jpg" }` | Contained on a dark ground | Design-file canvas maps |
+| `{ type: "brand" }` | The logo on a plate, over a palette bar. Reads `mark`, `colors` and `dark` from the `brand` block | Websites and product work |
+| `{ type: "still", stills: ["a", "b"], video: true }` | The frame itself, with a play badge | Video work |
+| `{ type: "canvas", src: "…" }` | Contained on a dark ground | Design-file canvas maps |
 | `{ type: "plate", glyph: "01" }` | A typographic plate, no image | Anything with no visual yet |
 
-Add `dark: true` to a `brand` block when the logo is drawn for a dark
-background, or it'll disappear on the light plate.
+Add `dark: true` to `brand` when the logo is drawn for a dark background,
+or it'll disappear on the light plate.
+
+`mark` is a filename in `assets/media/marks/`. A bare name means `.png`;
+include the extension for anything else (`"shedulr.svg"`). SVG is better
+where you have it — it stays sharp at any size.
 
 ### Adding a still
 
@@ -108,10 +127,9 @@ logo is drawn for a dark background.
 
 ## Swap in a better screenshot
 
-Every website card carries a real capture of the live site. To replace one:
-save a new image (1400px wide is right) into `assets/media/stills/` and
-point that project's `stills` at its filename, without the extension. List
-two or more and the monitor gives you a filmstrip.
+Save the image (1400px wide is right) into `assets/media/stills/` and add
+its filename — without the extension — to that project's `shots` array.
+List two or more and the monitor gives you a filmstrip.
 
 ## Change what a channel says
 
@@ -153,15 +171,30 @@ cramped on a laptop — stack them two-up at that point.
 
 ## Put it online
 
-**Netlify or Vercel** — drag the folder in, or connect the repo. Nothing to configure.
+**Vercel** (what this is set up for)
 
-**GitHub Pages** — Settings → Pages → deploy from branch, root folder. This
-repo (`clepbo/clepbo`) is your *profile* repo, so Pages serves it at
-`clepbo.github.io/clepbo/`. For a bare `clepbo.github.io`, copy these files
-into a repo named exactly that.
+1. vercel.com → Add New → Project → import `clepbo/clepbo`.
+2. Framework preset: **Other**. Leave the build command empty and set the
+   output directory to the repo root — it's plain static files, there is
+   nothing to build.
+3. Deploy.
 
-**Custom domain** — point it at whichever host, then update the `og:` tags in
-`index.html`.
+`vercel.json` is already in the repo: it sets clean URLs and caches
+`assets/` for a year, so fonts and images load instantly on repeat visits.
+`.vercelignore` keeps the Figma files out of the deploy — they're linked
+from GitHub, so there's no reason to ship 15 MB to the edge.
+
+Every push to `main` redeploys. Pull requests get their own preview URL.
+
+**Custom domain** — add it under the project's Domains tab, point your DNS
+at Vercel, then update the `og:` tags in `index.html` to the real address.
+The `og:image` at `assets/media/og.png` is the desk itself, so shared links
+preview with all four channels visible.
+
+**Anywhere else** — it's plain static files. Netlify takes the folder as-is;
+GitHub Pages works from Settings → Pages → deploy from branch, root folder
+(this is your *profile* repo, so Pages would serve it at
+`clepbo.github.io/clepbo/`).
 
 ## Before you launch
 
