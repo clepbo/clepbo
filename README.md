@@ -1,41 +1,45 @@
-Hi ![](https://user-images.githubusercontent.com/18350557/176309783-0785949b-9127-417c-8b55-ab5a4333674e.gif)My name is Israel Oni
-==================================================================================================================================
+<h1 align="left">Israel Oni</h1>
 
-Back-end Developer | Java | Spring boot
----------------------------------------
+**Web &nbsp;·&nbsp; Product &nbsp;·&nbsp; Video &nbsp;·&nbsp; Solutions**
 
-Experienced software developer with expertise in Spring, Spring Boot, and Core Java. Proven track record of architecting efficient software systems and delivering successful projects, including a Hospital Management System and a school-based online marketplace. Recognized for analytical problem-solving skills and a strong collaborative spirit, dedicated to crafting elegant solutions for complex challenges.
+I build websites fast on WordPress and AI, design the product before anyone codes it,
+cut the video, and fix the process underneath when that turns out to be the real problem.
+One person, four channels — which is exactly how my portfolio is built.
 
-* 🌍  I'm based in Abuja, Nigeria
-* ✉️  You can contact me at [oniokikijesu04@gmail.com](mailto:oniokikijesu04@gmail.com)
-* 🚀  I'm currently working on [Hospital Management System](http://github.com/clepbo/Hospital_Management_System)
-* 🧠  I'm learning Spring Microservices
-* 🤝  I'm open to collaborating on Building Restful APIs with Spring boot
+- 📍 &nbsp;Benin City, Edo State, Nigeria
+- ✉️ &nbsp;[io.israeloni@gmail.com](mailto:io.israeloni@gmail.com)
+- 🎛️ &nbsp;Portfolio — **[The Desk](https://github.com/clepbo/clepbo)**
+- 🤝 &nbsp;Open to freelance, contract and collaboration
 
-### Skills
+---
 
+### What I do
 
-<p align="left">
-<a href="https://www.oracle.com/java/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/java-colored.svg" width="36" height="36" alt="Java" /></a><a href="https://git-scm.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/git-colored.svg" width="36" height="36" alt="Git" /></a><a href="https://www.mysql.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/mysql-colored.svg" width="36" height="36" alt="MySQL" /></a>
-</p>
+| | |
+|---|---|
+| **Web & build** | Marketing sites, landing pages and WooCommerce storefronts on WordPress, Next.js when a CMS would fight you. Built fast, with AI doing the hours that were never the craft — for founders who need it live, not perfect. |
+| **Product & UI/UX** | Flows, wireframes, high fidelity and design systems in Figma. The expensive mistakes get made before the first line of code; I'd rather find them on a canvas. |
+| **Video & motion** | Editing, pacing, colour and sound. Short-form built for the scroll, long-form series that hold their shape, and motion graphics that match the rest of the identity. |
+| **Solutions & systems** | Internal tools, REST APIs, integrations and automation. Java and Spring Boot when a system has to keep behaving once real people arrive. |
 
+### Selected work
 
-### Socials
+**Sites** — [Teasoo Consulting](https://teasooconsulting.com/) · [EHF Africa](https://ehfoundation.africa/) · [Moatview Apartments](https://moatviewapartments.com/) · [Shina Luwoye Foundation](https://shinaluwoyefoundation.com/) · [The Thinking Room](https://the-thinking-room-pi.vercel.app/) · [MediaGiants](https://mediagiantsenterprise.com/) · [Thomas Emmanuel Ayodele](https://clepbo.github.io/Thomas-Emmanuel-Ayodele-/index.html)
 
-<p align="left"> <a href="https://www.facebook.com/clepbo" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/facebook-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/facebook.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/facebook.svg" width="32" height="32" /> </picture> </a> <a href="https://www.github.com/clepbo" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github.svg" width="32" height="32" /> </picture> </a> <a href="http://www.instagram.com/israeli4god/" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="undefined" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/instagram.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/instagram.svg" width="32" height="32" /> </picture> </a> <a href="https://www.linkedin.com/in/israel-oni-2496a1210/" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin.svg" width="32" height="32" /> </picture> </a> <a href="https://www.stackoverflow.com/users/11863642/clepbo" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="undefined" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/stackoverflow.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/stackoverflow.svg" width="32" height="32" /> </picture> </a> <a href="https://www.x.com/clepbo" target="_blank" rel="noreferrer"> <picture> <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/twitter-dark.svg" /> <source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/twitter.svg" /> <img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/twitter.svg" width="32" height="32" /> </picture> </a></p>
+**Product design** — [ESG Horizon, EventPlanna and Shedulr](https://github.com/clepbo/clepbo/tree/main/Projects) (Figma files)
 
-### Badges
+**Systems** — [Hospital Management System](https://github.com/clepbo/Hospital_Management_System) · school marketplace
 
-<b>My GitHub Stats</b>
+### On the desk
 
-<a href="http://www.github.com/clepbo"><img src="https://github-readme-stats.vercel.app/api?username=clepbo&show_icons=true&hide=&count_private=true&title_color=0891b2&text_color=ffffff&icon_color=0891b2&bg_color=1c1917&hide_border=true&show_icons=true" alt="clepbo's GitHub stats" /></a>
+`WordPress` `Next.js` `Java` `Spring Boot` `MySQL` `Figma` `Canva`
+`DaVinci Resolve` `CapCut` `ChatGPT` `Claude` `Git` `GitHub` `Miro` `Jira` `ClickUp`
 
-<a href="http://www.github.com/clepbo"><img src="https://github-readme-streak-stats.herokuapp.com/?user=clepbo&stroke=ffffff&background=1c1917&ring=0891b2&fire=0891b2&currStreakNum=ffffff&currStreakLabel=0891b2&sideNums=ffffff&sideLabels=ffffff&dates=ffffff&hide_border=true" /></a>
+### Elsewhere
 
-<a href="http://www.github.com/clepbo"><img src="https://github-readme-activity-graph.cyclic.app/graph?username=clepbo&bg_color=1c1917&color=ffffff&line=0891b2&point=ffffff&area_color=1c1917&area=true&hide_border=true&custom_title=GitHub%20Commits%20Graph" alt="GitHub Commits Graph" /></a>
+[GitHub](https://github.com/clepbo) · [LinkedIn](https://www.linkedin.com/in/israel-oni-2496a1210/) · [X](https://www.x.com/clepbo) · [Instagram](https://www.instagram.com/israeli4god/) · [Stack Overflow](https://stackoverflow.com/users/11863642/clepbo)
 
-<a href="https://github.com/clepbo" align="left"><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=clepbo&langs_count=10&title_color=0891b2&text_color=ffffff&icon_color=0891b2&bg_color=1c1917&hide_border=true&locale=en&custom_title=Top%20%Languages" alt="Top Languages" /></a>
+<br>
 
-<b>Top Repositories</b>
-
-<div width="100%" align="center"><a href="https://github.com/clepbo/Hospital_Management_System" align="left"><img align="left" width="45%" src="https://github-readme-stats.vercel.app/api/pin/?username=clepbo&repo=Hospital_Management_System&title_color=0891b2&text_color=ffffff&icon_color=0891b2&bg_color=1c1917&hide_border=true&locale=en" /></a></div><br /><br /><br /><br /><br /><br /><br />
+<a href="https://github.com/clepbo"><img src="https://github-readme-stats.vercel.app/api?username=clepbo&show_icons=true&count_private=true&title_color=35D6C4&text_color=E9E7E0&icon_color=35D6C4&bg_color=16181A&hide_border=true" alt="Israel Oni's GitHub stats" height="150" /></a>
+<a href="https://github.com/clepbo"><img src="https://github-readme-stats.vercel.app/api/top-langs/?username=clepbo&langs_count=8&layout=compact&title_color=35D6C4&text_color=E9E7E0&bg_color=16181A&hide_border=true&custom_title=Top%20Languages" alt="Top languages" height="150" /></a>
