@@ -55,10 +55,12 @@ function mediaHTML(item, big) {
     const first = m.stills[0];
     const n = m.stills.length;
     const badge = n > 1 ? `<span class="media__count">${n} frames</span>` : "";
+    const play = m.video ? `<span class="media__play" aria-hidden="true"></span>` : "";
+    const alt = m.video ? `Frame from ${esc(item.title)}` : `${esc(item.title)} — screen`;
     return `<span class="${cls} media--still">
-        <img class="shot" src="${stillSrc(first)}" alt="Frame from ${esc(item.title)}"
+        <img class="shot" src="${stillSrc(first)}" alt="${alt}"
              loading="lazy" decoding="async">
-        <span class="media__play" aria-hidden="true"></span>${badge}
+        ${play}${badge}
       </span>`;
   }
 
@@ -184,7 +186,8 @@ const els = {
   kind: document.getElementById("monKind"), pos: document.getElementById("monPos"),
   client: document.getElementById("monClient"), title: document.getElementById("monTitle"),
   story: document.getElementById("monStory"), meta: document.getElementById("monMeta"),
-  note: document.getElementById("monNote"), link: document.getElementById("monLink")
+  note: document.getElementById("monNote"), link: document.getElementById("monLink"),
+  brand: document.getElementById("monBrand"), casebox: document.getElementById("monCase")
 };
 let reel = [], reelAt = 0, frameAt = 0, lastFocus = null;
 
@@ -221,6 +224,9 @@ function paintMonitor() {
   els.meta.innerHTML = (item.meta || []).map(([k, v]) =>
     `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join("");
 
+  paintBrand(item);
+  paintCase(item);
+
   if (item.link) {
     els.link.href = item.link;
     els.link.textContent = (item.linkText || "Open") + " →";
@@ -241,6 +247,57 @@ function paintMonitor() {
       b.addEventListener("click", () => { frameAt = Number(b.dataset.i); paintFrame(); });
     });
   }
+}
+
+/* The brand strip: the client's own mark, the palette sampled from it,
+   and the typeface the live site actually runs. */
+function paintBrand(item) {
+  const bd = item.brand;
+  els.brand.hidden = !bd;
+  if (!bd) return;
+  const sw = (bd.colors || []).map((c) =>
+    `<li class="brandbar__sw"><span class="brandbar__chip" style="background:${esc(c)}"></span>
+       <span class="brandbar__hex">${esc(c).toUpperCase()}</span></li>`).join("");
+  els.brand.innerHTML = `
+    <p class="case__head">Brand</p>
+    <div class="brandbar__row">
+      <span class="brandbar__mark${bd.dark ? " is-dark" : ""}">
+        <img src="assets/media/marks/${esc(bd.mark)}.png" alt="${esc(item.client)} logo" loading="lazy">
+      </span>
+      <ul class="brandbar__sws">${sw}</ul>
+      ${bd.type ? `<p class="brandbar__type"><span>Typeface</span>${esc(bd.type)}</p>` : ""}
+    </div>`;
+}
+
+/* The case study: what was wrong, how it was worked out, what was
+   decided and why, what shipped. */
+function paintCase(item) {
+  const c = item.case;
+  els.casebox.hidden = !c;
+  if (!c) return;
+  const steps = (c.process || []).map(([t, b], i) => `
+    <li class="case__step">
+      <span class="case__n">${String(i + 1).padStart(2, "0")}</span>
+      <div><h5 class="case__sub">${esc(t)}</h5><p class="case__text">${esc(b)}</p></div>
+    </li>`).join("");
+  const decisions = (c.decisions || []).map(([t, b]) => `
+    <li class="case__decision">
+      <h5 class="case__sub">${esc(t)}</h5><p class="case__text">${esc(b)}</p>
+    </li>`).join("");
+
+  els.casebox.innerHTML = `
+    ${c.problem ? `<section class="case__block">
+      <p class="case__head">The problem</p>
+      <p class="case__lead">${esc(c.problem)}</p></section>` : ""}
+    ${steps ? `<section class="case__block">
+      <p class="case__head">How it was worked out</p>
+      <ol class="case__steps">${steps}</ol></section>` : ""}
+    ${decisions ? `<section class="case__block">
+      <p class="case__head">Design decisions</p>
+      <ul class="case__decisions">${decisions}</ul></section>` : ""}
+    ${c.outcome ? `<section class="case__block case__block--out">
+      <p class="case__head">Outcome</p>
+      <p class="case__lead">${esc(c.outcome)}</p></section>` : ""}`;
 }
 
 function openMonitor(id) {

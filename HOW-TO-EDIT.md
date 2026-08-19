@@ -31,20 +31,23 @@ which of the four visual treatments it gets.
   client: "Client name",
   title: "What it's called",
   line: "One line for the card.",
-  story: "Two or three sentences for the monitor.",
-  media: { type: "still", stills: ["file-name"] },
+  story: "Two or three sentences, top of the monitor.",
+  media: { type: "still", stills: ["file-name"], video: true },
   meta: [["Work", "Edit"], ["Format", "Vertical"]],
   link: "https://…", linkText: "Watch it",
   note: "Optional line, shown with an accent rule."
 }
 ```
 
+`video: true` puts the play badge on the card. Leave it off for
+screenshots, or a website will look like a video.
+
 ### The four visuals
 
 | `media` | Looks like | Use it for |
 |---|---|---|
 | `{ type: "still", stills: ["a", "b"] }` | The frame, plus a filmstrip in the monitor when there's more than one | Video work |
-| `{ type: "brand", mark: "teasoo", colors: ["#e11b3f", …] }` | A brand plate — logo on a light card with a palette bar | Websites |
+| `{ type: "brand", mark: "teasoo", colors: ["#e11b3f", …] }` | A brand plate — logo on a light card with a palette bar | An alternative to a screenshot |
 | `{ type: "canvas", src: "assets/media/stills/x.jpg" }` | Contained on a dark ground | Design-file canvas maps |
 | `{ type: "plate", glyph: "01" }` | A typographic plate, no image | Anything with no visual yet |
 
@@ -65,19 +68,50 @@ palette bar.
 
 ---
 
-## Add real site screenshots
+## Write a case study
 
-The web cards currently show brand plates — logo, real palette, typeface —
-rather than screenshots, because I couldn't reach the live sites from the
-machine this was built on. Screenshots would be stronger. To swap one in:
+Add a `case` block to any project and the monitor turns into a case study —
+the problem, the process as numbered steps, the design decisions, and the
+outcome. This is what the website and UI/UX entries use.
 
-1. Screenshot the site (1440px wide is a good size), save it to
-   `assets/media/stills/` as e.g. `teasoo-site.jpg`.
-2. In `data.js`, change that project's media to:
-   `media: { type: "still", stills: ["teasoo-site"] }`
+```js
+case: {
+  problem: "What was actually wrong before this existed.",
+  process: [
+    ["Step name", "What you did and why it came first."],
+    ["Next step", "…"]
+  ],
+  decisions: [
+    ["The decision", "Why it beat the obvious alternative."],
+    ["Another one", "…"]
+  ],
+  outcome: "What shipped, stated plainly."
+}
+```
 
-Or keep the brand plate and add the screenshot as a second entry — the
-monitor will show both as a filmstrip.
+Decisions read best as **a choice plus the option you rejected** — that's
+what separates a case study from a description. Don't invent numbers you
+can't stand behind; a specific design reason is more convincing than an
+unverifiable metric.
+
+## Add a brand strip
+
+Add a `brand` block and the monitor shows the client's mark, their palette
+and their typeface under the story:
+
+```js
+brand: { mark: "teasoo", colors: ["#e11b3f", "#41454f"], type: "Montserrat" }
+```
+
+`mark` is a filename in `assets/media/marks/`. Add `dark: true` when the
+logo is drawn for a dark background.
+
+## Swap in a better screenshot
+
+Every website card carries a real capture of the live site. To replace one:
+save a new image (1400px wide is right) into `assets/media/stills/` and
+point that project's `stills` at its filename, without the extension. List
+two or more and the monitor gives you a filmstrip.
 
 ## Change what a channel says
 
@@ -101,12 +135,16 @@ and lights up when one of them is live:
 single-colour SVG. `icon: "cut"` is the one hand-drawn mark (CapCut isn't in
 the icon set).
 
-## Add a fifth channel
+## Add or remove a channel
 
 1. Copy an `<article class="channel" data-ch="4">` block in `index.html`.
 2. Copy a `<div class="brief__panel" id="brief-4">` block.
 3. Add `html[data-channel="5"] { … }` to the CSS.
 4. Add `5: { … }` to `CHANNELS` in `data.js`.
+
+To remove one, delete its `<article class="channel">` and
+`<div class="brief__panel">` from `index.html` and its entry from
+`CHANNELS`, then renumber the rest.
 
 The keyboard picks up new channels on its own. Past five strips it gets
 cramped on a laptop — stack them two-up at that point.
@@ -127,9 +165,10 @@ into a repo named exactly that.
 
 ## Before you launch
 
-- [ ] Replace the three placeholder entries (`slot: true` in `data.js`) —
-      EventPlanna, Shedulr and the solutions card need real stories
-- [ ] Consider swapping brand plates for real screenshots (above)
+- [ ] Write the EventPlanna and Shedulr case studies (`slot: true` in
+      `data.js` — the scaffold is there, the words aren't)
+- [ ] CH 04 Solutions has only one project on it. Either add work, or
+      remove the channel (recipe below)
 - [ ] Add an `og:image` (1200×630) so shared links preview properly
 - [ ] Open it on your own phone, not just a desktop browser
 
