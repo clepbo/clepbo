@@ -1604,3 +1604,126 @@ body.is-locked { overflow: hidden; }
   .study__step--next { text-align: left; align-items: flex-start; }
   .contact__cv { margin-left: 0; display: block; }
 }
+
+/* ============================================================
+   9. ENQUIRY FORM — in the patch bay
+   ============================================================ */
+
+.enq {
+  margin-top: clamp(2.25rem, 4vw, 3rem);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  max-width: 42rem;
+  border: 1px solid var(--rule);
+  background: var(--panel);
+  transition: background-color 0.75s var(--tune);
+}
+
+.enq__head {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  transition: color 0.5s var(--tune);
+}
+
+.enq__note {
+  margin-top: 0.7rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--legend-dim);
+}
+
+.enq__row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+  gap: 0 1rem;
+}
+
+.enq__field { display: block; margin-top: 1.25rem; }
+
+.enq__label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--legend-mute);
+}
+
+.enq input[type="text"],
+.enq input[type="email"],
+.enq select,
+.enq textarea {
+  width: 100%;
+  padding: 0.7rem 0.8rem;
+  background: var(--panel-2);
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  color: var(--legend);
+  font-family: inherit;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  transition: border-color 0.25s var(--tune);
+}
+.enq textarea { resize: vertical; min-height: 7rem; }
+.enq input::placeholder, .enq textarea::placeholder { color: var(--legend-mute); }
+.enq input:hover, .enq select:hover, .enq textarea:hover { border-color: var(--legend-mute); }
+.enq input:focus, .enq select:focus, .enq textarea:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+/* The honeypot: off-screen, untabbable, invisible to assistive tech. */
+.enq__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.enq__send {
+  margin-top: 1.6rem;
+  padding: 0.85rem 1.6rem;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.3s var(--tune), color 0.3s var(--tune);
+}
+.enq__send:hover:not(:disabled) { background: var(--accent); color: var(--accent-ink); }
+.enq__send:disabled { opacity: 0.55; cursor: wait; }
+
+.enq__error {
+  margin-top: 1rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid #FF5A36;
+  font-size: 0.9rem;
+  color: #FF8B6E;
+}
+
+.enq--done { border-color: color-mix(in srgb, var(--accent) 45%, var(--rule)); }
+
+.enq__done-head {
+  font-size: clamp(1.02rem, 0.95rem + 0.4vw, 1.2rem);
+  line-height: 1.5;
+  color: var(--legend);
+}
+.enq__done-head::before {
+  content: "";
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.6rem;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 12px 2px var(--glow);
+  vertical-align: middle;
+}

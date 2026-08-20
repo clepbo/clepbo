@@ -1062,6 +1062,44 @@ function ContactTab({ doc, edit, say }: { doc: Content } & Shared) {
       ))}
       <button className="adm__btn"
         onClick={() => edit((d) => { d.contact.links.push({ label: "", href: "" }); })}>Add a link</button>
+
+      <div className="sub"><h3>Enquiry form</h3></div>
+      <p className="adm__note" style={{ marginBottom: "1rem" }}>
+        Sends the enquiry to you and an automatic confirmation to whoever wrote it.
+        Needs RESEND_API_KEY set, and a sender address on a domain you have verified
+        with Resend.
+      </p>
+      <label className="chip" style={{ marginBottom: "1rem" }}>
+        <input type="checkbox" checked={c.form?.enabled ?? false}
+          onChange={(e) => edit((d) => { d.contact.form.enabled = e.target.checked; })} />
+        Show the form on the site
+      </label>
+
+      <div className="row">
+        <Field label="Heading" value={c.form?.heading ?? ""}
+          onChange={(v) => edit((d) => { d.contact.form.heading = v; })} />
+        <Field label="Button" value={c.form?.button ?? ""}
+          onChange={(v) => edit((d) => { d.contact.form.button = v; })} />
+      </div>
+      <Field label="Note under the heading" value={c.form?.note ?? ""} area ai say={say}
+        context="the reassurance line above a contact form"
+        onChange={(v) => edit((d) => { d.contact.form.note = v; })} />
+      <Field label="Message shown after sending" value={c.form?.success ?? ""} area ai say={say}
+        context="the confirmation shown on screen after someone sends an enquiry"
+        onChange={(v) => edit((d) => { d.contact.form.success = v; })} />
+
+      <div className="row">
+        <Field label="Deliver enquiries to (blank = the email above)" value={c.form?.deliverTo ?? ""}
+          onChange={(v) => edit((d) => { d.contact.form.deliverTo = v; })} />
+        <Field label="Send from (must be a verified Resend sender)" value={c.form?.from ?? ""}
+          onChange={(v) => edit((d) => { d.contact.form.from = v; })} />
+      </div>
+
+      <Field label="Confirmation subject" value={c.form?.replySubject ?? ""}
+        onChange={(v) => edit((d) => { d.contact.form.replySubject = v; })} />
+      <Field label="Confirmation email" value={c.form?.replyBody ?? ""} area rows={7} ai say={say}
+        context="the automatic email someone receives after sending an enquiry"
+        onChange={(v) => edit((d) => { d.contact.form.replyBody = v; })} />
     </>
   );
 }

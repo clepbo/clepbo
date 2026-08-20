@@ -115,6 +115,20 @@ export type Content = {
     eyebrow: string; title: string; body: string;
     email: string;
     links: { label: string; href: string }[];
+    form: {
+      enabled: boolean;
+      heading: string;
+      note: string;
+      button: string;
+      success: string;
+      /** Where enquiries land. Falls back to `email` when blank. */
+      deliverTo: string;
+      /** Verified sender on your email provider. */
+      from: string;
+      /** The automatic reply the sender receives. */
+      replySubject: string;
+      replyBody: string;
+    };
   };
   footer: { left: string; right: string };
 };

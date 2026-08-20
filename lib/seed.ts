@@ -1440,7 +1440,18 @@ export const SEED: Content = {
         "label": "Stack Overflow",
         "href": "https://stackoverflow.com/users/11863642/clepbo"
       }
-    ]
+    ],
+    "form": {
+      "enabled": true,
+      "heading": "Or just tell me here",
+      "note": "Straight to my inbox. You'll get a confirmation immediately, and a real reply within a day.",
+      "button": "Send it",
+      "success": "Got it. Check your inbox for a confirmation — I'll reply properly within a day.",
+      "deliverTo": "",
+      "from": "Israel Oni <onboarding@resend.dev>",
+      "replySubject": "I've got your message",
+      "replyBody": "Thanks for getting in touch — your message has landed and I've read it.\n\nI reply to everything myself, usually within a day. If it's urgent, reply to this email and it comes straight back to me.\n\nIsrael"
+    }
   },
   "footer": {
     "left": "Israel Oni — Benin City, Nigeria",
