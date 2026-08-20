@@ -2,6 +2,7 @@ import { put, del } from "@vercel/blob";
 import { NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { isAuthed } from "@/lib/auth";
+import { rateLimit, sweep } from "@/lib/ratelimit";
 import { extractText, isTextDoc } from "@/lib/extract";
 import { processImage } from "@/lib/palette";
 import type { ContextDoc } from "@/lib/types";
@@ -13,6 +14,15 @@ const MAX_BYTES = 20 * 1024 * 1024;
 
 export async function POST(req: Request) {
   if (!(await isAuthed())) return NextResponse.json({ error: "Not signed in." }, { status: 401 });
+
+  sweep();
+  const limit = rateLimit("context", 20, 60000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: `Too many uploads at once — try again in ${limit.retryAfter}s.` },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } },
+    );
+  }
 
   const form = await req.formData();
   const file = form.get("file");

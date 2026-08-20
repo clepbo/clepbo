@@ -74,6 +74,22 @@ export type Project = {
   context?: ProjectContext;
 };
 
+export type Testimonial = {
+  id: string;
+  quote: string;
+  name: string;
+  role: string;      // "Founder, Teasoo Consulting"
+  ch?: number[];     // which channels this speaks to
+  hidden?: boolean;
+};
+
+export type Version = {
+  version: number;
+  updatedAt: string;
+  pathname: string;
+  bytes: number;
+};
+
 export type Content = {
   version: number;
   updatedAt: string;
@@ -87,10 +103,12 @@ export type Content = {
     standby: string;       // the standby line in the brief
     hint: string;
     context?: ProjectContext;   // background every rewrite gets, site-wide
+    cv?: { label: string; url: string };
   };
   channels: Channel[];
   rack: { eyebrow: string; title: string; note: string; tools: Tool[] };
   work: { eyebrow: string; title: string; note: string; projects: Project[] };
+  testimonials: { eyebrow: string; title: string; note: string; items: Testimonial[] };
   path: { eyebrow: string; title: string; note: string; steps: { name: string; body: string }[] };
   about: { eyebrow: string; title: string; lead: string; body: string[]; facts: { label: string; value: string }[] };
   contact: {

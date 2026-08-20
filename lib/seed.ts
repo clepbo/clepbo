@@ -14,7 +14,11 @@ export const SEED: Content = {
     "title": "Israel Oni — Web, Product, Video, Solutions",
     "description": "Israel Oni, Benin City. Four channels: websites built fast on WordPress and AI, product and UI/UX design, video editing and motion, and digital solutions.",
     "standby": "Four channels, one person. Patch into any of them above — the desk retunes to whichever one you're listening to, and the work below follows.",
-    "hint": "switch channel"
+    "hint": "switch channel",
+    "cv": {
+      "label": "",
+      "url": ""
+    }
   },
   "channels": [
     {
@@ -1441,5 +1445,11 @@ export const SEED: Content = {
   "footer": {
     "left": "Israel Oni — Benin City, Nigeria",
     "right": "Built by hand. No template."
+  },
+  "testimonials": {
+    "eyebrow": "What clients say",
+    "title": "In their words",
+    "note": "Add a testimonial in the admin — three sentences from a client does more than any feature.",
+    "items": []
   }
 } as Content;

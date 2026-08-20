@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { getContent } from "@/lib/content";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -14,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [{ url: "/assets/media/og.png", width: 1200, height: 630 }],
     },
     twitter: { card: "summary_large_image" },
-    metadataBase: new URL(process.env.SITE_URL ?? "https://clepbo.vercel.app"),
+    metadataBase: new URL(process.env.SITE_URL ?? "https://israeloni.vercel.app"),
   };
 }
 
@@ -33,7 +34,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2316181A'/><circle cx='16' cy='16' r='6' fill='%2335D6C4'/></svg>"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

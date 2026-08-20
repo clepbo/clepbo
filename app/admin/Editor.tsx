@@ -1,13 +1,14 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
-import type { Content, Project, ProjectContext } from "@/lib/types";
+import { useCallback, useEffect, useRef, useState } from "react";
+import type { Content, Project, ProjectContext, Version } from "@/lib/types";
 import "./admin.css";
 
-type Tab = "site" | "channels" | "rack" | "work" | "path" | "about" | "contact";
+type Tab = "site" | "channels" | "rack" | "work" | "says" | "path" | "about" | "contact" | "history";
 const TABS: [Tab, string][] = [
-  ["site", "Site"], ["channels", "Channels"], ["work", "Work"],
+  ["site", "Site"], ["channels", "Channels"], ["work", "Work"], ["says", "Testimonials"],
   ["rack", "The rack"], ["path", "Signal path"], ["about", "About"], ["contact", "Contact"],
+  ["history", "History"],
 ];
 
 const AI_MODES = [
@@ -90,6 +91,8 @@ export default function Editor({ initial }: { initial: Content }) {
           {tab === "site" && <SiteTab doc={doc} {...shared} />}
           {tab === "channels" && <ChannelsTab doc={doc} {...shared} />}
           {tab === "work" && <WorkTab doc={doc} {...shared} />}
+          {tab === "says" && <SaysTab doc={doc} {...shared} />}
+          {tab === "history" && <HistoryTab say={say} onRestore={(d) => { setDoc(d); setDirty(false); }} />}
           {tab === "rack" && <RackTab doc={doc} {...shared} />}
           {tab === "path" && <PathTab doc={doc} {...shared} />}
           {tab === "about" && <AboutTab doc={doc} {...shared} />}
@@ -295,6 +298,23 @@ function SiteTab({ doc, edit, say }: { doc: Content } & Shared) {
         <Field label="Footer left" value={doc.footer.left} onChange={(v) => edit((d) => { d.footer.left = v; })} />
         <Field label="Footer right" value={doc.footer.right} onChange={(v) => edit((d) => { d.footer.right = v; })} />
       </div>
+
+      <div className="sub"><h3>CV</h3></div>
+      <div className="row" style={{ alignItems: "end" }}>
+        <Field label="Button label" value={doc.site.cv?.label ?? ""}
+          onChange={(v) => edit((d) => { d.site.cv = { label: v, url: d.site.cv?.url ?? "" }; })} />
+        <Field label="File URL" value={doc.site.cv?.url ?? ""}
+          onChange={(v) => edit((d) => { d.site.cv = { label: d.site.cv?.label ?? "", url: v }; })} />
+        <div className="fld">
+          <span className="fld__top"><span className="fld__label">Upload</span></span>
+          <CvUpload say={say} onDone={(url) => edit((d) => {
+            d.site.cv = { label: d.site.cv?.label || "Download CV", url };
+          })} />
+        </div>
+      </div>
+      <p className="adm__note" style={{ marginTop: "-.5rem" }}>
+        Leave the URL empty and no CV link appears on the site.
+      </p>
 
       <ContextPanel
         ctx={doc.site.context}
@@ -655,6 +675,39 @@ function ImageList({
   );
 }
 
+function CvUpload({ say, onDone }: { say: Shared["say"]; onDone: (url: string) => void }) {
+  const ref = useRef<HTMLInputElement | null>(null);
+  const [busy, setBusy] = useState(false);
+
+  async function send(file: File) {
+    setBusy(true);
+    try {
+      const fd = new FormData();
+      fd.set("file", file);
+      const res = await fetch("/api/context", { method: "POST", body: fd });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error ?? "Upload failed.");
+      onDone(body.url);
+      say("CV uploaded");
+    } catch (err) {
+      say(err instanceof Error ? err.message : "Upload failed.", true);
+    } finally {
+      setBusy(false);
+      if (ref.current) ref.current.value = "";
+    }
+  }
+
+  return (
+    <>
+      <button className="adm__btn" type="button" disabled={busy} onClick={() => ref.current?.click()}>
+        {busy ? "Uploading…" : "Upload a PDF"}
+      </button>
+      <input ref={ref} type="file" accept=".pdf" hidden
+        onChange={(e) => { const f = e.target.files?.[0]; if (f) void send(f); }} />
+    </>
+  );
+}
+
 function ContextPanel({
   ctx, onChange, say, title,
 }: {
@@ -749,6 +802,146 @@ function ContextPanel({
           on upload, so a scanned PDF needs OCR first.
         </p>
       </div>
+    </>
+  );
+}
+
+function SaysTab({ doc, edit, say }: { doc: Content } & Shared) {
+  const items = doc.testimonials?.items ?? [];
+  return (
+    <>
+      <Head
+        title="Testimonials"
+        note="Three honest sentences from a client will do more for you than any feature on this site."
+      />
+      <div className="row">
+        <Field label="Eyebrow" value={doc.testimonials.eyebrow} onChange={(v) => edit((d) => { d.testimonials.eyebrow = v; })} />
+        <Field label="Heading" value={doc.testimonials.title} onChange={(v) => edit((d) => { d.testimonials.title = v; })} />
+      </div>
+      <Field label="Section note" value={doc.testimonials.note} onChange={(v) => edit((d) => { d.testimonials.note = v; })} />
+
+      <button
+        className="adm__btn adm__btn--go"
+        style={{ margin: "1rem 0" }}
+        onClick={() => edit((d) => {
+          d.testimonials.items.unshift({ id: `t-${Date.now()}`, quote: "", name: "", role: "", ch: [] });
+        })}
+      >
+        Add a testimonial
+      </button>
+
+      {items.length === 0 && (
+        <p className="adm__note">
+          Nothing here yet, so the section stays off the site until you add one.
+        </p>
+      )}
+
+      {items.map((t, i) => (
+        <div className={`card2${t.hidden ? " card2--off" : ""}`} key={t.id}>
+          <div className="card2__top">
+            <span className="card2__grip">{String(i + 1).padStart(2, "0")}</span>
+            <span className="card2__name">{t.name || "Unnamed"}</span>
+            <span className="card2__acts">
+              <button onClick={() => edit((d) => { d.testimonials.items = move(d.testimonials.items, i, -1); })}>↑</button>
+              <button onClick={() => edit((d) => { d.testimonials.items = move(d.testimonials.items, i, 1); })}>↓</button>
+              <button onClick={() => edit((d) => { d.testimonials.items[i].hidden = !d.testimonials.items[i].hidden; })}>
+                {t.hidden ? "Show" : "Hide"}
+              </button>
+              <button onClick={() => edit((d) => { d.testimonials.items.splice(i, 1); })}>Del</button>
+            </span>
+          </div>
+          <div className="card2__open">
+            <Field label="Quote" value={t.quote} area rows={4} ai say={say}
+              context="a client testimonial on a freelance portfolio — keep the client's own voice"
+              onChange={(v) => edit((d) => { d.testimonials.items[i].quote = v; })} />
+            <div className="row">
+              <Field label="Name" value={t.name} onChange={(v) => edit((d) => { d.testimonials.items[i].name = v; })} />
+              <Field label="Role and company" value={t.role} onChange={(v) => edit((d) => { d.testimonials.items[i].role = v; })} />
+            </div>
+            <div className="fld">
+              <span className="fld__top"><span className="fld__label">Speaks to which channels</span></span>
+              <div className="chips">
+                {doc.channels.map((c) => (
+                  <label className="chip" key={c.id}>
+                    <input type="checkbox" checked={Boolean(t.ch?.includes(c.id))}
+                      onChange={(e) => edit((d) => {
+                        const list = d.testimonials.items[i].ch ?? [];
+                        d.testimonials.items[i].ch = e.target.checked
+                          ? [...list, c.id].sort()
+                          : list.filter((n) => n !== c.id);
+                      })} />
+                    CH 0{c.id} {c.word}
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </>
+  );
+}
+
+function HistoryTab({ say, onRestore }: { say: Shared["say"]; onRestore: (d: Content) => void }) {
+  const [versions, setVersions] = useState<Version[] | null>(null);
+  const [busy, setBusy] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch("/api/versions")
+      .then((r) => r.json())
+      .then((b) => setVersions(b.versions ?? []))
+      .catch(() => setVersions([]));
+  }, []);
+
+  async function restore(v: Version) {
+    if (!confirm(`Restore version ${v.version}? The current version is kept in history.`)) return;
+    setBusy(v.pathname);
+    try {
+      const res = await fetch("/api/versions", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ pathname: v.pathname }),
+      });
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error ?? "Restore failed.");
+      onRestore(body);
+      say(`Restored version ${v.version} — published as v${body.version}`);
+      setVersions(null);
+      const list = await fetch("/api/versions").then((r) => r.json());
+      setVersions(list.versions ?? []);
+    } catch (err) {
+      say(err instanceof Error ? err.message : "Restore failed.", true);
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  return (
+    <>
+      <Head title="History" note="Every save is kept. The last twenty are here — restoring one publishes it as a new version, so the restore itself is undoable." />
+      {versions === null && <p className="adm__note">Reading history…</p>}
+      {versions?.length === 0 && (
+        <p className="adm__note">
+          No snapshots yet. They start once you save with Blob storage connected —
+          local development writes to disk and keeps no history.
+        </p>
+      )}
+      {versions?.map((v) => (
+        <div className="card2" key={v.pathname}>
+          <div className="card2__top">
+            <span className="card2__grip">v{v.version}</span>
+            <span className="card2__name">
+              {new Date(v.updatedAt).toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}
+            </span>
+            <span className="card2__kind">{Math.round(v.bytes / 1024)} kB</span>
+            <span className="card2__acts">
+              <button disabled={busy === v.pathname} onClick={() => void restore(v)}>
+                {busy === v.pathname ? "…" : "Restore"}
+              </button>
+            </span>
+          </div>
+        </div>
+      ))}
     </>
   );
 }
