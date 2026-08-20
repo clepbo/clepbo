@@ -28,23 +28,9 @@
   --tune:   cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-/* Each channel relights the desk: the graphite itself takes the hue */
-html[data-channel="1"] {
-  --panel: #101A1B; --panel-2: #162426; --panel-3: #1D2E30;
-  --accent: #35D6C4; --accent-ink: #04201D; --glow: rgba(53, 214, 196, 0.30);
-}
-html[data-channel="2"] {
-  --panel: #15121D; --panel-2: #1E1A2B; --panel-3: #272138;
-  --accent: #A98BFF; --accent-ink: #150A2A; --glow: rgba(169, 139, 255, 0.30);
-}
-html[data-channel="3"] {
-  --panel: #1A1210; --panel-2: #241816; --panel-3: #2E1F1B;
-  --accent: #FF5A36; --accent-ink: #240A03; --glow: rgba(255, 90, 54, 0.30);
-}
-html[data-channel="4"] {
-  --panel: #191509; --panel-2: #231D10; --panel-3: #2D2616;
-  --accent: #F5B93F; --accent-ink: #241802; --glow: rgba(245, 185, 63, 0.28);
-}
+/* Each channel relights the desk: the graphite itself takes the hue.
+   Those custom properties are injected per channel from the content
+   document — see app/ChannelStyles.tsx. */
 
 /* ---- 2. BASE --------------------------------------------- */
 
