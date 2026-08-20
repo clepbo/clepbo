@@ -259,6 +259,46 @@ cramped on a laptop — stack them two-up at that point.
 
 ---
 
+## The enquiry form
+
+The patch bay carries a form as well as the email address, so people who don't
+want to open a mail client can still reach you. Sending it does two things:
+
+1. The enquiry lands in your inbox, with the sender's address set as reply-to —
+   so hitting reply goes straight back to them.
+2. They get an automatic confirmation, in your words.
+
+Everything about it is editable under **Contact** in the admin: the heading,
+the note, the button, the on-screen success message, where enquiries are
+delivered, and the full text of the confirmation email.
+
+### Setting it up
+
+The form needs an email provider. Resend is the transactional-email option in
+the Vercel Marketplace:
+
+1. Vercel → your project → **Integrations** → add **Resend**. That sets
+   `RESEND_API_KEY` for you.
+2. In Resend, **verify a domain** you own.
+3. Back in the admin, set **Send from** to an address on that domain, e.g.
+   `Israel Oni <hello@yourdomain.com>`.
+
+Until a domain is verified, Resend only lets you send from `onboarding@resend.dev`
+and only to your own address. The form ships set that way, so you can test it
+end to end before your domain is ready — but confirmations to other people will
+not arrive until step 2 is done. If a confirmation fails, the enquiry still
+reaches you and the sender is told plainly.
+
+### What stops spam
+
+- A hidden field no person can see or tab into. Anything that fills it gets a
+  success response and goes nowhere.
+- A timing check — a form submitted in under 2.5 seconds is treated the same way.
+- Three enquiries per IP per ten minutes.
+- Length and format checks on every field.
+
+No captcha. Nobody should have to identify traffic lights to hire you.
+
 ## Put it online
 
 **If the site 404s, this is why**

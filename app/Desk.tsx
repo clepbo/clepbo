@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Channel, Content, Project } from "@/lib/types";
+import ContactForm from "./ContactForm";
 
 const isUrl = (n: string) => /^https?:\/\//.test(n);
 const stillSrc = (n: string) => (isUrl(n) ? n : `/assets/media/stills/${n}.jpg`);
@@ -375,6 +376,13 @@ export default function Desk({ content }: { content: Content }) {
             <a className="contact__cv" href={content.site.cv.url} target="_blank" rel="noopener">
               {content.site.cv.label || "Download CV"} ↓
             </a>
+          )}
+          {content.contact.form?.enabled && (
+            <ContactForm
+              form={content.contact.form}
+              channels={channels.map((c) => ({ id: c.id, name: c.name }))}
+              email={content.contact.email}
+            />
           )}
           <ul className="contact__links">
             {content.contact.links.map((l) => (

@@ -5,6 +5,23 @@ import path from "path";
 import type { Content, Version } from "./types";
 import { SEED } from "./seed";
 
+/** A document saved before a field existed must not break the site. Stored
+ *  values always win; anything the stored copy has never heard of is filled in
+ *  from the seed. Arrays are taken whole — a list the author emptied stays
+ *  empty rather than refilling itself. */
+function withDefaults<T>(stored: unknown, seed: T): T {
+  if (Array.isArray(seed)) return (Array.isArray(stored) ? stored : seed) as T;
+  if (seed && typeof seed === "object") {
+    if (!stored || typeof stored !== "object" || Array.isArray(stored)) return seed;
+    const out: Record<string, unknown> = { ...(stored as Record<string, unknown>) };
+    for (const [k, v] of Object.entries(seed as Record<string, unknown>)) {
+      out[k] = k in out ? withDefaults(out[k], v) : v;
+    }
+    return out as T;
+  }
+  return (stored === undefined ? seed : stored) as T;
+}
+
 const BLOB_PATH = "desk/content.json";
 const VERSION_PREFIX = "desk/versions/";
 const KEEP_VERSIONS = 20;
@@ -37,18 +54,7 @@ async function readBlob(): Promise<Content | null> {
 /* A document saved before a new section existed is still valid — fill the
    gaps from the seed rather than letting the page or the editor hit undefined. */
 function normalise(doc: Content): Content {
-  return {
-    ...SEED,
-    ...doc,
-    site: { ...SEED.site, ...doc.site },
-    rack: { ...SEED.rack, ...doc.rack },
-    work: { ...SEED.work, ...doc.work },
-    testimonials: { ...SEED.testimonials, ...(doc.testimonials ?? {}) },
-    path: { ...SEED.path, ...doc.path },
-    about: { ...SEED.about, ...doc.about },
-    contact: { ...SEED.contact, ...doc.contact },
-    footer: { ...SEED.footer, ...doc.footer },
-  };
+  return withDefaults(doc, SEED);
 }
 
 export const getContent = unstable_cache(
