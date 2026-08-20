@@ -1,6 +1,8 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { isAuthed } from "@/lib/auth";
+import { getContentFresh } from "@/lib/content";
+import type { ProjectContext } from "@/lib/types";
 
 export const runtime = "nodejs";
 export const maxDuration = 120;
@@ -24,6 +26,9 @@ The site's voice, which you must match exactly:
 Hard rules:
 - Never invent facts, clients, metrics, dates or outcomes. If the source text has
   no numbers, the result has no numbers.
+- Background material may be supplied — a brief, a PRD, a spec, screenshots. Use it
+  to get the project right, and you may draw specifics from it. Everything in it is
+  fair game; anything not in it or in the source text is not.
 - Return only the rewritten text. No preamble, no quotes around it, no commentary,
   no markdown formatting unless the input already had it.`;
 
@@ -47,8 +52,8 @@ export async function POST(req: Request) {
     );
   }
 
-  const { mode, text, context } = (await req.json().catch(() => ({}))) as {
-    mode?: string; text?: string; context?: string;
+  const { mode, text, context, projectId } = (await req.json().catch(() => ({}))) as {
+    mode?: string; text?: string; context?: string; projectId?: string;
   };
 
   const instruction = MODES[mode ?? ""];
@@ -56,7 +61,37 @@ export async function POST(req: Request) {
   if (!text?.trim()) return NextResponse.json({ error: "Nothing to work on." }, { status: 400 });
   if (text.length > 12000) return NextResponse.json({ error: "That text is too long." }, { status: 400 });
 
+  // Background the author attached: site-wide, plus this project's own.
+  let brief = "";
+  let images: string[] = [];
+  try {
+    const doc = await getContentFresh();
+    const project = projectId
+      ? doc.work.projects.find((p) => p.id === projectId)
+      : undefined;
+    const parts = [doc.site.context, project?.context].filter(Boolean) as ProjectContext[];
+    ({ brief, images } = buildContext(parts, project?.title));
+  } catch (err) {
+    // Background is a bonus. Losing it should not lose the rewrite.
+    console.error("context load failed:", err);
+  }
+
   const client = new Anthropic();
+
+  const content: Anthropic.ContentBlockParam[] = [
+    ...images.map((url): Anthropic.ContentBlockParam => ({
+      type: "image",
+      source: { type: "url", url },
+    })),
+    {
+      type: "text",
+      text:
+        `${instruction}\n\n` +
+        (context ? `Where this appears: ${context}\n\n` : "") +
+        (brief ? `${brief}\n\n` : "") +
+        `Text to work on:\n---\n${text}\n---`,
+    },
+  ];
 
   try {
     const response = await client.messages.create({
@@ -64,15 +99,7 @@ export async function POST(req: Request) {
       max_tokens: 16000,
       system: VOICE,
       output_config: { effort: "medium" },
-      messages: [
-        {
-          role: "user",
-          content:
-            `${instruction}\n\n` +
-            (context ? `Where this appears: ${context}\n\n` : "") +
-            `---\n${text}\n---`,
-        },
-      ],
+      messages: [{ role: "user", content }],
     });
 
     if (response.stop_reason === "refusal") {
@@ -101,4 +128,44 @@ export async function POST(req: Request) {
     console.error("ai failed:", err);
     return NextResponse.json({ error: "That rewrite failed." }, { status: 500 });
   }
+}
+
+/* Assemble the attached background into one block, capped so a long PRD
+   cannot crowd out the text actually being edited. */
+const MAX_CONTEXT_CHARS = 120_000;
+const MAX_IMAGES = 4;
+
+function buildContext(parts: ProjectContext[], title?: string) {
+  const chunks: string[] = [];
+  const images: string[] = [];
+  let budget = MAX_CONTEXT_CHARS;
+
+  for (const part of parts) {
+    if (part.brief?.trim()) {
+      const t = part.brief.trim().slice(0, budget);
+      budget -= t.length;
+      chunks.push(t);
+    }
+    for (const d of part.docs ?? []) {
+      if (d.kind === "image") {
+        if (images.length < MAX_IMAGES) images.push(d.url);
+        continue;
+      }
+      if (!d.text || budget <= 0) continue;
+      const body = d.text.slice(0, Math.max(0, budget));
+      budget -= body.length;
+      chunks.push(`--- ${d.name} ---\n${body}`);
+    }
+  }
+
+  if (!chunks.length && !images.length) return { brief: "", images };
+
+  const head = title
+    ? `Background on ${title}, supplied by the author. Treat it as true:`
+    : "Background supplied by the author. Treat it as true:";
+  const imgNote = images.length
+    ? `\n\n${images.length} image${images.length > 1 ? "s are" : " is"} attached above as further background.`
+    : "";
+
+  return { brief: chunks.length ? `${head}\n\n${chunks.join("\n\n")}${imgNote}` : head + imgNote, images };
 }

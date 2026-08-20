@@ -63,6 +63,27 @@ you — the same treatment the existing stills got. Upload a **client logo** and
 the palette is sampled from it automatically, so a new project card styles
 itself.
 
+### Giving Claude the full picture
+
+Every project has a **Context for the AI** panel, and there's one for the whole
+site under the Site tab. Two parts:
+
+- **A brief** — free text. "Lead on the compliance angle", "the client hates the
+  word platform", "this was a rescue job, say so."
+- **Documents and screenshots** — attach the PRD, the spec, your notes, or a
+  screenshot of the product. PDF, Word, text, markdown and images, up to 20 MB
+  each.
+
+Text is read out of the file the moment you upload it, so a 30-page PDF becomes
+context immediately. Screenshots go to Claude as images — it looks at them.
+
+None of it appears on the site. It only shapes what the rewrite buttons produce,
+and the project's own context is combined with the site-wide context every time.
+
+Two limits worth knowing: a scanned PDF with no text layer needs OCR before it's
+useful, and very long documents are trimmed so they can't crowd out the text
+you're actually editing.
+
 ---
 
 ## Editing the files directly
