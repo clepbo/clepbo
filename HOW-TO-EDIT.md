@@ -1,25 +1,79 @@
-# The Desk — how to change things
+# The Desk — how it works
 
-A static site. No build step, no framework, no `npm install`. Edit, save, refresh.
+There are now two halves. The **site** is what visitors see. The **admin** at
+`/admin` is where you change it, with Claude on hand to rewrite copy.
+
+Everything you can see on the page is editable there — you should rarely need
+to open a file again.
 
 ```
-index.html               structure and the fixed copy
-assets/js/data.js        ← all project content lives here
-assets/js/console.js     rendering, the channel switch, the monitor, the meters
-assets/css/console.css   the whole design system
-assets/css/fonts.css     self-hosted Archivo + IBM Plex Mono
-assets/media/stills/     video frames
-assets/media/marks/      client logos
-assets/icons/            tool marks
+app/                     the site and the admin
+  page.tsx               the desk, rendered from the content document
+  Desk.tsx               all the interactivity — channels, meters, monitor
+  admin/                 the editor
+  api/                   session, content, upload, ai
+lib/
+  types.ts               the shape of the content document
+  seed.ts                the content the site ships with
+  content.ts             reads and writes the document
+public/assets/           fonts, icons, stills, marks — served as-is
 ```
-
-**Almost everything you'll want to change is in `assets/js/data.js`.**
 
 ---
 
-## Add a project
+## Using the admin
 
-Copy a block in the `WORK` array and fill it in. The `media` key decides
+Go to `/admin`, sign in with your password, and you get seven tabs:
+
+| Tab | What's in it |
+|---|---|
+| **Site** | Your name, the rail subtitle, location, clock timezone, page title, meta description, standby line, footer |
+| **Channels** | Each strip: the big word, its line, tags, the whole brief below it, the channel spec — and the five colours it lights the page with |
+| **Work** | Every project card. Add, delete, reorder, hide, and edit down to the last case-study decision |
+| **The rack** | The tools, and which channels each one lights up on |
+| **Signal path** | The four stages |
+| **About** | Your paragraphs and fact rows |
+| **Contact** | Headline, body, email, social links |
+
+**Save & publish** writes the document and the live site updates immediately —
+no rebuild, no deploy, no wait.
+
+### Show and hide
+
+Every project, channel and tool has a **Hide** button. Hiding takes it off the
+site while keeping everything you wrote, which is what you want for work under
+NDA, a client who hasn't launched, or a channel you're not selling this quarter.
+**Delete** is separate and permanent.
+
+### Claude in the editor
+
+Any long text field has four buttons: **Tighten**, **Rewrite**, **Expand**,
+**Fix**. They send that field to Claude with a description of the site's voice
+and put the result straight back in the box.
+
+Claude is told never to invent facts, clients, metrics or dates — if your text
+has no numbers, the rewrite has none either. It's an editor, not a ghostwriter.
+Nothing is saved until you press Save, so you can always type over a rewrite
+you don't like.
+
+### Images
+
+Upload from the Work tab and the image is resized, compressed and stored for
+you — the same treatment the existing stills got. Upload a **client logo** and
+the palette is sampled from it automatically, so a new project card styles
+itself.
+
+---
+
+## Editing the files directly
+
+You can still edit `lib/seed.ts` by hand — it is the content the site falls
+back to before anything has been saved from the admin. Once you have saved
+once, the stored document wins and the seed is only a fallback.
+
+### The project shape
+
+Each project in the document looks like this: The `media` key decides
 which of the four visual treatments it gets.
 
 ```js
@@ -136,13 +190,13 @@ List two or more and the monitor gives you a filmstrip.
 - **The strip on the front panel** — search `data-ch="2"` in `index.html`.
 - **The detail below** — search `id="brief-2"`: headline, paragraph,
   capability list and the **Channel spec** sidebar.
-- **Its name and colour** — the `CHANNELS` map at the top of `data.js`,
+- **Its name and colour** — the `CHANNELS` map at the top of `lib/seed.ts`,
   **and** the matching `html[data-channel="2"]` block in `console.css`.
   Both, or the meters and the page will disagree.
 
 ## Change the tools
 
-The `TOOLS` array in `data.js`. Each tool lists the channels it's used on,
+The `TOOLS` array in `lib/seed.ts`. Each tool lists the channels it's used on,
 and lights up when one of them is live:
 
 ```js
@@ -158,7 +212,7 @@ the icon set).
 1. Copy an `<article class="channel" data-ch="4">` block in `index.html`.
 2. Copy a `<div class="brief__panel" id="brief-4">` block.
 3. Add `html[data-channel="5"] { … }` to the CSS.
-4. Add `5: { … }` to `CHANNELS` in `data.js`.
+4. Add `5: { … }` to `CHANNELS` in `lib/seed.ts`.
 
 To remove one, delete its `<article class="channel">` and
 `<div class="brief__panel">` from `index.html` and its entry from
@@ -171,50 +225,49 @@ cramped on a laptop — stack them two-up at that point.
 
 ## Put it online
 
-**Vercel** (what this is set up for)
+**First deploy**
 
-1. vercel.com → Add New → Project → import `clepbo/clepbo`.
-2. Framework preset: **Other**. Leave the build command empty and set the
-   output directory to the repo root — it's plain static files, there is
-   nothing to build.
-3. Deploy.
+1. vercel.com → Add New → Project → import `clepbo/clepbo`. Framework preset
+   **Next.js** — it detects everything.
+2. Project → Storage → Create → **Blob**. That creates `BLOB_READ_WRITE_TOKEN`
+   for you and attaches it to the project.
+3. Project → Settings → Environment Variables, add three more:
+   - `ADMIN_PASSWORD` — what you'll type at `/admin/login`
+   - `SESSION_SECRET` — `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`
+   - `ANTHROPIC_API_KEY` — from console.anthropic.com, for the rewrite buttons
+4. Redeploy so the variables take effect.
 
-`vercel.json` is already in the repo: it sets clean URLs and caches
-`assets/` for a year, so fonts and images load instantly on repeat visits.
-`.vercelignore` keeps the Figma files out of the deploy — they're linked
-from GitHub, so there's no reason to ship 15 MB to the edge.
+Until you save from the admin once, the site serves `lib/seed.ts`. Your first
+save creates the stored document and takes over from there.
 
-Every push to `main` redeploys. Pull requests get their own preview URL.
+**Running it locally**
 
-**Custom domain** — add it under the project's Domains tab, point your DNS
-at Vercel, then update the `og:` tags in `index.html` to the real address.
-The `og:image` at `assets/media/og.png` is the desk itself, so shared links
-preview with all four channels visible.
+```bash
+npm install
+cp .env.example .env.local     # fill in ADMIN_PASSWORD and SESSION_SECRET
+npm run dev
+```
 
-**Anywhere else** — it's plain static files. Netlify takes the folder as-is;
-GitHub Pages works from Settings → Pages → deploy from branch, root folder
-(this is your *profile* repo, so Pages would serve it at
-`clepbo.github.io/clepbo/`).
+Without a Blob token the editor writes `.data/content.json` on disk instead, so
+you can work offline. That file is gitignored; production always uses Blob.
 
-## Before you launch
-
-- [ ] Write the EventPlanna and Shedulr case studies (`slot: true` in
-      `data.js` — the scaffold is there, the words aren't)
-- [ ] CH 04 Solutions has only one project on it. Either add work, or
-      remove the channel (recipe below)
-- [ ] Add an `og:image` (1200×630) so shared links preview properly
-- [ ] Open it on your own phone, not just a desktop browser
+**Custom domain** — add it under the project's Domains tab, then set `SITE_URL`
+so the `og:image` resolves to the real address.
 
 ## Things worth knowing
 
-- **Keyboard** — `1`–`4` switch channels, `0` or `Esc` returns to standby.
-  In the monitor: `←` `→` move through the work, `Esc` closes.
+- **Keyboard on the site** — `1`–`4` switch channels, `0` or `Esc` returns to
+  standby. In the monitor: `←` `→` move through the work, `Esc` closes.
+- **The design is untouched by the build.** `console.css` and `fonts.css` are
+  linked from `public/`, not imported, so nothing in the pipeline can alter
+  them. Channel colours are the one exception — they come from the content
+  document and are injected as custom properties.
 - **Reduced motion** — meters freeze and transitions drop for anyone who has
   that turned on. Don't remove that block.
-- **Fonts are local.** No Google Fonts request, so the page works offline and
-  loads in one round trip.
-- **The meters are drawn in code** — a stepped clock line for web, a lattice
-  of artboards for product, metering bars for video, a climbing ramp for
-  solutions. They're in `drawMeter()`.
-- **Video files aren't hosted here.** The stills are local; the links point
-  at Google Drive. If you move a video, update its `link` in `data.js`.
+- **Storage never takes the site down.** If the document can't be read, the
+  page serves the seed and logs the error rather than failing.
+- **`/admin` is `noindex`** and excluded in `robots.ts`.
+- **The session cookie** is httpOnly, signed, and lasts 12 hours. Changing
+  `SESSION_SECRET` signs everyone out immediately.
+- **Video files aren't hosted here.** Stills are local; the links point at
+  Google Drive.
