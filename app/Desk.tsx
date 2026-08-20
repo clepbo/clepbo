@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Channel, Content, Project } from "@/lib/types";
 import ContactForm from "./ContactForm";
+import ThemeToggle from "./ThemeToggle";
 
 const isUrl = (n: string) => /^https?:\/\//.test(n);
 const stillSrc = (n: string) => (isUrl(n) ? n : `/assets/media/stills/${n}.jpg`);
@@ -139,10 +140,13 @@ export default function Desk({ content }: { content: Content }) {
           <span className="rail__status" role="status">{status}</span>
           <span className="rail__status rail__status--short" aria-hidden="true">{shortStatus}</span>
         </p>
-        <div className="rail__meta">
-          <span>{content.site.location}</span>
-          <span className="rail__dot" aria-hidden="true" />
-          <span className="rail__clock">{clock}</span>
+        <div className="rail__end">
+          <span className="rail__meta">
+            <span>{content.site.location}</span>
+            <span className="rail__dot" aria-hidden="true" />
+            <span className="rail__clock">{clock}</span>
+          </span>
+          <ThemeToggle />
         </div>
       </header>
 
@@ -365,32 +369,37 @@ export default function Desk({ content }: { content: Content }) {
 
         {/* ══ CONTACT ══ */}
         <section className="contact" id="contact" aria-labelledby="contactTitle">
-          <p className="eyebrow">{content.contact.eyebrow}</p>
-          <h2 className="contact__title" id="contactTitle">{content.contact.title}</h2>
-          <p className="contact__body">{content.contact.body}</p>
-          <a className="contact__jack" href={`mailto:${content.contact.email}?subject=Project%20enquiry`}>
-            <span className="contact__jack-label">Email</span>
-            <span className="contact__jack-value">{content.contact.email}</span>
-          </a>
-          {content.site.cv?.url && (
-            <a className="contact__cv" href={content.site.cv.url} target="_blank" rel="noopener">
-              {content.site.cv.label || "Download CV"} ↓
-            </a>
-          )}
-          {content.contact.form?.enabled && (
-            <ContactForm
-              form={content.contact.form}
-              channels={channels.map((c) => ({ id: c.id, name: c.name }))}
-              email={content.contact.email}
-            />
-          )}
-          <ul className="contact__links">
-            {content.contact.links.map((l) => (
-              <li key={l.label}>
-                <a href={l.href} rel="me noopener" target="_blank">{l.label}</a>
-              </li>
-            ))}
-          </ul>
+          <div className="contact__grid">
+            <div className="contact__say">
+              <p className="eyebrow">{content.contact.eyebrow}</p>
+              <h2 className="contact__title" id="contactTitle">{content.contact.title}</h2>
+              <p className="contact__body">{content.contact.body}</p>
+              <a className="contact__jack" href={`mailto:${content.contact.email}?subject=Project%20enquiry`}>
+                <span className="contact__jack-label">Email</span>
+                <span className="contact__jack-value">{content.contact.email}</span>
+              </a>
+              {content.site.cv?.url && (
+                <a className="contact__cv" href={content.site.cv.url} target="_blank" rel="noopener">
+                  {content.site.cv.label || "Download CV"} ↓
+                </a>
+              )}
+              <ul className="contact__links">
+                {content.contact.links.map((l) => (
+                  <li key={l.label}>
+                    <a href={l.href} rel="me noopener" target="_blank">{l.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {content.contact.form?.enabled && (
+              <ContactForm
+                form={content.contact.form}
+                channels={channels.map((c) => ({ id: c.id, name: c.name }))}
+                email={content.contact.email}
+              />
+            )}
+          </div>
         </section>
       </main>
 

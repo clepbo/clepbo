@@ -369,6 +369,12 @@ so the `og:image` resolves to the real address.
 
 - **Keyboard on the site** — `1`–`4` switch channels, `0` or `Esc` returns to
   standby. In the monitor: `←` `→` move through the work, `Esc` closes.
+- **Light and dark.** The switch is in the top rail. A first-time visitor gets
+  whatever their system is set to; after that their choice is remembered. The
+  light palette is **derived** from your channel colours — the panel is that
+  accent mixed into paper, and the accent itself is walked toward ink until it
+  clears WCAG AA against it. So changing a channel colour in the admin updates
+  both themes at once, and there is no second set of colours to maintain.
 - **The design is untouched by the build.** `console.css` and `fonts.css` are
   linked from `public/`, not imported, so nothing in the pipeline can alter
   them. Channel colours are the one exception — they come from the content

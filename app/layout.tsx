@@ -19,12 +19,27 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const viewport: Viewport = { themeColor: "#16181A" };
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#16181A" },
+    { media: "(prefers-color-scheme: light)", color: "#F2F0EA" },
+  ],
+};
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" data-channel="0">
       <head>
+        {/* Settle the theme before first paint so the page never flashes. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('desk-theme');" +
+              "if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}" +
+              "document.documentElement.dataset.theme=t;}catch(e){" +
+              "document.documentElement.dataset.theme='dark';}})();",
+          }}
+        />
         {/* Linked rather than imported: the desk's CSS ships exactly as written,
             with nothing in the build pipeline able to alter it. */}
         <link rel="stylesheet" href="/assets/css/fonts.css" />
