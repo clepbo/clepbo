@@ -31,6 +31,22 @@ export type CaseStudy = {
   outcome: string;
 };
 
+/* Context a project carries for the AI: a written brief plus documents —
+   a PRD, a spec, a screenshot — that describe what the thing actually is. */
+export type ContextDoc = {
+  id: string;
+  name: string;
+  kind: "text" | "image";
+  url: string;
+  text?: string;      // extracted for documents; images go to Claude as vision
+  bytes: number;
+  pages?: number;
+  truncated?: boolean;
+  addedAt: string;
+};
+
+export type ProjectContext = { brief: string; docs: ContextDoc[] };
+
 export type Media =
   | { type: "brand" }
   | { type: "still"; stills: string[]; video?: boolean }
@@ -55,6 +71,7 @@ export type Project = {
   note?: string;
   slot?: boolean;
   hidden?: boolean;
+  context?: ProjectContext;
 };
 
 export type Content = {
@@ -69,6 +86,7 @@ export type Content = {
     description: string;
     standby: string;       // the standby line in the brief
     hint: string;
+    context?: ProjectContext;   // background every rewrite gets, site-wide
   };
   channels: Channel[];
   rack: { eyebrow: string; title: string; note: string; tools: Tool[] };
