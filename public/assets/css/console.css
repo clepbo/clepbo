@@ -19,6 +19,12 @@
   --accent:     #A2A8A6;
   --accent-ink: #101214;
   --glow:       rgba(162, 168, 166, 0.22);
+  --well:       #08090A;   /* the ground a screen or photo sits on */
+  --scrim:      rgba(6, 7, 8, 0.82);
+  --warn:       #FF5A36;
+  --warn-ink:   #FF8B6E;
+  --grain:      rgba(255, 255, 255, 0.014);
+  --lift:       rgba(255, 255, 255, 0.035);
 
   --font-display: 'Archivo', 'Helvetica Neue', Arial, sans-serif;
   --font-mono:    'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
@@ -31,6 +37,46 @@
 /* Each channel relights the desk: the graphite itself takes the hue.
    Those custom properties are injected per channel from the content
    document — see app/ChannelStyles.tsx. */
+
+/* The desk in daylight. Same instrument, different finish: powder-coated
+   pale steel rather than anodized graphite. Channel tints and accents are
+   derived per channel in app/ChannelStyles.tsx. */
+html[data-theme="light"] {
+  --panel:      #F2F0EA;
+  --panel-2:    #E9E6DE;
+  --panel-3:    #DFDBD1;
+  --legend:     #16181A;
+  --legend-dim: #4A4F4C;
+  --legend-mute:#5C625E;
+  --rule:       rgba(22, 24, 26, 0.17);
+  --rule-soft:  rgba(22, 24, 26, 0.09);
+  --accent:     #4A5350;
+  --accent-ink: #F5F3ED;
+  --glow:       rgba(74, 83, 80, 0.20);
+  --well:       #DFDBD1;
+  --scrim:      rgba(18, 20, 22, 0.55);
+  --warn:       #B3432B;
+  --warn-ink:   #92351F;
+  --grain:      rgba(22, 24, 26, 0.022);
+  --lift:       rgba(255, 255, 255, 0.5);
+}
+
+html[data-theme="light"] ::selection { background: var(--accent); color: var(--accent-ink); }
+
+/* Photography and canvas maps keep a dark well in either theme — a screenshot
+   floats better on ink than on paper. */
+/* On paper the plate ground has to be lighter than the panel, or the card
+   edge disappears. */
+html[data-theme="light"] .media--brand { background: #FDFCF8; }
+
+/* Dimming that reads as "not this channel" on graphite reads as "broken" on
+   paper, so the step back is gentler here. */
+html[data-theme="light"] .card--dim,
+html[data-theme="light"] .says__item--dim { opacity: 0.5; }
+
+html[data-theme="light"] .monitor__screen .media--still,
+html[data-theme="light"] .study__screen,
+html[data-theme="light"] .monitor__frame { background: #14161A; }
 
 /* ---- 2. BASE --------------------------------------------- */
 
@@ -60,7 +106,7 @@ body::before {
   z-index: 2;
   background: repeating-linear-gradient(
     0deg,
-    rgba(255, 255, 255, 0.014) 0 1px,
+    var(--grain) 0 1px,
     transparent 1px 3px
   );
 }
@@ -213,7 +259,7 @@ canvas { display: block; }
 .channel__btn::before {
   content: "";
   position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0) 42%);
+  background: linear-gradient(180deg, var(--lift), transparent 42%);
   opacity: 0;
   transition: opacity 0.45s var(--tune);
   pointer-events: none;
@@ -801,7 +847,7 @@ svg.rack__icon { filter: none; }
   border: 1px solid var(--rule);
 }
 
-.card { display: flex; transition: opacity 0.4s var(--tune); }
+.card { display: flex; flex-direction: column; transition: opacity 0.4s var(--tune); }
 .card--dim { opacity: 0.3; }
 
 .card__btn {
@@ -1024,7 +1070,7 @@ body.is-locked { overflow: hidden; }
 .monitor__scrim {
   position: absolute;
   inset: 0;
-  background: rgba(6, 7, 8, 0.82);
+  background: var(--scrim);
   backdrop-filter: blur(6px);
 }
 
@@ -1090,7 +1136,7 @@ body.is-locked { overflow: hidden; }
 }
 .monitor__close:hover { color: var(--legend); border-color: var(--mon-accent); }
 
-.monitor__screen { flex: none; background: #0C0E0F; }
+.monitor__screen { flex: none; background: var(--well); }
 
 .monitor__screen .media {
   aspect-ratio: 16 / 9;
@@ -1098,7 +1144,7 @@ body.is-locked { overflow: hidden; }
 }
 /* brand plates keep their own ground, light or dark, so every mark reads */
 .monitor__screen .media--still,
-.monitor__screen .media--plate { background: #08090A; }
+.monitor__screen .media--plate { background: var(--well); }
 .monitor__screen .media--still .shot,
 .monitor__screen .media--canvas .shot { object-fit: contain; }
 .monitor__screen .media__play,
@@ -1120,7 +1166,7 @@ body.is-locked { overflow: hidden; }
   flex: 1;
   padding: 0;
   border: 0;
-  background: #08090A;
+  background: var(--well);
   cursor: pointer;
   aspect-ratio: 16 / 9;
   opacity: 0.42;
@@ -1203,7 +1249,7 @@ body.is-locked { overflow: hidden; }
   text-decoration: none;
   transition: background-color 0.3s var(--tune), color 0.3s var(--tune);
 }
-.monitor__link:hover { background: var(--mon-accent); color: #0B0D0E; }
+.monitor__link:hover { background: var(--mon-accent); color: var(--accent-ink); }
 .monitor__link[hidden] { display: none; }
 
 .monitor__nav {
@@ -1442,7 +1488,7 @@ body.is-locked { overflow: hidden; }
 
 .study__gallery { border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
 
-.study__screen { background: #08090A; }
+.study__screen { background: var(--well); }
 .study__screen img {
   display: block;
   width: 100%;
@@ -1704,9 +1750,9 @@ body.is-locked { overflow: hidden; }
 .enq__error {
   margin-top: 1rem;
   padding-left: 0.85rem;
-  border-left: 2px solid #FF5A36;
+  border-left: 2px solid var(--warn);
   font-size: 0.9rem;
-  color: #FF8B6E;
+  color: var(--warn-ink);
 }
 
 .enq--done { border-color: color-mix(in srgb, var(--accent) 45%, var(--rule)); }
@@ -1726,4 +1772,83 @@ body.is-locked { overflow: hidden; }
   background: var(--accent);
   box-shadow: 0 0 12px 2px var(--glow);
   vertical-align: middle;
+}
+
+/* ============================================================
+   10. PATCH BAY — the form sits beside the address on a desktop
+   ============================================================ */
+
+.contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(2.25rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+@media (min-width: 62rem) {
+  .contact__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); gap: clamp(3rem, 6vw, 6rem); }
+  /* Two columns means less room for the display line, so it stops shouting
+     quite so loudly and wraps on its own terms. */
+  .contact__title { font-size: clamp(2rem, 0.9rem + 2.9vw, 3.6rem); max-width: 13ch; }
+  .contact__grid .enq { margin-top: 0; }
+}
+
+.contact__grid .enq { max-width: none; }
+.contact__say .contact__links { margin-top: 2.25rem; }
+
+/* ============================================================
+   11. THEME SWITCH — a panel toggle in the rail
+   ============================================================ */
+
+.rail__end { display: flex; align-items: center; gap: clamp(0.75rem, 2vw, 1.5rem); }
+
+.tog {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  flex: none;
+}
+
+.tog__track {
+  position: relative;
+  width: 2.15rem;
+  height: 1.15rem;
+  flex: none;
+  border: 1px solid var(--rule);
+  background: var(--panel-2);
+  transition: border-color 0.3s var(--tune), background-color 0.5s var(--tune);
+}
+.tog:hover .tog__track { border-color: var(--accent); }
+
+.tog__cap {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: 1px;
+  width: 0.88rem;
+  background: var(--accent);
+  transition: transform 0.32s var(--tune), background-color 0.5s var(--tune);
+}
+html[data-theme="light"] .tog__cap { transform: translateX(0.98rem); }
+
+.tog__label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--legend-dim);
+  transition: color 0.3s var(--tune);
+  min-width: 2.6rem;
+  text-align: left;
+}
+.tog:hover .tog__label { color: var(--legend); }
+
+@media (max-width: 48rem) {
+  /* The clock and location go, the switch stays. */
+  .rail__end { gap: 0; }
+  .tog__label { display: none; }
 }
