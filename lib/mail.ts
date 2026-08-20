@@ -1,4 +1,5 @@
 import { Resend } from "resend";
+import nodemailer from "nodemailer";
 import type { Content } from "./types";
 
 /** Everything the contact route needs to send its two emails. */
@@ -68,17 +69,68 @@ function replyHtml(body: string, name: string, site: string) {
 const textOf = (e: Enquiry) =>
   `New enquiry\n\nFrom: ${e.name}\nEmail: ${e.email}\nNeeds: ${e.need}\n\n${e.message}\n`;
 
-export async function sendEnquiry(enquiry: Enquiry, content: Content, site: string) {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) throw new Error("RESEND_API_KEY is not set on this deployment.");
+type Letter = {
+  from: string;
+  to: string;
+  replyTo: string;
+  subject: string;
+  html: string;
+  text: string;
+};
 
+/** Two ways to send. Gmail needs no domain of your own, so confirmations reach
+ *  real people from day one; Resend is the better long-term home once you have
+ *  a domain. Whichever is configured wins, Gmail first. */
+function transport() {
+  const user = process.env.GMAIL_USER;
+  const pass = process.env.GMAIL_APP_PASSWORD;
+
+  if (user && pass) {
+    const mailer = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: { user, pass },
+    });
+    return {
+      name: "gmail" as const,
+      /* Gmail rewrites a From header that is not the authenticated account, so
+         the display name is honoured and the address is forced. */
+      send: async (l: Letter) => {
+        const name = l.from.match(/^\s*"?([^"<]+?)"?\s*</)?.[1]?.trim();
+        await mailer.sendMail({ ...l, from: name ? `"${name}" <${user}>` : user });
+      },
+    };
+  }
+
+  const key = process.env.RESEND_API_KEY;
+  if (key) {
+    const resend = new Resend(key);
+    return {
+      name: "resend" as const,
+      send: async (l: Letter) => {
+        const { error } = await resend.emails.send({
+          from: l.from, to: l.to, replyTo: l.replyTo,
+          subject: l.subject, html: l.html, text: l.text,
+        });
+        if (error) throw new Error(error.message);
+      },
+    };
+  }
+
+  throw new Error(
+    "No email provider configured. Set GMAIL_USER and GMAIL_APP_PASSWORD, or RESEND_API_KEY.",
+  );
+}
+
+export async function sendEnquiry(enquiry: Enquiry, content: Content, site: string) {
   const { form } = content.contact;
   const to = form.deliverTo?.trim() || content.contact.email;
-  const from = form.from?.trim() || "onboarding@resend.dev";
-  const resend = new Resend(key);
+  const from = form.from?.trim() || process.env.GMAIL_USER || "onboarding@resend.dev";
+  const post = transport();
 
   // The one that matters. If this fails the whole request fails.
-  const notify = await resend.emails.send({
+  await post.send({
     from,
     to,
     replyTo: enquiry.email,
@@ -86,14 +138,13 @@ export async function sendEnquiry(enquiry: Enquiry, content: Content, site: stri
     html: notifyHtml(enquiry, site),
     text: textOf(enquiry),
   });
-  if (notify.error) throw new Error(notify.error.message);
 
-  /* The confirmation is a courtesy. If it bounces — most often because the
+  /* The confirmation is a courtesy. If it bounces — most often because a Resend
      sending domain is not verified yet — the enquiry still reached the inbox,
      so we log it and let the sender see success. */
   let confirmed = true;
   try {
-    const ack = await resend.emails.send({
+    await post.send({
       from,
       to: enquiry.email,
       replyTo: to,
@@ -101,11 +152,10 @@ export async function sendEnquiry(enquiry: Enquiry, content: Content, site: stri
       html: replyHtml(form.replyBody, enquiry.name, site),
       text: `Hi ${enquiry.name.split(" ")[0] || "there"},\n\n${form.replyBody}\n`,
     });
-    if (ack.error) throw new Error(ack.error.message);
   } catch (err) {
     console.error("confirmation email failed:", err);
     confirmed = false;
   }
 
-  return { confirmed };
+  return { confirmed, via: post.name };
 }

@@ -274,20 +274,42 @@ delivered, and the full text of the confirmation email.
 
 ### Setting it up
 
-The form needs an email provider. Resend is the transactional-email option in
-the Vercel Marketplace:
+Two ways to send. Set either one — if both are present, Gmail wins.
+
+**Your own Gmail** (simplest, and the right choice until you own a domain)
+
+1. Turn on 2-Step Verification on your Google account.
+2. Go to [myaccount.google.com/apppasswords](https://myaccount.google.com/apppasswords)
+   and generate one. You get a 16-character password.
+3. In Vercel → Settings → Environment Variables, set `GMAIL_USER` to your
+   address and `GMAIL_APP_PASSWORD` to that password. Redeploy.
+
+Mail goes out through `smtp.gmail.com` as genuinely you, so it carries Gmail's
+own reputation and lands in inboxes — no domain to verify, nothing to warm up.
+Free Gmail allows 500 messages a day, which a contact form will never approach.
+
+Two things to know. An app password gives whatever holds it the ability to send
+mail as you, so keep it in Vercel's environment variables and nowhere else — if
+it ever leaks, revoke it on that same Google page. And **Send from** in the
+admin only controls the display name when using Gmail; the address is always
+your Gmail account, because Google rewrites anything else.
+
+App passwords need a personal Google account. They are unavailable on work,
+school and other organisation accounts, on accounts using security keys as
+their only second factor, and on accounts with Advanced Protection.
+
+**Resend** (better once you have your own domain)
 
 1. Vercel → your project → **Integrations** → add **Resend**. That sets
    `RESEND_API_KEY` for you.
 2. In Resend, **verify a domain** you own.
-3. Back in the admin, set **Send from** to an address on that domain, e.g.
+3. Set **Send from** in the admin to an address on that domain, e.g.
    `Israel Oni <hello@yourdomain.com>`.
 
-Until a domain is verified, Resend only lets you send from `onboarding@resend.dev`
-and only to your own address. The form ships set that way, so you can test it
-end to end before your domain is ready — but confirmations to other people will
-not arrive until step 2 is done. If a confirmation fails, the enquiry still
-reaches you and the sender is told plainly.
+Until a domain is verified Resend only sends from `onboarding@resend.dev`, and
+only to your own address — so confirmations to other people will not arrive.
+Either way, if a confirmation fails the enquiry still reaches you and the
+sender is told plainly.
 
 ### What stops spam
 
