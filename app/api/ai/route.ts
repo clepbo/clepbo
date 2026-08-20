@@ -1,6 +1,7 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { NextResponse } from "next/server";
 import { isAuthed } from "@/lib/auth";
+import { rateLimit, sweep } from "@/lib/ratelimit";
 import { getContentFresh } from "@/lib/content";
 import type { ProjectContext } from "@/lib/types";
 
@@ -44,6 +45,15 @@ const MODES: Record<string, string> = {
 
 export async function POST(req: Request) {
   if (!(await isAuthed())) return NextResponse.json({ error: "Not signed in." }, { status: 401 });
+
+  sweep();
+  const limit = rateLimit("ai", 30, 60000);
+  if (!limit.ok) {
+    return NextResponse.json(
+      { error: `Too many rewrites at once — try again in ${limit.retryAfter}s.` },
+      { status: 429, headers: { "Retry-After": String(limit.retryAfter) } },
+    );
+  }
 
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json(

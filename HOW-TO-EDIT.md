@@ -30,13 +30,28 @@ Go to `/admin`, sign in with your password, and you get seven tabs:
 | **Site** | Your name, the rail subtitle, location, clock timezone, page title, meta description, standby line, footer |
 | **Channels** | Each strip: the big word, its line, tags, the whole brief below it, the channel spec — and the five colours it lights the page with |
 | **Work** | Every project card. Add, delete, reorder, hide, and edit down to the last case-study decision |
+| **Testimonials** | Client quotes. Tag each one to the channels it speaks to, so it dims when another channel is live |
 | **The rack** | The tools, and which channels each one lights up on |
 | **Signal path** | The four stages |
 | **About** | Your paragraphs and fact rows |
 | **Contact** | Headline, body, email, social links |
+| **History** | The last twenty saves, with one-click restore |
 
 **Save & publish** writes the document and the live site updates immediately —
 no rebuild, no deploy, no wait.
+
+### If you regret a save
+
+The **History** tab keeps the last twenty versions. Restoring one publishes it
+as a *new* version rather than rewinding the counter, so the restore is itself
+undoable and the history stays a straight line.
+
+### Case studies have their own pages
+
+Any project with a case study also lives at `/work/<its-id>` — a real page you
+can send a client, and one Google can index on its own. Cards on the desk carry
+a "Full case study" link, and the monitor offers it too. They are listed in
+`sitemap.xml` and carry `CreativeWork` structured data.
 
 ### Show and hide
 
@@ -246,6 +261,19 @@ cramped on a laptop — stack them two-up at that point.
 
 ## Put it online
 
+**If the site 404s, this is why**
+
+An earlier version of this repo was a static site, and Vercel projects created
+for it were set to Framework Preset "Other" with the output directory pointed at
+the repo root. That configuration serves files out of `public/` and runs no app —
+so `/` and `/admin` both 404 while `/assets/...` still works.
+
+`vercel.json` now pins `"framework": "nextjs"`, which fixes it on the next
+deploy. If it persists, clear the dashboard overrides:
+Settings → Build & Deployment → Framework Preset **Next.js**, and switch off the
+**Build Command** and **Output Directory** overrides so they fall back to the
+defaults. Then redeploy.
+
 **First deploy**
 
 1. vercel.com → Add New → Project → import `clepbo/clepbo`. Framework preset
@@ -292,3 +320,10 @@ so the `og:image` resolves to the real address.
   `SESSION_SECRET` signs everyone out immediately.
 - **Video files aren't hosted here.** Stills are local; the links point at
   Google Drive.
+- **Analytics** are on via `@vercel/analytics`. Numbers appear in the Vercel
+  dashboard under the project's Analytics tab; nothing to configure.
+- **The AI and upload routes are rate limited** to catch a runaway loop. It is
+  per-instance and best-effort — the real protection is your password, so also
+  set a monthly spend cap in the Anthropic console.
+- **A document saved before a section existed still works.** Missing sections
+  are filled from the seed on read, so old saves never break the page.

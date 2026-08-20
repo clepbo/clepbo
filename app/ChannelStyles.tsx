@@ -13,7 +13,7 @@ export default function ChannelStyles({ channels }: { channels: Channel[] }) {
     .map((c) => {
       const accent = ok(c.colour, "#A2A8A6");
       return (
-        `html[data-channel="${Number(c.id)}"]{` +
+        `[data-channel="${Number(c.id)}"]{` +
         `--panel:${ok(c.panel, "#16181A")};` +
         `--panel-2:${ok(c.panel2, "#1C1F21")};` +
         `--panel-3:${ok(c.panel3, "#23262A")};` +

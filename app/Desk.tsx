@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Channel, Content, Project } from "@/lib/types";
 
@@ -14,6 +15,10 @@ export default function Desk({ content }: { content: Content }) {
   const channels = useMemo(() => content.channels.filter((c) => !c.hidden), [content.channels]);
   const tools = useMemo(() => content.rack.tools.filter((t) => !t.hidden), [content.rack.tools]);
   const projects = useMemo(() => content.work.projects.filter((p) => !p.hidden), [content.work.projects]);
+  const says = useMemo(
+    () => (content.testimonials?.items ?? []).filter((t) => !t.hidden),
+    [content.testimonials],
+  );
   const byId = useMemo(() => new Map(channels.map((c) => [c.id, c])), [channels]);
 
   const [live, setLive] = useState(0);
@@ -286,11 +291,39 @@ export default function Desk({ content }: { content: Content }) {
                   {frames.length > 1 && p.media.type !== "still" && (
                     <span className="card__frames">{frames.length} screens</span>
                   )}
+                  {p.case && (
+                    <Link className="card__full" href={`/work/${p.id}`}>Full case study →</Link>
+                  )}
                 </article>
               );
             })}
           </div>
         </section>
+
+        {/* ══ TESTIMONIALS ══ */}
+        {says.length > 0 && (
+          <section className="says" id="says" aria-labelledby="saysTitle">
+            <div className="section-head">
+              <p className="eyebrow">{content.testimonials.eyebrow}</p>
+              <h2 className="section-title" id="saysTitle">{content.testimonials.title}</h2>
+              {content.testimonials.note && <p className="section-note">{content.testimonials.note}</p>}
+            </div>
+            <div className="says__grid">
+              {says.map((t) => {
+                const match = live === 0 || !t.ch?.length || t.ch.includes(live);
+                return (
+                  <figure className={`says__item${match ? "" : " says__item--dim"}`} key={t.id}>
+                    <blockquote className="says__quote">{t.quote}</blockquote>
+                    <figcaption className="says__by">
+                      {t.name}
+                      {t.role && <span className="says__role">{t.role}</span>}
+                    </figcaption>
+                  </figure>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* ══ SIGNAL PATH ══ */}
         <section className="path" id="path" aria-labelledby="pathTitle">
@@ -338,6 +371,11 @@ export default function Desk({ content }: { content: Content }) {
             <span className="contact__jack-label">Email</span>
             <span className="contact__jack-value">{content.contact.email}</span>
           </a>
+          {content.site.cv?.url && (
+            <a className="contact__cv" href={content.site.cv.url} target="_blank" rel="noopener">
+              {content.site.cv.label || "Download CV"} ↓
+            </a>
+          )}
           <ul className="contact__links">
             {content.contact.links.map((l) => (
               <li key={l.label}>
@@ -578,6 +616,9 @@ function Monitor({
             <a className="monitor__link" href={project.link} target="_blank" rel="noopener">
               {project.linkText || "Open"} →
             </a>
+          )}
+          {project.case && (
+            <Link className="monitor__full" href={`/work/${project.id}`}>Open the full case study ↗</Link>
           )}
         </div>
 
