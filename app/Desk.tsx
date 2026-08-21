@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { Channel, Content, Project } from "@/lib/types";
 import ContactForm from "./ContactForm";
 import ThemeToggle from "./ThemeToggle";
+import VideoPlayer from "./VideoPlayer";
 
 const isUrl = (n: string) => /^https?:\/\//.test(n);
 const stillSrc = (n: string) => (isUrl(n) ? n : `/assets/media/stills/${n}.jpg`);
@@ -523,7 +524,9 @@ function Monitor({
         </header>
 
         <div className="monitor__screen">
-          {src ? (
+          {project.video ? (
+            <VideoPlayer video={project.video} poster={src ?? undefined} title={project.title} />
+          ) : src ? (
             <span className="media media--big media--still">
               <img className="shot" src={src} alt={`${project.title} — screen`} />
             </span>
@@ -629,9 +632,14 @@ function Monitor({
           </dl>
 
           {project.note && <p className="monitor__note">{project.note}</p>}
-          {project.link && (
+          {project.link && !project.video && (
             <a className="monitor__link" href={project.link} target="_blank" rel="noopener">
               {project.linkText || "Open"} →
+            </a>
+          )}
+          {project.link && project.video && (
+            <a className="monitor__full" href={project.link} target="_blank" rel="noopener">
+              {project.linkText || "Open the source"} ↗
             </a>
           )}
           {project.case && (
