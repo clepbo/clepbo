@@ -72,6 +72,9 @@ export type Project = {
   slot?: boolean;
   hidden?: boolean;
   context?: ProjectContext;
+  /** A watch link. Paste a YouTube, Google Drive, Cloudflare Stream, Bunny or
+   *  direct .mp4 URL — the player works out how to play it. */
+  video?: string;
 };
 
 export type Testimonial = {
