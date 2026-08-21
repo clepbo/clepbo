@@ -83,7 +83,7 @@ export default async function Study({ params }: { params: Promise<{ slug: string
             <p className="study__line">{p.line}</p>
           </section>
 
-          {frames.length > 0 && <Gallery frames={frames} title={p.title} />}
+          {(frames.length > 0 || p.video) && <Gallery frames={frames} title={p.title} video={p.video} />}
 
           <section className="study__body">
             <p className="study__story">{p.story}</p>
