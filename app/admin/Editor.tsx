@@ -512,6 +512,14 @@ function ProjectForm({ doc, index, edit, say }: { doc: Content; index: number } 
       <ImageList label="Screens shown in the monitor" items={shots} say={say}
         onChange={(v) => set((x) => { x.shots = v; })} />
 
+      <Field label="Watch link (plays on the site, no redirect)" value={p.video ?? ""}
+        onChange={(v) => set((x) => { x.video = v.trim() || undefined; })} />
+      <p className="adm__note" style={{ marginTop: "-.5rem" }}>
+        Paste a YouTube, Google&nbsp;Drive, Cloudflare&nbsp;Stream or Bunny link, or a direct
+        .mp4 URL. The first card frame above becomes the poster; nothing loads from the host
+        until a visitor presses play. Leave it empty for no player.
+      </p>
+
       <div className="sub"><h3>Brand strip</h3></div>
       {p.brand ? (
         <>
