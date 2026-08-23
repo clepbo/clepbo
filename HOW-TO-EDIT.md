@@ -123,14 +123,37 @@ which of the four visual treatments it gets.
   line: "One line for the card.",
   story: "Two or three sentences, top of the monitor.",
   media: { type: "still", stills: ["file-name"], video: true },
+  video: "https://…",             // plays in the monitor, no redirect
   meta: [["Work", "Edit"], ["Format", "Vertical"]],
   link: "https://…", linkText: "Watch it",
   note: "Optional line, shown with an accent rule."
 }
 ```
 
-`video: true` puts the play badge on the card. Leave it off for
+`video: true` inside `media` puts the play badge on the card. Leave it off for
 screenshots, or a website will look like a video.
+
+### The in-app player
+
+`video` is a watch link, and it makes the film play on the site instead of
+sending somebody off to Google Drive. In the admin it's the **Watch link**
+field under Visual. Paste whatever URL you already have:
+
+| Paste | What plays |
+|---|---|
+| `https://drive.google.com/file/d/…/view` | Drive's own player, in the monitor. Costs nothing, works today. The file has to be shared as *anyone with the link* |
+| A YouTube link, or just the 11-character id | YouTube, on the no-cookie domain |
+| `https://….mp4` (or `.webm`, `.m3u8`) | The browser's own player |
+| A Cloudflare Stream or Bunny iframe URL | Their player |
+
+The first frame in `stills` (or the first `shot`) becomes the poster. Nothing
+loads from the video host until a visitor presses play — the poster is a
+still image and a button, so a page full of films is still one page of
+images. When a project has a `video`, its `link` moves to a quieter "open the
+source" line under the text, because the watch button is now the main way in.
+
+A link the player doesn't recognise falls back to the poster, so a typo
+degrades to what you had before rather than to a broken frame.
 
 ### Card and monitor show different things
 
@@ -386,8 +409,9 @@ so the `og:image` resolves to the real address.
 - **`/admin` is `noindex`** and excluded in `robots.ts`.
 - **The session cookie** is httpOnly, signed, and lasts 12 hours. Changing
   `SESSION_SECRET` signs everyone out immediately.
-- **Video files aren't hosted here.** Stills are local; the links point at
-  Google Drive.
+- **Video files aren't hosted here.** Stills are local; the player embeds
+  whatever host the `video` link names — Drive today, and moving to YouTube,
+  Cloudflare Stream or Bunny later is a paste into one field, not a rebuild.
 - **Analytics** are on via `@vercel/analytics`. Numbers appear in the Vercel
   dashboard under the project's Analytics tab; nothing to configure.
 - **The AI and upload routes are rate limited** to catch a runaway loop. It is

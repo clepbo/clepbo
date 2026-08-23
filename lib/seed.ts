@@ -1181,6 +1181,7 @@ export const SEED: Content = {
             "value": "Site on CH 01"
           }
         ],
+        "video": "https://drive.google.com/file/d/1ZFh3R-CE6Bm0_Y3eK94KffU4hNxsRATo/view",
         "link": "https://drive.google.com/file/d/1ZFh3R-CE6Bm0_Y3eK94KffU4hNxsRATo/view",
         "linkText": "Watch the film"
       },
@@ -1218,6 +1219,7 @@ export const SEED: Content = {
             "value": "Ongoing series"
           }
         ],
+        "video": "https://drive.google.com/file/d/1IAqlAvQ9gi1avgfKmwww5wmFFWmAQ3iX/view",
         "link": "https://drive.google.com/file/d/1IAqlAvQ9gi1avgfKmwww5wmFFWmAQ3iX/view",
         "linkText": "Watch an episode"
       },
@@ -1254,6 +1256,7 @@ export const SEED: Content = {
             "value": "Social"
           }
         ],
+        "video": "https://drive.google.com/file/d/18lJ05HmQfQp1RYCHNm6uvFS4cN0ksa17/view",
         "link": "https://drive.google.com/file/d/18lJ05HmQfQp1RYCHNm6uvFS4cN0ksa17/view",
         "linkText": "Watch a cut"
       },
@@ -1325,6 +1328,7 @@ export const SEED: Content = {
             "value": "Long-form"
           }
         ],
+        "video": "https://drive.google.com/file/d/1cb8jHbKKrRV_N_obnsdEHvTuSOQ65xBO/view",
         "link": "https://drive.google.com/file/d/1cb8jHbKKrRV_N_obnsdEHvTuSOQ65xBO/view",
         "linkText": "Watch it"
       },
@@ -1359,6 +1363,7 @@ export const SEED: Content = {
             "value": "Podcast + social"
           }
         ],
+        "video": "https://drive.google.com/file/d/1yD3SaeZSZVOcnl8bTGqAcHI53v0PAR9B/view",
         "link": "https://drive.google.com/file/d/1yD3SaeZSZVOcnl8bTGqAcHI53v0PAR9B/view",
         "linkText": "Watch it"
       }
