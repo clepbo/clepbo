@@ -984,6 +984,97 @@ svg.rack__icon { filter: none; }
   color: #E9E7E0;
 }
 
+/* -- the in-app player --
+   Video plays on the desk, not on somebody else's site. The poster is a
+   facade: nothing from a video host loads until the visitor presses play. */
+
+.play {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  background: var(--well);
+  color: inherit;
+  font: inherit;
+}
+
+button.play { cursor: pointer; }
+
+/* A frame grab is a whole picture, not a texture — never crop it. */
+.play .shot { object-fit: contain; }
+
+.play__blank {
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(135deg, var(--rule-soft) 0 1px, transparent 1px 10px),
+    var(--well);
+}
+
+.play__btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: clamp(3.4rem, 7vw, 4.6rem);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--mon-accent, var(--accent));
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s var(--tune);
+}
+.play__btn::after {
+  content: "";
+  position: absolute;
+  left: 56%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-left: clamp(0.9rem, 1.9vw, 1.2rem) solid var(--accent-ink);
+  border-top: clamp(0.55rem, 1.15vw, 0.72rem) solid transparent;
+  border-bottom: clamp(0.55rem, 1.15vw, 0.72rem) solid transparent;
+}
+.play:hover .play__btn,
+.play:focus-visible .play__btn { transform: translate(-50%, -50%) scale(1.09); }
+
+/* Top-left, the mirror of the frame count — a lower third or a subtitle
+   lives at the bottom of a film still and would fight it there. */
+.play__hint {
+  position: absolute;
+  left: 0.75rem;
+  top: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(9, 11, 12, 0.78);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #E9E7E0;
+}
+
+/* Once it is running the ground goes black, whatever the theme — that is
+   what the letterboxing either side of a video should be. */
+.play--live { background: #000; }
+
+.play__frame,
+.play__video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.play__video { object-fit: contain; background: #000; }
+
+@media (prefers-reduced-motion: reduce) {
+  .play__btn { transition: none; }
+  .play:hover .play__btn,
+  .play:focus-visible .play__btn { transform: translate(-50%, -50%); }
+}
+
 /* -- the words -- */
 
 .card__body {
@@ -1496,6 +1587,10 @@ body.is-locked { overflow: hidden; }
   object-fit: contain;
   margin: 0 auto;
 }
+
+/* The player keeps its 16/9, so cap it by width or a tall screen makes it
+   taller than the viewport. */
+.study__screen .play { max-width: min(100%, calc(78vh * 16 / 9)); margin-inline: auto; }
 
 .study__body {
   padding: clamp(2.5rem, 6vw, 4.5rem) var(--gutter) 0;
