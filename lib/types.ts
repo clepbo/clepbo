@@ -110,7 +110,12 @@ export type Content = {
   };
   channels: Channel[];
   rack: { eyebrow: string; title: string; note: string; tools: Tool[] };
-  work: { eyebrow: string; title: string; note: string; projects: Project[] };
+  work: {
+    eyebrow: string; title: string; note: string; projects: Project[];
+    /** Projects shipped in code that this document has already been offered.
+     *  Kept so a project deleted in the editor is not added back. */
+    offered?: string[];
+  };
   testimonials: { eyebrow: string; title: string; note: string; items: Testimonial[] };
   path: { eyebrow: string; title: string; note: string; steps: { name: string; body: string }[] };
   about: { eyebrow: string; title: string; lead: string; body: string[]; facts: { label: string; value: string }[] };

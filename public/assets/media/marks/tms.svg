@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 64" role="img" aria-label="TMS — Tree Management System">
+  <rect x="2" y="4" width="56" height="56" rx="14" fill="#1d6b45"/>
+  <path transform="translate(6 8) scale(1.5)" d="M16 3 6 17h6l-5 7h7v5h4v-5h7l-5-7h6z" fill="#ffffff"/>
+  <text x="72" y="45" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="38" font-weight="700" letter-spacing="1" fill="#1d6b45">TMS</text>
+</svg>
