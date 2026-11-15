@@ -1947,3 +1947,43 @@ html[data-theme="light"] .tog__cap { transform: translateX(0.98rem); }
   .rail__end { gap: 0; }
   .tog__label { display: none; }
 }
+
+/* -- what it does: one screen and one paragraph per feature, sides alternating -- */
+
+.feats__list { display: grid; gap: clamp(2.25rem, 5vw, 3.5rem); }
+
+.feat {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+  gap: 1.25rem 2.25rem;
+  align-items: center;
+}
+.feat:nth-child(even) { grid-template-columns: minmax(0, 1fr) minmax(0, 1.45fr); }
+.feat:nth-child(even) .feat__shot { order: 2; }
+.feat--text { grid-template-columns: 1fr; }
+
+.feat__shot {
+  display: block;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--rule);
+}
+.feat__shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: transform 0.4s ease;
+}
+.feat__shot:hover img,
+.feat__shot:focus-visible img { transform: scale(1.02); }
+
+.feat__copy .case__n { display: block; width: auto; margin-bottom: 0.5rem; }
+
+@media (max-width: 48rem) {
+  .feat, .feat:nth-child(even) { grid-template-columns: 1fr; }
+  .feat:nth-child(even) .feat__shot { order: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .feat__shot img { transition: none; }
+}

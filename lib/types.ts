@@ -24,8 +24,13 @@ export type Channel = {
 
 export type Tool = { icon: string; name: string; ch: number[]; hidden?: boolean };
 
+/** One thing the product does, shown with its own screen on the case page. */
+export type Feature = { title: string; body: string; shot?: string };
+
 export type CaseStudy = {
   problem: string;
+  /** Optional: what it does, feature by feature. */
+  features?: Feature[];
   process: { title: string; body: string }[];
   decisions: { title: string; body: string }[];
   outcome: string;
@@ -110,7 +115,12 @@ export type Content = {
   };
   channels: Channel[];
   rack: { eyebrow: string; title: string; note: string; tools: Tool[] };
-  work: { eyebrow: string; title: string; note: string; projects: Project[] };
+  work: {
+    eyebrow: string; title: string; note: string; projects: Project[];
+    /** Projects shipped in code that this document has already been offered.
+     *  Kept so a project deleted in the editor is not added back. */
+    offered?: string[];
+  };
   testimonials: { eyebrow: string; title: string; note: string; items: Testimonial[] };
   path: { eyebrow: string; title: string; note: string; steps: { name: string; body: string }[] };
   about: { eyebrow: string; title: string; lead: string; body: string[]; facts: { label: string; value: string }[] };

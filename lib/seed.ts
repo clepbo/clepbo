@@ -326,6 +326,182 @@ export const SEED: Content = {
     "note": "Showing everything. Patch into a channel to filter.",
     "projects": [
       {
+        "id": "tms",
+        "ch": [
+          4,
+          2
+        ],
+        "kind": "Management system · Android + web",
+        "client": "Teasoo Consulting",
+        "title": "Tree Management System",
+        "line": "Every tree planted, found again.",
+        "story": "A reforestation programme plants thousands of trees across sites where phones have no signal. TMS gives every tree an ID, a place and a history. Field officers record each tree on an Android app that works fully offline. Managers, executives and the programme's sponsor follow the same data on the web as soon as a phone finds a connection. I designed and built the whole system, from the database to the app in an officer's hand, and kept shipping it while it was in use in the field.",
+        "media": {
+          "type": "still",
+          "stills": [
+            "tms-dashboard"
+          ]
+        },
+        "meta": [
+          {
+            "label": "Role",
+            "value": "Product, design + build"
+          },
+          {
+            "label": "Field app",
+            "value": "Android · Kotlin · Jetpack Compose · Room"
+          },
+          {
+            "label": "Portal",
+            "value": "React · Vite"
+          },
+          {
+            "label": "Backend",
+            "value": "NestJS · PostgreSQL + PostGIS"
+          },
+          {
+            "label": "Status",
+            "value": "In the field · Android 1.0.21"
+          }
+        ],
+        "link": "https://tms.teasooconsulting.com/",
+        "linkText": "Visit TMS",
+        "shots": [
+          "tms-landing",
+          "tms-dashboard",
+          "tms-trees",
+          "tms-tree",
+          "tms-areas",
+          "tms-activity",
+          "tms-field-activity",
+          "tms-features"
+        ],
+        "brand": {
+          "mark": "tms.svg",
+          "colors": [
+            "#1d6b45",
+            "#e3f0e8",
+            "#f5f5f2",
+            "#0b0b0b"
+          ],
+          "type": "Inter"
+        },
+        "note": "The screens show demo data, not the programme's records. Sapling photo: T. R. Shankar Raman, CC BY-SA 4.0, with a measuring stick added for the demo.",
+        "case": {
+          "problem": "Planting a tree is the easy part. Proving a year later that it was planted, where it stands and whether it is still alive is the hard part. Officers work in the bush with no signal. A tag number written down wrong means a tree nobody can find again. A visit nobody recorded may as well not have happened. The sponsor paying for the trees wants evidence, not a spreadsheet someone rebuilds every Monday.",
+          "features": [
+            {
+              "title": "Works with no signal",
+              "body": "Officers register trees, record visits and take photos with no connection at all, and can sign in offline after the first time. Everything waits safely on the phone and syncs by itself when a signal comes back. The dashboard lists every phone and what it is still holding, such as 18 records and 7 photos waiting since 7:04 AM, so a manager knows the work exists before it arrives.",
+              "shot": "tmsf-sync"
+            },
+            {
+              "title": "Register a tree in a few taps",
+              "body": "Each tree gets an ID from the project's format: a project code, a planting year and a serial, or the nursery's own tag format. The app suggests the next number, species are picked from picture cards, and a clear \"Tree registered\" confirmation ends each one. Several officers can share one tablet, each signed in to their own account.",
+              "shot": "tmsf-trees"
+            },
+            {
+              "title": "A full history for every tree",
+              "body": "Every follow-up visit adds to the tree's record: alive or dead, a photo, its height. A growth chart builds up visit by visit. Each tree is due a maintenance visit every 90 days, and trees that are overdue are flagged on the dashboard.",
+              "shot": "tmsf-tree"
+            },
+            {
+              "title": "Height from a photo",
+              "body": "Officers photograph each tree beside a measuring stick: 3 ft in 2025, 1 m in 2026. An administrator marks the stick and the tree, or lets AI mark them, and TMS works out the height from the stick's length. Here it is 148 cm. Estimates are labelled as estimates and never overwrite a height measured in the field.",
+              "shot": "tmsf-height"
+            },
+            {
+              "title": "Species check from photos",
+              "body": "Every day a sample of new tree photos goes to Pl@ntNet, a plant identification service. When its answer doesn't match the species the officer recorded, the tree is queued for review with the photo and the scores side by side. An administrator keeps the record or corrects it in one click.",
+              "shot": "tmsf-species"
+            },
+            {
+              "title": "Areas from a KML file",
+              "body": "Sector and sub-sector outlines drawn in Google Earth are uploaded as a KML file. TMS shows exactly what it will create or update, with the size of each area in hectares, before anything is saved. Uploading the same file again updates the same areas instead of duplicating them.",
+              "shot": "tmsf-kml"
+            },
+            {
+              "title": "A field map that works offline",
+              "body": "Each planting year has its own sectors and sub-sectors on the map. On the phone, the offline field map shows the officer's position and the team's rally points, with the distance and direction to each. Officers can also mark their own starting point.",
+              "shot": "tmsf-areas"
+            },
+            {
+              "title": "Duplicates are caught, not lost",
+              "body": "If two phones register the same tree ID, the second record isn't thrown away or silently merged. An administrator sees both side by side, with who recorded each and when, and decides: keep the original, accept the newer one, re-number a mistyped tag, or correct the existing tree.",
+              "shot": "tmsf-conflict"
+            },
+            {
+              "title": "Reports for every audience",
+              "body": "Managers see status, species, vendors and planting over time, plus field activity by officer and by day, all filtered by project, year, area or date. Executives get an overview of the work done. Every number opens the trees behind it, and every view exports to Excel.",
+              "shot": "tmsf-activity"
+            },
+            {
+              "title": "A live link for the sponsor",
+              "body": "A sponsor or client gets a private, read-only link to their project's charts, map and trees, with no account or password. Links can expire or be revoked at any time.",
+              "shot": "tmsf-share"
+            },
+            {
+              "title": "Every change on the record",
+              "body": "Corrections sit beside the original instead of replacing it. The audit log records who did what and when, from sign-ins to KML imports, and can be searched and exported.",
+              "shot": "tmsf-audit"
+            }
+          ],
+          "process": [
+            {
+              "title": "Model the tree's life, not the form",
+              "body": "Every tree is an event history: registration, follow-up visits, corrections, death. Each one is recorded against the tree's ID, so the record tells its own story from planting day on."
+            },
+            {
+              "title": "Build the field app to work with no signal",
+              "body": "The Android app writes everything to the phone first, including sign-in after the first time. Records queue up and sync in the background when a connection appears. Several officers can share one tablet, each signed in to their own account."
+            },
+            {
+              "title": "Give every area a shape",
+              "body": "Each project is split into planting years, sectors and sub-sectors. Boundaries come from GPS corners or an imported KML file, and the field map shows officers where they are and where the team meets."
+            },
+            {
+              "title": "One set of data, a view for each audience",
+              "body": "Administrators get the full dashboard: status, overdue maintenance, conflicts, an audit log and Excel export. Executives get an overview of work done. Clients get a private, read-only link with no account to create."
+            },
+            {
+              "title": "Use AI on the slow checks",
+              "body": "Species check compares tree photos against the recorded species. Height from photo measures the tree against the reference stick used that year: 3 ft in 2025, 1 m in 2026. Both are suggestions an administrator confirms."
+            },
+            {
+              "title": "Ship while it's in use",
+              "body": "Released to field officers early, then improved release by release from what they ran into on real sites."
+            }
+          ],
+          "decisions": [
+            {
+              "title": "Offline first, not offline tolerated",
+              "body": "Working without signal is the normal case in the field, not an error. Every operation has its own ID, so a batch sent twice over a bad connection never creates a duplicate tree."
+            },
+            {
+              "title": "Tree IDs come from a scheme, not free text",
+              "body": "Each ID is a project code, a planting year and a serial number, or the vendor's own tag format. The app suggests the next number. A typed ID with a typo is a tree you can never find again."
+            },
+            {
+              "title": "Corrections sit beside the original",
+              "body": "A fix never overwrites what was recorded. The original stays, the correction sits next to it, and the audit log shows who changed what and when."
+            },
+            {
+              "title": "Disagreements go to a person",
+              "body": "When two phones record different things about the same tree, TMS doesn't silently keep the last one to sync. It raises a conflict, and an administrator decides which record is right."
+            },
+            {
+              "title": "AI suggests, people decide",
+              "body": "Estimates are labelled as estimates and kept apart from heights measured in the field. Nothing an AI suggests changes a record until someone confirms it."
+            },
+            {
+              "title": "One clock for everyone",
+              "body": "Every date and report uses West Africa Time, and weeks run Monday to Sunday. A tree planted just after midnight counts on the day the officer planted it, not the day before on the server's clock."
+            }
+          ],
+          "outcome": "A working system in the field at tms.teasooconsulting.com: an Android app officers use with or without signal, and a web portal where managers, executives and the sponsor follow the same data as it syncs. Every tree has an ID, a place on the map and a history of visits, and every number on a dashboard opens up to the trees behind it."
+        }
+      },
+      {
         "id": "teasoo",
         "ch": [
           1

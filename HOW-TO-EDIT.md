@@ -107,6 +107,11 @@ You can still edit `lib/seed.ts` by hand — it is the content the site falls
 back to before anything has been saved from the admin. Once you have saved
 once, the stored document wins and the seed is only a fallback.
 
+To ship a **new project** in code to a site that has already been saved, add
+it to `lib/seed.ts` and put its id in `ADDED_IN_CODE` in `lib/content.ts`. The
+site adds it to the top of the stored list once and records the id in
+`work.offered`. If you delete it in the admin afterwards, it stays deleted.
+
 ### The project shape
 
 Each project in the document looks like this: The `media` key decides

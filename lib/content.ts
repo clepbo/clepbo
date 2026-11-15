@@ -54,14 +54,33 @@ async function readBlob(): Promise<Content | null> {
 /* A document saved before a new section existed is still valid — fill the
    gaps from the seed rather than letting the page or the editor hit undefined. */
 function normalise(doc: Content): Content {
-  return withDefaults(doc, SEED);
+  return offerNewProjects(withDefaults(doc, SEED));
+}
+
+/* Projects added to the seed after the live document was first saved. The
+   project list is taken whole from the stored copy, so without this a project
+   shipped in code would never reach a site that has been edited. Each id is
+   offered once, placed at the top, and remembered in work.offered, so a
+   project the author deletes in the editor stays deleted. */
+const ADDED_IN_CODE = ["tms"];
+
+function offerNewProjects(doc: Content): Content {
+  const offered = doc.work.offered ?? [];
+  const due = ADDED_IN_CODE.filter((id) => !offered.includes(id));
+  if (due.length === 0) return doc;
+  const have = new Set(doc.work.projects.map((p) => p.id));
+  const add = SEED.work.projects.filter((p) => due.includes(p.id) && !have.has(p.id));
+  return {
+    ...doc,
+    work: { ...doc.work, projects: [...add, ...doc.work.projects], offered: [...offered, ...due] },
+  };
 }
 
 export const getContent = unstable_cache(
   async (): Promise<Content> => {
     try {
       const stored = hasBlob() ? await readBlob() : await readLocal();
-      return stored ? normalise(stored) : SEED;
+      return normalise(stored ?? SEED);
     } catch (err) {
       // Never take the site down because storage hiccuped.
       console.error("content read failed, serving seed:", err);
@@ -75,7 +94,7 @@ export const getContent = unstable_cache(
 /** Read without the cache — the editor must always see what it last saved. */
 export async function getContentFresh(): Promise<Content> {
   const stored = hasBlob() ? await readBlob() : await readLocal();
-  return stored ? normalise(stored) : SEED;
+  return normalise(stored ?? SEED);
 }
 
 export async function saveContent(next: Content): Promise<Content> {

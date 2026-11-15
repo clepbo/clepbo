@@ -600,6 +600,32 @@ function CaseForm({ doc, index, edit, say }: { doc: Content; index: number } & S
         onChange={(v) => set((x) => { x.problem = v; })} />
 
       <div className="fld">
+        <span className="fld__top"><span className="fld__label">What it does (optional)</span></span>
+        {(c.features ?? []).map((s, i) => (
+          <div className="card2" key={i} style={{ background: "var(--sur2)" }}>
+            <div className="card2__top">
+              <span className="card2__grip">{String(i + 1).padStart(2, "0")}</span>
+              <input type="text" value={s.title} aria-label="Feature"
+                onChange={(e) => set((x) => { x.features![i].title = e.target.value; })} />
+              <span className="card2__acts">
+                <button onClick={() => set((x) => { x.features = move(x.features!, i, -1); })}>↑</button>
+                <button onClick={() => set((x) => { x.features = move(x.features!, i, 1); })}>↓</button>
+                <button onClick={() => set((x) => { x.features!.splice(i, 1); })}>Del</button>
+              </span>
+            </div>
+            <div style={{ padding: "0 .9rem .9rem" }}>
+              <Field label="What it does and why it matters" value={s.body} area ai say={say} projectId={p.id}
+                context="a feature of the product in a case study"
+                onChange={(v) => set((x) => { x.features![i].body = v; })} />
+              <Field label="Screen (a still's name, or an image URL)" value={s.shot ?? ""}
+                onChange={(v) => set((x) => { x.features![i].shot = v.trim() || undefined; })} />
+            </div>
+          </div>
+        ))}
+        <button className="adm__btn" onClick={() => set((x) => { (x.features ??= []).push({ title: "", body: "" }); })}>Add a feature</button>
+      </div>
+
+      <div className="fld">
         <span className="fld__top"><span className="fld__label">How it was worked out</span></span>
         {c.process.map((s, i) => (
           <div className="card2" key={i} style={{ background: "var(--sur2)" }}>
