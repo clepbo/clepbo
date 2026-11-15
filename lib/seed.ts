@@ -386,9 +386,66 @@ export const SEED: Content = {
           ],
           "type": "Inter"
         },
-        "note": "The screens show demo data, not the programme's records.",
+        "note": "The screens show demo data, not the programme's records. Sapling photo: T. R. Shankar Raman, CC BY-SA 4.0, with a measuring stick added for the demo.",
         "case": {
           "problem": "Planting a tree is the easy part. Proving a year later that it was planted, where it stands and whether it is still alive is the hard part. Officers work in the bush with no signal. A tag number written down wrong means a tree nobody can find again. A visit nobody recorded may as well not have happened. The sponsor paying for the trees wants evidence, not a spreadsheet someone rebuilds every Monday.",
+          "features": [
+            {
+              "title": "Works with no signal",
+              "body": "Officers register trees, record visits and take photos with no connection at all, and can sign in offline after the first time. Everything waits safely on the phone and syncs by itself when a signal comes back. The dashboard lists every phone and what it is still holding, such as 18 records and 7 photos waiting since 7:04 AM, so a manager knows the work exists before it arrives.",
+              "shot": "tmsf-sync"
+            },
+            {
+              "title": "Register a tree in a few taps",
+              "body": "Each tree gets an ID from the project's format: a project code, a planting year and a serial, or the nursery's own tag format. The app suggests the next number, species are picked from picture cards, and a clear \"Tree registered\" confirmation ends each one. Several officers can share one tablet, each signed in to their own account.",
+              "shot": "tmsf-trees"
+            },
+            {
+              "title": "A full history for every tree",
+              "body": "Every follow-up visit adds to the tree's record: alive or dead, a photo, its height. A growth chart builds up visit by visit. Each tree is due a maintenance visit every 90 days, and trees that are overdue are flagged on the dashboard.",
+              "shot": "tmsf-tree"
+            },
+            {
+              "title": "Height from a photo",
+              "body": "Officers photograph each tree beside a measuring stick: 3 ft in 2025, 1 m in 2026. An administrator marks the stick and the tree, or lets AI mark them, and TMS works out the height from the stick's length. Here it is 148 cm. Estimates are labelled as estimates and never overwrite a height measured in the field.",
+              "shot": "tmsf-height"
+            },
+            {
+              "title": "Species check from photos",
+              "body": "Every day a sample of new tree photos goes to Pl@ntNet, a plant identification service. When its answer doesn't match the species the officer recorded, the tree is queued for review with the photo and the scores side by side. An administrator keeps the record or corrects it in one click.",
+              "shot": "tmsf-species"
+            },
+            {
+              "title": "Areas from a KML file",
+              "body": "Sector and sub-sector outlines drawn in Google Earth are uploaded as a KML file. TMS shows exactly what it will create or update, with the size of each area in hectares, before anything is saved. Uploading the same file again updates the same areas instead of duplicating them.",
+              "shot": "tmsf-kml"
+            },
+            {
+              "title": "A field map that works offline",
+              "body": "Each planting year has its own sectors and sub-sectors on the map. On the phone, the offline field map shows the officer's position and the team's rally points, with the distance and direction to each. Officers can also mark their own starting point.",
+              "shot": "tmsf-areas"
+            },
+            {
+              "title": "Duplicates are caught, not lost",
+              "body": "If two phones register the same tree ID, the second record isn't thrown away or silently merged. An administrator sees both side by side, with who recorded each and when, and decides: keep the original, accept the newer one, re-number a mistyped tag, or correct the existing tree.",
+              "shot": "tmsf-conflict"
+            },
+            {
+              "title": "Reports for every audience",
+              "body": "Managers see status, species, vendors and planting over time, plus field activity by officer and by day, all filtered by project, year, area or date. Executives get an overview of the work done. Every number opens the trees behind it, and every view exports to Excel.",
+              "shot": "tmsf-activity"
+            },
+            {
+              "title": "A live link for the sponsor",
+              "body": "A sponsor or client gets a private, read-only link to their project's charts, map and trees, with no account or password. Links can expire or be revoked at any time.",
+              "shot": "tmsf-share"
+            },
+            {
+              "title": "Every change on the record",
+              "body": "Corrections sit beside the original instead of replacing it. The audit log records who did what and when, from sign-ins to KML imports, and can be searched and exported.",
+              "shot": "tmsf-audit"
+            }
+          ],
           "process": [
             {
               "title": "Model the tree's life, not the form",

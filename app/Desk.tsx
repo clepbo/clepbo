@@ -587,6 +587,19 @@ function Monitor({
                   <p className="case__lead">{project.case.problem}</p>
                 </section>
               )}
+              {(project.case.features?.length ?? 0) > 0 && (
+                <section className="case__block">
+                  <p className="case__head">What it does</p>
+                  <ul className="case__decisions">
+                    {project.case.features!.map((f) => (
+                      <li className="case__decision" key={f.title}>
+                        <h5 className="case__sub">{f.title}</h5>
+                        <p className="case__text">{f.body}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              )}
               {project.case.process.length > 0 && (
                 <section className="case__block">
                   <p className="case__head">How it was worked out</p>

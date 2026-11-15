@@ -24,8 +24,13 @@ export type Channel = {
 
 export type Tool = { icon: string; name: string; ch: number[]; hidden?: boolean };
 
+/** One thing the product does, shown with its own screen on the case page. */
+export type Feature = { title: string; body: string; shot?: string };
+
 export type CaseStudy = {
   problem: string;
+  /** Optional: what it does, feature by feature. */
+  features?: Feature[];
   process: { title: string; body: string }[];
   decisions: { title: string; body: string }[];
   outcome: string;

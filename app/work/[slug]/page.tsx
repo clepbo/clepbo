@@ -8,6 +8,8 @@ import Gallery from "./Gallery";
 const framesOf = (p: { shots?: string[]; media: { type: string; stills?: string[] } }) =>
   p.shots?.length ? p.shots : p.media.type === "still" ? p.media.stills ?? [] : [];
 
+const stillSrc = (n: string) => (/^https?:\/\//.test(n) ? n : `/assets/media/stills/${n}.jpg`);
+
 const markSrc = (n: string) =>
   /^https?:\/\//.test(n) ? n : `/assets/media/marks/${/\./.test(n) ? n : `${n}.png`}`;
 
@@ -114,6 +116,27 @@ export default async function Study({ params }: { params: Promise<{ slug: string
                   <section className="case__block">
                     <p className="case__head">The problem</p>
                     <p className="case__lead">{p.case.problem}</p>
+                  </section>
+                )}
+                {(p.case.features?.length ?? 0) > 0 && (
+                  <section className="case__block feats">
+                    <p className="case__head">What it does</p>
+                    <ol className="feats__list">
+                      {p.case.features!.map((f, n) => (
+                        <li className={`feat${f.shot ? "" : " feat--text"}`} key={f.title}>
+                          {f.shot && (
+                            <a className="feat__shot" href={stillSrc(f.shot)} target="_blank" rel="noopener">
+                              <img src={stillSrc(f.shot)} alt={`${p.title}: ${f.title}`} loading="lazy" decoding="async" />
+                            </a>
+                          )}
+                          <div className="feat__copy">
+                            <span className="case__n">{String(n + 1).padStart(2, "0")}</span>
+                            <h2 className="case__sub">{f.title}</h2>
+                            <p className="case__text">{f.body}</p>
+                          </div>
+                        </li>
+                      ))}
+                    </ol>
                   </section>
                 )}
                 {p.case.process.length > 0 && (
