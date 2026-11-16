@@ -54,7 +54,7 @@ async function readBlob(): Promise<Content | null> {
 /* A document saved before a new section existed is still valid — fill the
    gaps from the seed rather than letting the page or the editor hit undefined. */
 function normalise(doc: Content): Content {
-  return offerNewProjects(withDefaults(doc, SEED));
+  return refreshProjects(offerNewProjects(withDefaults(doc, SEED)));
 }
 
 /* Projects added to the seed after the live document was first saved. The
@@ -73,6 +73,28 @@ function offerNewProjects(doc: Content): Content {
   return {
     ...doc,
     work: { ...doc.work, projects: [...add, ...doc.work.projects], offered: [...offered, ...due] },
+  };
+}
+
+/* Projects updated in code after the live document was saved. The stored
+   project list wins over the seed, so a rewrite of a case study in seed.ts
+   would never reach an edited site. Bump a project's number here to replace
+   the stored copy with the seed's once, in the same position. A project the
+   author deleted is not added back. work.refreshed remembers the number
+   applied, so later edits in the admin are kept until the next bump. */
+const REFRESHED_IN_CODE: Record<string, number> = { "shop-timart": 1 };
+
+function refreshProjects(doc: Content): Content {
+  const done = doc.work.refreshed ?? {};
+  const due = Object.entries(REFRESHED_IN_CODE).filter(([id, v]) => (done[id] ?? 0) < v);
+  if (due.length === 0) return doc;
+  const projects = doc.work.projects.map((p) => {
+    if (!due.some(([id]) => id === p.id)) return p;
+    return SEED.work.projects.find((s) => s.id === p.id) ?? p;
+  });
+  return {
+    ...doc,
+    work: { ...doc.work, projects, refreshed: { ...done, ...Object.fromEntries(due) } },
   };
 }
 

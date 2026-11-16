@@ -335,7 +335,7 @@ export const SEED: Content = {
         "client": "Shop Timart",
         "title": "Shop Timart",
         "line": "A fashion store where you see it on your size first.",
-        "story": "Shop Timart is a Benin City fashion brand that sells modest corporate wear and styles clients for work, seminars and big days. Until now it sold through TikTok, Instagram and WhatsApp messages. I designed and built its online store: a catalogue every piece can be previewed on across six body types and every colour, a checkout that takes Naira payments, a QR discount for the walk-in store, and an admin the owner runs herself, from new stock to the words on the homepage.",
+        "story": "Shop Timart is a Benin City fashion brand that sells modest corporate wear and styles clients for work, seminars and big days. Until now it sold through TikTok, Instagram and WhatsApp messages. I designed and built its online store: a catalogue every piece can be previewed on across six body types and every colour, a checkout that takes Naira payments, a QR discount for the walk-in store, sales she can run on one piece or the whole shop, and an admin the owner runs herself, from new stock to the words on the homepage.",
         "media": {
           "type": "brand"
         },
@@ -345,6 +345,9 @@ export const SEED: Content = {
           "stm-fit",
           "stm-shop",
           "stm-checkout",
+          "stm-onsale",
+          "stm-sales",
+          "stm-cms",
           "stm-care",
           "stm-coupons",
           "stm-orders"
@@ -395,7 +398,7 @@ export const SEED: Content = {
             },
             {
               "title": "A QR code that gives 5% off",
-              "body": "A branded QR card for the store links to the shop with a discount code. Scanning it saves the code in the browser and applies it at checkout. The owner can create her own codes too: percentage or naira, a minimum order, a usage limit, an expiry date and once per customer.",
+              "body": "A branded QR card for the store links to the shop with a discount code. Scanning it saves the code in the browser and applies it at checkout. The owner can create her own codes too: percentage or naira, a minimum order, a usage limit, an expiry date and once per customer. The PNG and SVG she downloads for print are drawn on the server from the same artwork as the card in the admin, monogram in the middle and the code underneath.",
               "shot": "stmf-qr"
             },
             {
@@ -409,9 +412,14 @@ export const SEED: Content = {
               "shot": "stmf-receipt"
             },
             {
-              "title": "The owner edits the site herself",
-              "body": "Headlines, paragraphs, bullet lists and images for every homepage section, the announcement bar, the footer and the care page are editable in the admin. Each section saves on its own, goes live at once and can be reset to the original wording.",
-              "shot": "stmf-content"
+              "title": "Sales on a piece, a category or the whole store",
+              "body": "The owner starts a sale on selected products, a category such as Corporate, a collection such as New arrivals, or everything. It can be a percentage or a naira amount, run between two dates or until she pauses it. A single product can also go on sale from its own edit page. Shoppers see the old price crossed out, a discount badge and an On sale filter in the shop.",
+              "shot": "stmf-sale"
+            },
+            {
+              "title": "Edit the site with a live preview",
+              "body": "Site content works like a small CMS. The owner picks a section, edits its words and images, and the real page reloads beside the form, scrolled to that section, on desktop or a phone frame. Changes save as a draft only she can see until she presses Publish. Discard throws the draft away, and any field can go back to its original wording.",
+              "shot": "stmf-cms"
             },
             {
               "title": "How to care for it",
@@ -439,7 +447,7 @@ export const SEED: Content = {
             },
             {
               "title": "Hand the keys to the owner",
-              "body": "Products, orders, styling requests, discount codes, the QR card and the site's own copy all live in one password-protected admin, so day-to-day changes don't need a developer."
+              "body": "Products, orders, styling requests, sales, discount codes, the QR card and the site's own copy all live in one password-protected admin, so day-to-day changes don't need a developer. Every form has a way back, unsaved changes ask before they're lost, deletes ask twice, and the sidebar folds down to icons to give the preview more room."
             },
             {
               "title": "Apply the brand once it arrived",
@@ -461,10 +469,14 @@ export const SEED: Content = {
             },
             {
               "title": "Edit fields, not a page builder",
-              "body": "The owner changes words and pictures in named fields for each section. She can't break the layout, and anything she hasn't touched keeps its original wording."
+              "body": "The owner changes words and pictures in named fields for each section. She can't break the layout, and anything she hasn't touched keeps its original wording. The preview is the real page rendered with her draft, not a mock-up, so what she sees is what goes live."
+            },
+            {
+              "title": "The biggest discount wins",
+              "body": "When a product is in more than one sale, the shopper gets the largest saving, not a sum of all of them. Sale prices are worked out on the server for every page and again when the order is placed, so the price in the bag is the price charged."
             }
           ],
-          "outcome": "A complete online store for Shop Timart: a catalogue with a fit preview on every product, Naira checkout with Paystack or WhatsApp, a 5% QR discount for the walk-in store, a care guide, and an admin where the owner runs products, orders, discounts and the site's copy herself."
+          "outcome": "A complete online store for Shop Timart: a catalogue with a fit preview on every product, Naira checkout with Paystack or WhatsApp, a 5% QR discount for the walk-in store, sales by product, category, collection or store, a care guide, and an admin where the owner runs products, orders, discounts and the site's copy herself, with a live preview before anything goes public."
         }
       },
       {

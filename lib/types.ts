@@ -120,6 +120,9 @@ export type Content = {
     /** Projects shipped in code that this document has already been offered.
      *  Kept so a project deleted in the editor is not added back. */
     offered?: string[];
+    /** Version of each code-side project refresh already applied (see
+     *  REFRESHED_IN_CODE in lib/content.ts). */
+    refreshed?: Record<string, number>;
   };
   testimonials: { eyebrow: string; title: string; note: string; items: Testimonial[] };
   path: { eyebrow: string; title: string; note: string; steps: { name: string; body: string }[] };
