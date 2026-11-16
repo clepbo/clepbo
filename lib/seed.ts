@@ -326,6 +326,148 @@ export const SEED: Content = {
     "note": "Showing everything. Patch into a channel to filter.",
     "projects": [
       {
+        "id": "shop-timart",
+        "ch": [
+          1,
+          2
+        ],
+        "kind": "E-commerce · Web",
+        "client": "Shop Timart",
+        "title": "Shop Timart",
+        "line": "A fashion store where you see it on your size first.",
+        "story": "Shop Timart is a Benin City fashion brand that sells modest corporate wear and styles clients for work, seminars and big days. Until now it sold through TikTok, Instagram and WhatsApp messages. I designed and built its online store: a catalogue every piece can be previewed on across six body types and every colour, a checkout that takes Naira payments, a QR discount for the walk-in store, and an admin the owner runs herself, from new stock to the words on the homepage.",
+        "media": {
+          "type": "brand"
+        },
+        "shots": [
+          "stm-home",
+          "stm-product",
+          "stm-fit",
+          "stm-shop",
+          "stm-checkout",
+          "stm-care",
+          "stm-coupons",
+          "stm-orders"
+        ],
+        "brand": {
+          "mark": "shoptimart.svg",
+          "colors": [
+            "#6b4a35",
+            "#a67b5b",
+            "#e6d8c3",
+            "#2e1f17"
+          ],
+          "type": "Alyamama · IBM Plex Sans Arabic"
+        },
+        "meta": [
+          {
+            "label": "Role",
+            "value": "Product, design + build"
+          },
+          {
+            "label": "Frontend",
+            "value": "Next.js 16 · React 19 · Tailwind CSS 4"
+          },
+          {
+            "label": "Data",
+            "value": "Neon Postgres · Vercel Blob"
+          },
+          {
+            "label": "Payments",
+            "value": "Paystack (NGN)"
+          }
+        ],
+        "link": "https://shop-timart.com",
+        "linkText": "Visit Shop Timart",
+        "note": "The screens show demo data: made-up customers and orders, not the store's records. The founder's portrait was supplied by the client.",
+        "case": {
+          "problem": "The owner sells and styles from a walk-in store in Benin City, and everything else happened in DMs: a TikTok video, a price in the caption, a WhatsApp message to order. Customers outside the city had to guess how a blazer cut for a size 8 model would sit on a size 16. Every new piece meant another round of photos and another thread of questions about fit, colour and price.",
+          "features": [
+            {
+              "title": "See it on your size",
+              "body": "Every piece can be previewed on six women's and four men's body profiles, from petite to plus, in every colour it comes in. Shoppers pick the body closest to theirs, compare all sizes side by side, choose a skin tone, and get a suggested size before they add to bag.",
+              "shot": "stmf-fit"
+            },
+            {
+              "title": "One photo in, every size out",
+              "body": "The owner adds a product with one photo, a garment type, sizes and colours. A live preview shows it across every body profile before she publishes. A pipeline for AI try-on photos is built in, ready to switch on when there's budget for it.",
+              "shot": "stmf-upload"
+            },
+            {
+              "title": "A QR code that gives 5% off",
+              "body": "A branded QR card for the store links to the shop with a discount code. Scanning it saves the code in the browser and applies it at checkout. The owner can create her own codes too: percentage or naira, a minimum order, a usage limit, an expiry date and once per customer.",
+              "shot": "stmf-qr"
+            },
+            {
+              "title": "The discount is checked twice",
+              "body": "The checkout shows the discount as soon as the code is applied. When the order is placed, the server prices the bag again from the catalogue and re-checks the code against the customer's phone number, so a code shared around can't be used twice by the same person.",
+              "shot": "stmf-discount"
+            },
+            {
+              "title": "Pay in Naira, or confirm on WhatsApp",
+              "body": "With Paystack connected, customers pay by card, bank transfer or USSD, and an order is only marked paid when Paystack confirms the exact amount. Without it, checkout records the order and hands off to WhatsApp, the way the store already worked. Either way the customer gets a receipt that prints onto the screen.",
+              "shot": "stmf-receipt"
+            },
+            {
+              "title": "The owner edits the site herself",
+              "body": "Headlines, paragraphs, bullet lists and images for every homepage section, the announcement bar, the footer and the care page are editable in the admin. Each section saves on its own, goes live at once and can be reset to the original wording.",
+              "shot": "stmf-content"
+            },
+            {
+              "title": "How to care for it",
+              "body": "Every product carries its care instructions and links to the matching section of a care guide for suits, satin, knits, everyday fabrics and bags. The owner can write care lines per piece or let the guide choose by garment type.",
+              "shot": "stmf-care-panel"
+            },
+            {
+              "title": "A wardrobe that moves",
+              "body": "The footer is a rail of hanging garments that glides past, with bags, dress forms and a mirror moving more slowly in front. It pauses on hover. Elsewhere, headlines reveal word by word and outfits sway like they're on a hanger.",
+              "shot": "stmf-wardrobe"
+            }
+          ],
+          "process": [
+            {
+              "title": "Start from how she already sells",
+              "body": "Her TikTok captions, store address, prices and sizes became the first catalogue, and WhatsApp stayed a first-class way to order, not a fallback hidden in the footer."
+            },
+            {
+              "title": "Draw the clothes instead of waiting for photos",
+              "body": "There was no budget for a photoshoot across sizes. A parametric figure redraws each garment template on any body profile and in any colour, so every product has a fit preview the moment it's saved."
+            },
+            {
+              "title": "Build the money path on the server",
+              "body": "Prices, discounts and delivery fees are worked out on the server from the catalogue, never taken from the browser. Paystack is verified on return and again by a signed webhook."
+            },
+            {
+              "title": "Hand the keys to the owner",
+              "body": "Products, orders, styling requests, discount codes, the QR card and the site's own copy all live in one password-protected admin, so day-to-day changes don't need a developer."
+            },
+            {
+              "title": "Apply the brand once it arrived",
+              "body": "When the brand guidelines landed, the monogram and pattern were lifted from the PDF as vectors, and the palette and typefaces went in as design tokens, so the whole site changed in one pass."
+            }
+          ],
+          "decisions": [
+            {
+              "title": "Illustrated previews before AI photos",
+              "body": "AI try-on services cost money per image and some aren't licensed for commercial use. Illustrations cost nothing, show proportion and colour honestly, and are labelled as illustrations. Photos can replace them product by product later."
+            },
+            {
+              "title": "The QR code carries a code, not a secret link",
+              "body": "The discount lives in an ordinary code the server checks, so the owner can pause it or change the offer without reprinting a single card."
+            },
+            {
+              "title": "Once per customer, by phone number",
+              "body": "Customers don't make accounts. Their phone number is what the store already uses to reach them on WhatsApp, so it's the natural way to stop the same person reusing a code."
+            },
+            {
+              "title": "Edit fields, not a page builder",
+              "body": "The owner changes words and pictures in named fields for each section. She can't break the layout, and anything she hasn't touched keeps its original wording."
+            }
+          ],
+          "outcome": "A complete online store for Shop Timart: a catalogue with a fit preview on every product, Naira checkout with Paystack or WhatsApp, a 5% QR discount for the walk-in store, a care guide, and an admin where the owner runs products, orders, discounts and the site's copy herself."
+        }
+      },
+      {
         "id": "tms",
         "ch": [
           4,
