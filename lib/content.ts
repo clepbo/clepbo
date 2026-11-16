@@ -62,7 +62,7 @@ function normalise(doc: Content): Content {
    shipped in code would never reach a site that has been edited. Each id is
    offered once, placed at the top, and remembered in work.offered, so a
    project the author deletes in the editor stays deleted. */
-const ADDED_IN_CODE = ["tms", "teasoo-expense"];
+const ADDED_IN_CODE = ["tms", "teasoo-expense", "shop-timart"];
 
 function offerNewProjects(doc: Content): Content {
   const offered = doc.work.offered ?? [];
