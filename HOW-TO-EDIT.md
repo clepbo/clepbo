@@ -112,6 +112,13 @@ it to `lib/seed.ts` and put its id in `ADDED_IN_CODE` in `lib/content.ts`. The
 site adds it to the top of the stored list once and records the id in
 `work.offered`. If you delete it in the admin afterwards, it stays deleted.
 
+To push a rewrite of an existing project to a site that has already been
+edited, change it in `lib/seed.ts` and raise its number in `REFRESHED_IN_CODE`
+in `lib/content.ts` (add the id at `1` if it isn't listed). The site swaps the
+stored project for the seed's version once, in the same place in the list, and
+records the number in `work.refreshed`. This replaces any edits made to that
+project in /admin. A project deleted in the admin is not added back.
+
 ### The project shape
 
 Each project in the document looks like this: The `media` key decides
