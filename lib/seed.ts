@@ -502,6 +502,166 @@ export const SEED: Content = {
         }
       },
       {
+        "id": "teasoo-expense",
+        "ch": [
+          4,
+          2
+        ],
+        "kind": "Internal tool · Web app",
+        "client": "Teasoo Consulting",
+        "title": "Funds & Expenses",
+        "line": "Every naira sent to staff, accounted for.",
+        "story": "Teasoo sends money to staff for trips, events and running costs, and needs to know where every naira went. Funds & Expenses gives each allocation a running balance. Staff log what they spend with a photo of the receipt, finance reviews it, and the allocation is reconciled to zero. Requisitions, which used to go through Zoho Expense, run through the same system, from the request to the COO's approval to the Managing Partner's payment. I designed and built it, and kept adding to it as the team used it.",
+        "media": {
+          "type": "still",
+          "stills": [
+            "tex-dashboard"
+          ]
+        },
+        "meta": [
+          {
+            "label": "Role",
+            "value": "Product, design + build"
+          },
+          {
+            "label": "App",
+            "value": "Next.js · React · TypeScript"
+          },
+          {
+            "label": "Data",
+            "value": "PostgreSQL · Drizzle"
+          },
+          {
+            "label": "Services",
+            "value": "Supabase Storage · Resend · Google sign-in"
+          },
+          {
+            "label": "Receipt scanning",
+            "value": "Tesseract.js, in the browser"
+          }
+        ],
+        "link": "",
+        "linkText": "",
+        "shots": [
+          "tex-dashboard",
+          "tex-allocation",
+          "tex-review",
+          "tex-requisitions",
+          "tex-requisition"
+        ],
+        "brand": {
+          "mark": "teasoo",
+          "colors": [
+            "#225756",
+            "#eef7f6",
+            "#e11b3f",
+            "#0c2222"
+          ],
+          "type": "Inter"
+        },
+        "note": "The screens show demo data with made-up people, amounts and vendors, not Teasoo's records.",
+        "case": {
+          "problem": "Money went out to staff by bank transfer, and the proof of how it was spent came back in pieces: receipts in WhatsApp threads and balances worked out by hand. Finance could not see at a glance who still held unspent money or which expenses had no receipt. Requisitions lived in a separate tool, Zoho Expense, so a request, its approval and the payment that followed were never in one place.",
+          "features": [
+            {
+              "title": "A live balance for every allocation",
+              "body": "Finance records the money sent to a staff member as an allocation, with its purpose, project and transfer receipt. From then on the balance works itself out from the records: received, spent, waiting for review and remaining. Top-ups, returns and corrections are separate entries, so the figure can always be traced back.",
+              "shot": "texf-balance"
+            },
+            {
+              "title": "Log an expense from the receipt",
+              "body": "On a phone, staff photograph the receipt. The app reads the total, the date, the vendor and the receipt number in the browser, then fills the form for them to check. The photo stays attached as evidence, and large phone photos are shrunk before upload so they stay under the size limit.",
+              "shot": "texf-scan"
+            },
+            {
+              "title": "Several expenses in one go",
+              "body": "After a trip, staff can log all their spending on one page, each row with its own fund, category and receipt. They see a running total and what each fund will have left. Every row is checked before anything is saved, and a row that needs a second look stays on the page while the rest go through.",
+              "shot": "texf-batch"
+            },
+            {
+              "title": "Review with a reason",
+              "body": "Finance approves, rejects, asks a question or asks for evidence, and any decision can carry a note. Internal notes stay with finance. When staff upload the receipt that was asked for, the expense goes back into the review queue by itself. Nobody can approve their own expense.",
+              "shot": "texf-review"
+            },
+            {
+              "title": "Reconciled to zero",
+              "body": "When every expense is approved and the unspent money has come back, the allocation closes with a breakdown that has to come to ₦0, and its approved expenses are locked. Money staff spend from their own pocket is kept apart and settled on purpose, by a refund or from an allocation they hold.",
+              "shot": "texf-reconcile"
+            },
+            {
+              "title": "Requisitions with the approval chain",
+              "body": "A requisition lists each item with its quantity, price, discount and the vendor's bank details, with quotes attached. It goes to the COO, who approves it, declines it with a reason or asks for more information. The requester answers, updates it and sends it back, and the whole history sits beside it.",
+              "shot": "texf-approve"
+            },
+            {
+              "title": "Payment, and where the money went",
+              "body": "Approved requisitions go to the Managing Partner, who records the payment with its reference and proof. When the money goes to a staff member instead of a vendor, it starts a new allocation or is added to one they already hold, and they account for it with receipts like any other funds.",
+              "shot": "texf-pay"
+            },
+            {
+              "title": "A purchase request in the familiar layout",
+              "body": "Each requisition downloads as a branded PDF named after its reference, in the layout the team already knew from Zoho: logo and contact details, items with bank details, the payment and the approval history. Numbering carries on from the last Zoho reference in the same TC-PR format.",
+              "shot": "texf-pdf"
+            },
+            {
+              "title": "One login, every company",
+              "body": "Each company or subsidiary has its own people, funds, categories, approvers and reports. A person can belong to several, with a different role in each, and switches between them from the menu beside the logo. A link to a record in another company switches over by itself.",
+              "shot": "texf-orgs"
+            },
+            {
+              "title": "Access by invitation",
+              "body": "Nobody signs up on their own. An administrator or accountant invites people into one or more companies. Staff with a company email sign in with Google, and anyone else gets a password they can keep or change.",
+              "shot": "texf-invite"
+            }
+          ],
+          "process": [
+            {
+              "title": "Start from the money, not the form",
+              "body": "Each allocation is a ledger: what was sent, what was spent and what came back. Balances are worked out from those entries on the server, never typed in, and amounts are stored in kobo so they never round."
+            },
+            {
+              "title": "Design the phone flow for the person spending",
+              "body": "Staff log expenses where they spend, so adding one is a short, step-by-step flow with the camera first. Finance works at a desk, with queues, filters and exports to Excel, CSV and PDF."
+            },
+            {
+              "title": "Write the rules down",
+              "body": "Receipts, duplicates, over-budget spending and future dates each have a rule an administrator can switch on or off, and every change lands in the audit log."
+            },
+            {
+              "title": "Shape it with the people using it",
+              "body": "Released early, then changed from what the team asked for in use: receipts made optional for funded spending, personal spend kept apart from company money, requisitions brought in from Zoho, and several companies under one login."
+            }
+          ],
+          "decisions": [
+            {
+              "title": "Personal spend kept apart",
+              "body": "Money staff pay from their own pocket is never taken off an allocation's balance. Finance settles it on purpose, by refund or from an allocation, so a balance only ever shows company money."
+            },
+            {
+              "title": "Approvers chosen per company, not fixed roles",
+              "body": "The COO and the Managing Partner are picked in Settings for each company, with backups. Fixed roles would break the first time someone is on leave, or a subsidiary has a different chain."
+            },
+            {
+              "title": "Nobody approves their own",
+              "body": "Expenses, claims and requisitions all skip the person who raised them. The COO's own requisitions go to the Managing Partner instead."
+            },
+            {
+              "title": "Receipts read on the phone",
+              "body": "Scanning runs in the browser with an open-source OCR library, so there is no cost per scan and the receipt isn't sent anywhere to be read."
+            },
+            {
+              "title": "Saved one row at a time",
+              "body": "When several expenses are logged together, each is sent on its own. A page full of receipt photos never hits the upload limit, and one row with a problem doesn't hold up the rest."
+            },
+            {
+              "title": "Invitations over an open domain",
+              "body": "A company email alone doesn't say which company, role or department someone belongs to. Invitations settle that before the first sign-in."
+            }
+          ],
+          "outcome": "A live internal system for allocations, expenses and requisitions, built to replace receipts in chat threads and requisitions in Zoho Expense. Every allocation has a balance that traces back to its records, every requisition carries its whole approval history, and each company sees only its own money."
+        }
+      },
+      {
         "id": "teasoo",
         "ch": [
           1
