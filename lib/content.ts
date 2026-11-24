@@ -82,7 +82,7 @@ function offerNewProjects(doc: Content): Content {
    the stored copy with the seed's once, in the same position. A project the
    author deleted is not added back. work.refreshed remembers the number
    applied, so later edits in the admin are kept until the next bump. */
-const REFRESHED_IN_CODE: Record<string, number> = { "shop-timart": 1 };
+const REFRESHED_IN_CODE: Record<string, number> = { "shop-timart": 2 };
 
 function refreshProjects(doc: Content): Content {
   const done = doc.work.refreshed ?? {};
