@@ -341,6 +341,7 @@ export const SEED: Content = {
         },
         "shots": [
           "stm-home",
+          "stm-lookbook",
           "stm-product",
           "stm-fit",
           "stm-shop",
@@ -349,6 +350,7 @@ export const SEED: Content = {
           "stm-sales",
           "stm-cms",
           "stm-care",
+          "stm-details",
           "stm-coupons",
           "stm-orders"
         ],
@@ -382,7 +384,7 @@ export const SEED: Content = {
         ],
         "link": "https://shop-timart.com",
         "linkText": "Visit Shop Timart",
-        "note": "The screens show demo data: made-up customers and orders, not the store's records. The founder's portrait was supplied by the client.",
+        "note": "The screens show demo data: made-up customers and orders, not the store's records. The founder's portrait, lookbook photos and packaging mockups were supplied by the client.",
         "case": {
           "problem": "The owner sells and styles from a walk-in store in Benin City, and everything else happened in DMs: a TikTok video, a price in the caption, a WhatsApp message to order. Customers outside the city had to guess how a blazer cut for a size 8 model would sit on a size 16. Every new piece meant another round of photos and another thread of questions about fit, colour and price.",
           "features": [
@@ -430,6 +432,11 @@ export const SEED: Content = {
               "title": "A wardrobe that moves",
               "body": "The footer is a rail of hanging garments that glides past, with bags, dress forms and a mirror moving more slowly in front. It pauses on hover. Elsewhere, headlines reveal word by word and outfits sway like they're on a hanger.",
               "shot": "stmf-wardrobe"
+            },
+            {
+              "title": "The brand's own photography",
+              "body": "When the brand's lookbook photos and packaging mockups arrived, they went in as content the owner controls. The hero shows a lookbook poster with the store's three promises floating beside it, a lookbook section pairs editorial photos with a shop link, and the About page shows the monogram on tags, ribbon, gift cards and bags. The hero takes a framed photo or a transparent cut-out, so the founder's portrait can come back with one setting.",
+              "shot": "stmf-hero"
             }
           ],
           "process": [
