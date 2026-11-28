@@ -17,6 +17,7 @@ const framesOf = (p: Project) =>
   p.shots?.length ? p.shots : p.media.type === "still" ? p.media.stills : [];
 const pad = (n: number) => String(n).padStart(2, "0");
 const NEUTRAL = "#A2A8A6";
+const HOW_MANY = ["No", "One", "Two", "Three", "Four", "Five", "Six"];
 
 /* Where each floating tile drifts to once the hero scrolls away, as fractions
    of half the viewport. Kept clear of the paragraph in the middle. */
@@ -44,7 +45,6 @@ export default function Studio({ content }: { content: Content }) {
   const [filter, setFilter] = useState(0);
   const [openId, setOpenId] = useState<string | null>(null);
   const [frame, setFrame] = useState(0);
-  const [clock, setClock] = useState("");
   const [menu, setMenu] = useState(false);
   const lastFocus = useRef<HTMLElement | null>(null);
   const sheetRef = useRef<HTMLDivElement | null>(null);
@@ -98,30 +98,14 @@ export default function Studio({ content }: { content: Content }) {
     return () => document.removeEventListener("keydown", onKey);
   }, [current, menu, close, step]);
 
-  /* ---- local clock ---- */
-  useEffect(() => {
-    const tick = () => {
-      try {
-        setClock(new Intl.DateTimeFormat("en-GB", {
-          timeZone: content.site.timezone, hour: "2-digit", minute: "2-digit",
-        }).format(new Date()));
-      } catch { setClock(""); }
-    };
-    tick();
-    const id = setInterval(tick, 30000);
-    return () => clearInterval(id);
-  }, [content.site.timezone]);
-
   const nav = [
     { href: "#work", label: "Work" },
     { href: "#services", label: "Services" },
-    { href: "#process", label: "Process" },
+    { href: "#tools", label: "Toolkit" },
     { href: "#about", label: "About" },
     { href: "#contact", label: "Contact" },
   ];
 
-  let sec = 0;
-  const num = () => `[${pad(++sec)}]`;
 
   return (
     <>
@@ -130,7 +114,7 @@ export default function Studio({ content }: { content: Content }) {
       <Nav name={content.site.name} links={nav} menu={menu} setMenu={setMenu} />
 
       <main id="top">
-        <Hero content={content} tools={tools} tint={tint} clock={clock} />
+        <Hero content={content} tools={tools} tint={tint} />
 
         {brands.length > 3 && (
           <section className="clients" aria-label="Clients">
@@ -162,7 +146,7 @@ export default function Studio({ content }: { content: Content }) {
 
         {/* ══ WORK ══ */}
         <section className="section work" id="work" aria-labelledby="workTitle">
-          <Head n={num()} eyebrow={content.work.eyebrow} title={content.work.title} id="workTitle" colour={tint(1)} />
+          <Head eyebrow={content.work.eyebrow} title={content.work.title} id="workTitle" colour={tint(1)} />
 
           <div className="filters" role="toolbar" aria-label="Filter the work" data-reveal>
             {[{ id: 0, name: "Everything", colour: "var(--ink)" }, ...channels].map((c) => {
@@ -193,26 +177,12 @@ export default function Studio({ content }: { content: Content }) {
         </section>
 
         {/* ══ SERVICES ══ */}
-        <Services channels={channels} n={num()} />
+        <Services channels={channels} />
 
-        {/* ══ TOOLS + PROCESS ══ */}
-        <section className="section process" id="process" aria-labelledby="pathTitle">
-          <Head n={num()} eyebrow={content.path.eyebrow} title={content.path.title} id="pathTitle" note={content.path.note} colour={tint(3)} />
-          <ol className="path">
-            {content.path.steps.map((s, i) => (
-              <li className="path__step" key={s.name} data-reveal style={{ "--i": i } as React.CSSProperties}>
-                <span className="path__no">{pad(i + 1)}</span>
-                <h3 className="path__name">{s.name}</h3>
-                <p className="path__body">{s.body}</p>
-              </li>
-            ))}
-          </ol>
-
-          <div className="rack" aria-labelledby="rackTitle">
-            <div className="rack__head" data-reveal>
-              <p className="rack__eyebrow" id="rackTitle">{content.rack.title}</p>
-              <p className="rack__note">{tools.length} tools in daily use.</p>
-            </div>
+        {/* ══ TOOLKIT ══ */}
+        <section className="section tools" id="tools" aria-labelledby="rackTitle">
+          <div className="rack">
+            <Head eyebrow={content.rack.eyebrow} title={content.rack.title} id="rackTitle" note={content.rack.note} colour={tint(4)} />
             {[tools, [...tools].reverse()].map((row, k) => (
               <div className={`marquee marquee--tools${k ? " marquee--rev" : ""}`} key={k}>
                 <div className="marquee__track">
@@ -238,7 +208,7 @@ export default function Studio({ content }: { content: Content }) {
         {/* ══ TESTIMONIALS ══ */}
         {says.length > 0 && (
           <section className="section says" id="says" aria-labelledby="saysTitle">
-            <Head n={num()} eyebrow={content.testimonials.eyebrow} title={content.testimonials.title} id="saysTitle" colour={tint(2)} />
+            <Head eyebrow={content.testimonials.eyebrow} title={content.testimonials.title} id="saysTitle" colour={tint(2)} />
             <div className="says__grid">
               {says.map((t, i) => (
                 <figure className="say" key={t.id} data-reveal style={{ "--i": i, "--c": tint(t.ch?.[0]) } as React.CSSProperties}>
@@ -255,7 +225,7 @@ export default function Studio({ content }: { content: Content }) {
 
         {/* ══ ABOUT ══ */}
         <section className="section about" id="about" aria-labelledby="aboutTitle">
-          <Head n={num()} eyebrow={content.about.eyebrow} title={content.about.title} id="aboutTitle" colour={tint(4)} />
+          <Head eyebrow={content.about.eyebrow} title={content.about.title} id="aboutTitle" colour={tint(4)} />
           <div className="about__grid">
             <WordFill text={content.about.lead} className="about__lead" />
             <div className="about__side" data-reveal>
@@ -270,7 +240,7 @@ export default function Studio({ content }: { content: Content }) {
         </section>
 
         {/* ══ CONTACT ══ */}
-        <Contact content={content} channels={channels} tools={tools} tint={tint} n={num()} />
+        <Contact content={content} channels={channels} tools={tools} tint={tint} />
       </main>
 
       <footer className="foot">
@@ -309,12 +279,12 @@ function Mark({ name }: { name: string }) {
 }
 
 function Head({
-  n, eyebrow, title, id, note, colour,
-}: { n: string; eyebrow: string; title: string; id: string; note?: string; colour: string }) {
+  eyebrow, title, id, note, colour,
+}: { eyebrow: string; title: string; id: string; note?: string; colour: string }) {
   return (
     <header className="head" data-reveal>
       <p className="head__eyebrow" style={{ "--c": colour } as React.CSSProperties}>
-        <i aria-hidden="true" />{n} {eyebrow}
+        <i aria-hidden="true" />{eyebrow}
       </p>
       <h2 className="head__title" id={id}><Words text={title} /></h2>
       {note && <p className="head__note">{note}</p>}
@@ -356,7 +326,7 @@ function ToolIcon({ tool }: { tool: Tool }) {
 const BRAND: Record<string, string> = {
   figma: "#F24E1E", canva: "#00C4CC", davinciresolve: "#E2483D", wordpress: "#21759B",
   openai: "#10A37F", claude: "#D97757", git: "#F05032", github: "var(--ink)",
-  miro: "#E8B500", jira: "#0052CC", clickup: "#7B68EE",
+  miro: "#E8B500", jira: "#0052CC", clickup: "#7B68EE", capcut: "var(--ink)",
 };
 
 /* ============================================================
@@ -434,8 +404,8 @@ function Nav({
    ============================================================ */
 
 function Hero({
-  content, tools, tint, clock,
-}: { content: Content; tools: Tool[]; tint: (c?: number) => string; clock: string }) {
+  content, tools, tint,
+}: { content: Content; tools: Tool[]; tint: (c?: number) => string }) {
   const scene = useRef<HTMLElement | null>(null);
   const tiles = useRef<(HTMLSpanElement | null)[]>([]);
   const [p, setP] = useState(0);
@@ -455,10 +425,20 @@ function Hero({
       ty = (e.clientY / window.innerHeight) * 2 - 1;
     };
 
+    /* Phones change innerHeight as the address bar slides away. Only take a
+       new height when the width changes or the jump is bigger than that bar,
+       so the tiles don't lurch mid-scroll. */
+    let vw = window.innerWidth, vh = window.innerHeight;
+    const onResize = () => {
+      if (window.innerWidth !== vw || Math.abs(window.innerHeight - vh) > 140) {
+        vw = window.innerWidth; vh = window.innerHeight;
+      }
+    };
+    window.addEventListener("resize", onResize);
+
     const frame = (t: number) => {
       if (!alive) return;
       const r = el.getBoundingClientRect();
-      const vw = window.innerWidth, vh = window.innerHeight;
       const prog = clamp(-r.top / Math.max(1, r.height - vh));
       if (Math.abs(prog - lastP) > 0.002) { lastP = prog; setP(prog); }
 
@@ -499,7 +479,11 @@ function Hero({
     };
     raf = requestAnimationFrame(frame);
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => { alive = false; cancelAnimationFrame(raf); window.removeEventListener("pointermove", onMove); };
+    return () => {
+      alive = false; cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("resize", onResize);
+    };
   }, [tools.length]);
 
   const heroOut = smooth(0.0, 0.32, p);
@@ -527,10 +511,6 @@ function Hero({
           className="hero"
           style={{ opacity: 1 - heroOut, transform: `translateY(${-heroOut * 80}px) scale(${1 - heroOut * 0.06})`, visibility: heroOut > 0.99 ? "hidden" : undefined }}
         >
-          <p className="hero__status">
-            <span className="pulse" aria-hidden="true" />
-            Available for new work · {content.site.location}
-          </p>
           <h1 className="hero__title" id="heroTitle"><Words text={headline} /></h1>
           <div className="hero__cta">
             <a className="btn btn--dark btn--lg" href="#work" data-magnetic>See the work</a>
@@ -547,9 +527,7 @@ function Hero({
         </div>
 
         <div className="scene__foot" style={{ opacity: 1 - smooth(0.05, 0.2, p) }}>
-          <span className="scene__clock">
-            {content.site.name}{clock && <> · {clock} local</>}
-          </span>
+          <span className="scene__clock">Working with clients worldwide</span>
           <a className="scene__down" href="#work">
             Scroll to explore <span aria-hidden="true">↓</span>
           </a>
@@ -590,7 +568,10 @@ function Card({
         </span>
         <span className="card__arrow" aria-hidden="true">↗</span>
       </button>
-      {p.case && <Link className="card__case" href={`/work/${p.id}`}>Case study</Link>}
+      <span className="card__tags">
+        {p.status && <span className="card__status"><i aria-hidden="true" />{p.status}</span>}
+        {p.case && <Link className="card__case" href={`/work/${p.id}`}>Case study</Link>}
+      </span>
     </article>
   );
 }
@@ -634,7 +615,7 @@ function Visual({ project }: { project: Project }) {
    Services — a sticky stage beside a scrolling list of steps
    ============================================================ */
 
-function Services({ channels, n }: { channels: Channel[]; n: string }) {
+function Services({ channels }: { channels: Channel[] }) {
   const [active, setActive] = useState(0);
   const list = useRef<HTMLOListElement | null>(null);
   const steps = useRef<(HTMLLIElement | null)[]>([]);
@@ -670,7 +651,12 @@ function Services({ channels, n }: { channels: Channel[]; n: string }) {
 
   return (
     <section className="section services" id="services" aria-labelledby="servicesTitle">
-      <Head n={n} eyebrow="What I build" title="AI-powered, end to end. Four ways I can help." id="servicesTitle" colour={channels[1]?.colour ?? NEUTRAL} />
+      <Head
+        eyebrow="What I build"
+        title={`AI-powered, end to end. ${HOW_MANY[channels.length] ?? channels.length} ways I can help.`}
+        id="servicesTitle"
+        colour={channels[1]?.colour ?? NEUTRAL}
+      />
 
       <div className="services__grid">
         <ol className="steps" ref={list}>
@@ -721,8 +707,8 @@ function Services({ channels, n }: { channels: Channel[]; n: string }) {
    ============================================================ */
 
 function Contact({
-  content, channels, tools, tint, n,
-}: { content: Content; channels: Channel[]; tools: Tool[]; tint: (c?: number) => string; n: string }) {
+  content, channels, tools, tint,
+}: { content: Content; channels: Channel[]; tools: Tool[]; tint: (c?: number) => string }) {
   const [copied, setCopied] = useState(false);
   const ref = useRef<HTMLElement | null>(null);
 
@@ -769,7 +755,7 @@ function Contact({
         ))}
       </div>
 
-      <Head n={n} eyebrow={content.contact.eyebrow} title={content.contact.title} id="contactTitle" colour={tint(1)} />
+      <Head eyebrow={content.contact.eyebrow} title={content.contact.title} id="contactTitle" colour={tint(1)} />
       <p className="contact__body" data-reveal>{content.contact.body}</p>
 
       <div className="contact__card" data-reveal>
@@ -835,6 +821,7 @@ function Sheet({
       <div className="sheet__box" role="dialog" aria-modal="true" aria-labelledby="sheetTitle" ref={boxRef}>
         <header className="sheet__bar">
           <span className="sheet__kind"><i />{project.kind}</span>
+          {project.status && <span className="card__status card__status--sheet"><i aria-hidden="true" />{project.status}</span>}
           <span className="sheet__pos">{position}</span>
           <button className="sheet__close" type="button" onClick={onClose} ref={closeRef} aria-label="Close">
             <span aria-hidden="true">×</span>

@@ -8,15 +8,15 @@ export const SEED: Content = {
   "updatedAt": "",
   "site": {
     "name": "Israel Oni",
-    "role": "AI-powered websites · products · video · systems",
-    "location": "Benin City, NG",
+    "role": "AI-powered websites · products · systems",
+    "location": "Remote · worldwide",
     "timezone": "Africa/Lagos",
     "title": "Israel Oni — AI-powered digital solutions for businesses and individuals",
-    "description": "Israel Oni builds AI-powered digital solutions for businesses and individuals: websites, product and UI/UX design, video, and the internal systems behind them. Based in Benin City, Nigeria.",
-    "standby": "Four ways to work with me. Pick one and the work below follows.",
+    "description": "Israel Oni builds AI-powered digital solutions for businesses and individuals: websites, product and UI/UX design, and the internal systems behind them. Working with clients anywhere.",
+    "standby": "Three ways to work with me. Pick one and the work below follows.",
     "hint": "filter the work",
     "headline": "Building AI-powered digital solutions for businesses and individuals.",
-    "intro": "I put AI to work on the hours that were never the craft, so your website, product, video or internal tool arrives in weeks, not months — and still holds up once real people start using it.",
+    "intro": "I put AI to work on the hours that were never the craft, so your website, product or internal system arrives in weeks, not months — and still holds up once real people start using it.",
     "cv": {
       "label": "",
       "url": ""
@@ -168,7 +168,8 @@ export const SEED: Content = {
             "value": "Recutting something you already have"
           }
         ]
-      }
+      },
+      "hidden": true
     },
     {
       "id": 4,
@@ -249,7 +250,7 @@ export const SEED: Content = {
         ]
       },
       {
-        "icon": "cut",
+        "icon": "capcut",
         "name": "CapCut",
         "ch": [
           3
@@ -325,8 +326,197 @@ export const SEED: Content = {
   "work": {
     "eyebrow": "Selected work",
     "title": "Solutions already at work",
-    "note": "Sites, products, films and systems, built with AI and shipped for real clients.",
+    "note": "Sites, products and systems, built with AI and shipped for real clients.",
     "projects": [
+      {
+        "id": "elevatedhere",
+        "ch": [
+          2,
+          1
+        ],
+        "kind": "Platform · Product design + website",
+        "client": "ElevatedHere",
+        "title": "ElevatedHere",
+        "status": "In progress",
+        "line": "Wellbeing support for anyone, paid for by whoever is paying.",
+        "story": "ElevatedHere is an AI-powered, multi-language, multi-currency social impact and wellness platform for Africa. It brings certified professionals across seven dimensions of wellbeing into one place, from mental health and legal support to career, money and physical health, for individuals, employers, governments and NGOs. I'm designing the product and building the marketing site with AI. It's still in progress.",
+        "media": {
+          "type": "still",
+          "stills": [
+            "eh-home",
+            "eh-partners",
+            "eh-providers",
+            "eh-pricing"
+          ]
+        },
+        "shots": [
+          "eh-home",
+          "eh-partners",
+          "eh-providers",
+          "eh-pricing"
+        ],
+        "meta": [
+          {
+            "label": "Status",
+            "value": "In progress"
+          },
+          {
+            "label": "Role",
+            "value": "Product design · website built with AI"
+          },
+          {
+            "label": "Scope",
+            "value": "153 product screens, mapped by role"
+          },
+          {
+            "label": "Stack",
+            "value": "HTML · CSS · JavaScript, no build step"
+          }
+        ],
+        "link": "https://clepbo.github.io/ElevatedHere/index.html",
+        "linkText": "See the site so far",
+        "note": "Pricing figures and testimonials on the site are still placeholders while the product is being designed.",
+        "brand": {
+          "mark": "elevatedhere.png",
+          "colors": [
+            "#098E2D",
+            "#04250F",
+            "#17181C"
+          ],
+          "type": "Inter"
+        },
+        "case": {
+          "problem": "Expert help has always been rationed by cost, distance and stigma. Putting professionals in one place is the easy part. The hard part is money and privacy: one session might be paid for by the person, their employer, a programme or an insurer, and whoever pays must never see what was said.",
+          "process": [
+            {
+              "title": "Map every screen by role",
+              "body": "Before high fidelity, every screen in the partner-organisation workspace was listed by role, with its empty, no-results and failed states. That came to 153 screens."
+            },
+            {
+              "title": "Design the money first",
+              "body": "Wallets, budget pools, seats, approvals and invoices were worked out on screen, including how they reconcile, because the earlier design implied two different totals."
+            },
+            {
+              "title": "Build the marketing site with AI",
+              "body": "Six pages in plain HTML, CSS and JavaScript with no build step. Animations are tied to scroll position, so scrolling back up reverses them, and the layout was checked from a 400px phone to a 2,500px screen."
+            }
+          ],
+          "decisions": [
+            {
+              "title": "Private data is absent, not locked",
+              "body": "Data that is always private is simply not on the screen. A greyed-out, locked row tells people the data exists and invites pressure to unlock it."
+            },
+            {
+              "title": "Changing currency never converts money silently",
+              "body": "A second balance opens and both stay spendable. Converting is a separate, explicit action with the rate and time stamped on the transaction."
+            },
+            {
+              "title": "Small groups stay anonymous",
+              "body": "Reports hide any group smaller than five people, and exports apply that rule before the file is made, not after."
+            },
+            {
+              "title": "Losses show in red",
+              "body": "Retention down two points is shown as a drop. A dashboard where every arrow is green doesn't get believed."
+            }
+          ],
+          "outcome": "In progress. The marketing site is up on GitHub Pages and the product design is ongoing."
+        }
+      },
+      {
+        "id": "eventplanna",
+        "ch": [
+          1,
+          2
+        ],
+        "kind": "Website · Product design",
+        "client": "EventPlanna",
+        "title": "EventPlanna",
+        "line": "An events marketplace. I designed the product and built the site with AI.",
+        "story": "EventPlanna is a Nigerian marketplace and workspace for events: clients find planners, planners find vendors, and budgets, bookings, tasks and payments live in one place both sides can see. I designed the product's UI/UX in Figma, dashboard included, then built the marketing site entirely with AI.",
+        "media": {
+          "type": "still",
+          "stills": [
+            "ep-home",
+            "ep-work",
+            "ep-market"
+          ]
+        },
+        "shots": [
+          "ep-home",
+          "ep-work",
+          "ep-market"
+        ],
+        "meta": [
+          {
+            "label": "Role",
+            "value": "Product UI/UX · website built with AI"
+          },
+          {
+            "label": "Stack",
+            "value": "HTML · CSS · JavaScript, no build step"
+          },
+          {
+            "label": "Images",
+            "value": "55 MB of photos → about 1 MB of WebP"
+          },
+          {
+            "label": "Status",
+            "value": "Live"
+          }
+        ],
+        "link": "https://eventplanna.com/",
+        "linkText": "Visit eventplanna.com",
+        "note": "The product's Figma file is in this repository: Projects/EventPlanna.fig.",
+        "brand": {
+          "mark": "eventplanna.svg",
+          "colors": [
+            "#7858F8",
+            "#5848E8",
+            "#182838"
+          ],
+          "type": "Inter"
+        },
+        "case": {
+          "problem": "The site had to speak to three readers who want opposite things from the same product: someone planning their own event, a professional planner, and a vendor. And it couldn't promise anything the product doesn't actually do.",
+          "process": [
+            {
+              "title": "Design the product first",
+              "body": "I designed EventPlanna's UI/UX in Figma: the dashboard, bookings, budgets, tasks and the shared workspace clients and planners both see."
+            },
+            {
+              "title": "Decide who the home page is for",
+              "body": "The home page is written for the client, who arrives cold. Planners and vendors arrive knowing what they came for, so they get a door each, one click away, and a page of their own."
+            },
+            {
+              "title": "Build the whole site with AI",
+              "body": "Plain HTML, CSS and JavaScript, with no framework and no build step. Every brand colour lives in one token block, and a small scroll engine runs the motion and switches off for anyone who prefers reduced motion."
+            },
+            {
+              "title": "Script the photography",
+              "body": "One script either generates each photo from its prompt with Gemini's image models or imports a supplied one, then crops it to the slot's measured size and writes WebP. 55 MB of photos became about 1 MB."
+            },
+            {
+              "title": "Check every claim",
+              "body": "Credit costs, pack prices, booking states and the verification checks come from the product itself. Anything illustrative, like the booking funnel and the testimonials, says so on the page."
+            }
+          ],
+          "decisions": [
+            {
+              "title": "Product mock-ups in markup, not screenshots",
+              "body": "The budget card, the pipeline and the brief are built in HTML. They stay sharp at any width and restyle with the brand tokens, where a screenshot of a dashboard goes stale and blurs."
+            },
+            {
+              "title": "Every figure has to add up",
+              "body": "The first pass of vendor counts per category summed to 2,702 against a 2,400+ headline on the same page. They were redone to sum to 2,460. Numbers that disagree cost more trust than they win."
+            },
+            {
+              "title": "Cut a detail that wasn't true",
+              "body": "An early draft said vendors are paid fortnightly. That isn't a real policy, so it went. The page now says funds are released once delivery is confirmed, which is what escrow actually implies."
+            }
+          ],
+          "outcome": "Live at eventplanna.com. One person took EventPlanna from product design in Figma to a shipped marketing site, with AI doing the build."
+        }
+      },
       {
         "id": "shop-timart",
         "ch": [
@@ -866,7 +1056,6 @@ export const SEED: Content = {
           ],
           "type": "Montserrat"
         },
-        "note": "Also under Video — I cut their brand video series.",
         "case": {
           "problem": "An advisory firm sells judgement, not objects. Teasoo runs six service lines — from organisational development to digital transformation — and a visitor arriving cold cannot tell which one is theirs. The old route to a conversation was buried.",
           "process": [
@@ -950,7 +1139,6 @@ export const SEED: Content = {
           ],
           "type": "Roboto"
         },
-        "note": "Also under Video — I shot and cut their school outreach films.",
         "case": {
           "problem": "A donor wants evidence the money moves. A partner organisation wants to know who else is at the table. A beneficiary wants to know whether they qualify and what to do next. One homepage, three incompatible reading orders.",
           "process": [
@@ -1033,7 +1221,6 @@ export const SEED: Content = {
           ],
           "type": "Poppins"
         },
-        "note": "Also under Video — the walkthrough film is mine too.",
         "case": {
           "problem": "Short-stay accommodation is chosen fast and on atmosphere. The three questions — where is it, what does it look like, how do I book — were all more than one click away, and a phone number that takes a click is a phone number nobody dials.",
           "process": [
@@ -1513,74 +1700,6 @@ export const SEED: Content = {
         }
       },
       {
-        "id": "eventplanna",
-        "ch": [
-          2
-        ],
-        "kind": "Product design · Figma",
-        "client": "EventPlanna",
-        "title": "EventPlanna",
-        "line": "Event planning, from booking to run sheet.",
-        "story": "A 38 MB design file covering the planning side of events — the part organisers live in once the excitement wears off. Add your own account of the problem here; the file is in the repo.",
-        "media": {
-          "type": "brand"
-        },
-        "meta": [
-          {
-            "label": "Tool",
-            "value": "Figma"
-          },
-          {
-            "label": "File",
-            "value": "EventPlanna.fig · 38 MB"
-          },
-          {
-            "label": "Stored",
-            "value": "Git LFS"
-          }
-        ],
-        "link": "https://github.com/clepbo/clepbo/blob/main/Projects/EventPlanna.fig",
-        "linkText": "Open the file",
-        "brand": {
-          "mark": "eventplanna.svg",
-          "colors": [
-            "#7858F8",
-            "#5848E8",
-            "#182838"
-          ],
-          "type": "Set in the file"
-        },
-        "slot": true,
-        "case": {
-          "problem": "Write what was broken before this existed — the spreadsheet, the group chat, the thing that kept getting missed.",
-          "process": [
-            {
-              "title": "Add your first step",
-              "body": "What you mapped or researched before drawing anything."
-            },
-            {
-              "title": "Add your second step",
-              "body": "How the structure took shape."
-            },
-            {
-              "title": "Add your third step",
-              "body": "How it got to high fidelity and handoff."
-            }
-          ],
-          "decisions": [
-            {
-              "title": "Add a decision",
-              "body": "And the reason it beat the obvious alternative."
-            },
-            {
-              "title": "Add another",
-              "body": "Design decisions read best as a choice plus a rejected option."
-            }
-          ],
-          "outcome": "What shipped, and what it changed."
-        }
-      },
-      {
         "id": "shedulr",
         "ch": [
           2
@@ -1646,7 +1765,8 @@ export const SEED: Content = {
             }
           ],
           "outcome": "What shipped, and what it changed."
-        }
+        },
+        "hidden": true
       },
       {
         "id": "moatview-film",
@@ -1682,7 +1802,8 @@ export const SEED: Content = {
         ],
         "video": "https://drive.google.com/file/d/1ZFh3R-CE6Bm0_Y3eK94KffU4hNxsRATo/view",
         "link": "https://drive.google.com/file/d/1ZFh3R-CE6Bm0_Y3eK94KffU4hNxsRATo/view",
-        "linkText": "Watch the film"
+        "linkText": "Watch the film",
+        "hidden": true
       },
       {
         "id": "teaching-series",
@@ -1720,7 +1841,8 @@ export const SEED: Content = {
         ],
         "video": "https://drive.google.com/file/d/1IAqlAvQ9gi1avgfKmwww5wmFFWmAQ3iX/view",
         "link": "https://drive.google.com/file/d/1IAqlAvQ9gi1avgfKmwww5wmFFWmAQ3iX/view",
-        "linkText": "Watch an episode"
+        "linkText": "Watch an episode",
+        "hidden": true
       },
       {
         "id": "short-form",
@@ -1757,7 +1879,8 @@ export const SEED: Content = {
         ],
         "video": "https://drive.google.com/file/d/18lJ05HmQfQp1RYCHNm6uvFS4cN0ksa17/view",
         "link": "https://drive.google.com/file/d/18lJ05HmQfQp1RYCHNm6uvFS4cN0ksa17/view",
-        "linkText": "Watch a cut"
+        "linkText": "Watch a cut",
+        "hidden": true
       },
       {
         "id": "ehf-films",
@@ -1793,7 +1916,8 @@ export const SEED: Content = {
           }
         ],
         "link": "https://ehfoundation.africa/",
-        "linkText": "See the foundation"
+        "linkText": "See the foundation",
+        "hidden": true
       },
       {
         "id": "teelens",
@@ -1829,7 +1953,8 @@ export const SEED: Content = {
         ],
         "video": "https://drive.google.com/file/d/1cb8jHbKKrRV_N_obnsdEHvTuSOQ65xBO/view",
         "link": "https://drive.google.com/file/d/1cb8jHbKKrRV_N_obnsdEHvTuSOQ65xBO/view",
-        "linkText": "Watch it"
+        "linkText": "Watch it",
+        "hidden": true
       },
       {
         "id": "podcast",
@@ -1864,7 +1989,8 @@ export const SEED: Content = {
         ],
         "video": "https://drive.google.com/file/d/1yD3SaeZSZVOcnl8bTGqAcHI53v0PAR9B/view",
         "link": "https://drive.google.com/file/d/1yD3SaeZSZVOcnl8bTGqAcHI53v0PAR9B/view",
-        "linkText": "Watch it"
+        "linkText": "Watch it",
+        "hidden": true
       }
     ]
   },
@@ -1894,15 +2020,15 @@ export const SEED: Content = {
   "about": {
     "eyebrow": "About",
     "title": "Israel Oni",
-    "lead": "I work out of Benin City, Edo State, building AI-powered digital solutions for businesses and individuals. Most people come to me for one thing — a site, a design file, a film, a system that needed fixing — and only find out later that I can do the rest too.",
+    "lead": "I build AI-powered digital solutions for businesses and individuals, wherever they are. Most people come to me for one thing — a site, a product design, a system that needed fixing — and only find out later that I can do the rest too.",
     "body": [
-      "The through-line across all four is the same: understand the problem properly, then build one thing that works — rather than hand over something that only looks finished.",
-      "I came up through backend engineering, and that hasn't gone anywhere: Java, Spring Boot and the databases underneath still decide whether a system behaves once real people arrive. What changed is the front of the job. Most of what I ship now is a site, a design file or a cut, put together fast because the tooling finally allows it."
+      "The through-line is the same every time: understand the problem properly, then build one thing that works — rather than hand over something that only looks finished.",
+      "I came up through backend engineering, and that hasn't gone anywhere: Java, Spring Boot and the databases underneath still decide whether a system behaves once real people arrive. What changed is the front of the job. Most of what I ship now is a site, a product or a system, put together fast because AI finally allows it."
     ],
     "facts": [
       {
-        "label": "Based",
-        "value": "Benin City, Edo State, Nigeria"
+        "label": "Works with",
+        "value": "Clients anywhere, remotely"
       },
       {
         "label": "Builds on",
@@ -1910,7 +2036,7 @@ export const SEED: Content = {
       },
       {
         "label": "Designs in",
-        "value": "Figma · DaVinci Resolve"
+        "value": "Figma · Canva"
       },
       {
         "label": "Open to",
@@ -1958,7 +2084,7 @@ export const SEED: Content = {
     }
   },
   "footer": {
-    "left": "Israel Oni — Benin City, Nigeria",
+    "left": "Israel Oni — working with clients worldwide",
     "right": "Built with AI, finished by hand."
   },
   "testimonials": {

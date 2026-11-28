@@ -72,7 +72,10 @@ export default async function Study({ params }: { params: Promise<{ slug: string
 
       <main className="study" style={{ ["--c" as string]: channel?.colour ?? "#A2A8A6" }}>
         <section className="study__head">
-          <p className="study__eyebrow"><i aria-hidden="true" />{p.client || channel?.name}</p>
+          <p className="study__eyebrow">
+            <i aria-hidden="true" />{p.client || channel?.name}
+            {p.status && <span className="card__status card__status--sheet">{p.status}</span>}
+          </p>
           <h1 className="study__title"><Words text={p.title} /></h1>
           <p className="study__line">{p.line}</p>
         </section>

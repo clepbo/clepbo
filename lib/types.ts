@@ -75,6 +75,8 @@ export type Project = {
   linkText: string;
   note?: string;
   slot?: boolean;
+  /** A short label such as "In progress", shown as a badge on the card. */
+  status?: string;
   hidden?: boolean;
   context?: ProjectContext;
   /** A watch link. Paste a YouTube, Google Drive, Cloudflare Stream, Bunny or
@@ -101,10 +103,13 @@ export type Version = {
 export type Content = {
   version: number;
   updatedAt: string;
+  /** One-off edits shipped in code that this document has already received
+   *  (see EDITS_IN_CODE in lib/content.ts). */
+  applied?: string[];
   site: {
     name: string;
     role: string;          // rail subtitle
-    location: string;      // "Benin City, NG"
+    location: string;      // "Remote · worldwide"
     timezone: string;      // IANA zone for the desk clock
     title: string;         // <title>
     description: string;
