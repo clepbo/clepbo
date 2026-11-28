@@ -359,13 +359,25 @@ kbd {
 @keyframes marquee { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } .marquee { overflow-x: auto; } }
 
-.clients__item { padding: 0 clamp(22px, 3.5vw, 44px); }
-.clients__item img {
-  height: 38px; width: auto; max-width: 140px; object-fit: contain;
-  filter: grayscale(1) contrast(1.1); opacity: .55; transition: filter .4s, opacity .4s, transform .4s var(--ease);
+.clients__item { padding: 0 clamp(8px, 1.4vw, 18px); }
+.clients__logo {
+  display: grid; place-items: center; height: 64px; padding: 0 18px; border-radius: 16px;
+  transition: background-color .4s var(--ease), box-shadow .4s var(--ease), transform .5s var(--spring);
 }
-:root[data-theme="dark"] .clients__item img { filter: grayscale(1) invert(1) brightness(1.4); }
-.clients__item img:hover { filter: none; opacity: 1; transform: scale(1.06); }
+.clients__logo img {
+  height: 38px; width: auto; max-width: 140px; object-fit: contain;
+  filter: grayscale(1) contrast(1.1); opacity: .55;
+  transition: filter .5s var(--ease), opacity .5s var(--ease), transform .5s var(--spring);
+}
+:root[data-theme="dark"] .clients__logo img { filter: grayscale(1) invert(1) brightness(1.4); }
+/* Hover, keyboard focus or a tap on a phone: the logo in its own colours,
+   on a white chip so dark marks still read in dark mode. */
+.clients__logo:hover, .clients__logo:focus-visible, .clients__logo:active {
+  background: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .06), var(--shadow); transform: translateY(-3px);
+}
+:root .clients__logo:hover img, :root .clients__logo:focus-visible img, :root .clients__logo:active img {
+  filter: none; opacity: 1; transform: scale(1.08);
+}
 
 /* ==========================================================================
    Work

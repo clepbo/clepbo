@@ -141,7 +141,16 @@ export default function Studio({ content }: { content: Content }) {
                   <ul className="marquee__set" aria-hidden={k === 1} key={k}>
                     {brands.map((b) => (
                       <li className="clients__item" key={b.id}>
-                        <img src={markSrc(b.mark)} alt={k === 0 ? b.name : ""} loading="lazy" decoding="async" />
+                        <button
+                          type="button"
+                          className="clients__logo"
+                          onClick={() => open(b.id)}
+                          tabIndex={k === 1 ? -1 : undefined}
+                          aria-label={`Open ${b.name}`}
+                          data-cursor="View"
+                        >
+                          <img src={markSrc(b.mark)} alt="" loading="lazy" decoding="async" />
+                        </button>
                       </li>
                     ))}
                   </ul>
