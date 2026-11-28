@@ -24,12 +24,17 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   const title = `${p.title} — ${content.site.name}`;
   const description = p.case?.problem?.slice(0, 180) ?? p.story.slice(0, 180);
+  // A case study is previewed with its own first screen; else the site's card.
+  const first = framesOf(p)[0];
+  const image = first
+    ? { url: stillSrc(first), alt: `${p.title} — screen` }
+    : { url: "/assets/media/og-studio.png", width: 1200, height: 630, alt: content.site.title };
   return {
     title,
     description,
     alternates: { canonical: `/work/${p.id}` },
-    openGraph: { title, description, type: "article", url: `/work/${p.id}` },
-    twitter: { card: "summary_large_image" },
+    openGraph: { title, description, type: "article", url: `/work/${p.id}`, images: [image] },
+    twitter: { card: "summary_large_image", images: [image.url] },
   };
 }
 
