@@ -54,7 +54,61 @@ async function readBlob(): Promise<Content | null> {
 /* A document saved before a new section existed is still valid — fill the
    gaps from the seed rather than letting the page or the editor hit undefined. */
 function normalise(doc: Content): Content {
-  return refreshProjects(offerNewProjects(withDefaults(doc, SEED)));
+  return retireWording(refreshProjects(offerNewProjects(withDefaults(doc, SEED))), SEED) as Content;
+}
+
+/* Default copy from the old "desk" design. Wherever the stored document still
+   holds one of these exact strings, the author never changed it, so the
+   seed's current wording at the same place replaces it. Anything edited in
+   the admin is left alone. Objects in arrays are matched by id when they
+   have one, otherwise by position. */
+const RETIRED = new Set([
+  "Israel Oni — Web, Product, Video, Solutions",
+  "Web · Product · Video · Solutions",
+  "Israel Oni, Benin City. Four channels: websites built fast on WordPress and AI, product and UI/UX design, video editing and motion, and digital solutions.",
+  "Four channels, one person. Patch into any of them above — the desk retunes to whichever one you're listening to, and the work below follows.",
+  "switch channel",
+  "Sites, products and video — built by one person.",
+  "I build websites fast on WordPress and AI, design the product before anyone codes it, cut the video, and fix the process underneath when that turns out to be the real problem.",
+  "The rack", "What's patched in", "Everything on the desk. Patch a channel to see what it runs on.",
+  "What's come off the desk", "Showing everything. Patch into a channel to filter.",
+  "Also on CH 03 — I cut their brand video series.",
+  "Also on CH 03 — I shot and cut their school outreach films.",
+  "Also on CH 03 — the walkthrough film is mine too.",
+  "Site on CH 01",
+  "Signal path", "How a job actually runs", "Same four stages on every channel.",
+  "Patch in", "Set levels", "On air",
+  "You see it while it's coming together, not at the end. Changes are cheap in the middle and expensive on the last day.",
+  "Operator",
+  "I work out of Benin City, Edo State. Most people meet me through one channel — a site, an edit, a design file, a system that needed fixing — and only find out about the rest later. That's the whole reason this page is built like a desk instead of a CV.",
+  "Patch bay", "Tell me which channel you need.",
+  "Say what you're trying to get done and when you need it. If it isn't something I should be doing, I'll say so and point you at someone better.",
+  "Built by hand. No template.",
+]);
+
+function retireWording(stored: unknown, seed: unknown): unknown {
+  if (typeof stored === "string") {
+    return RETIRED.has(stored) && typeof seed === "string" && seed !== stored ? seed : stored;
+  }
+  if (Array.isArray(stored)) {
+    if (!Array.isArray(seed)) return stored;
+    return stored.map((item, i) => {
+      const id = item && typeof item === "object" ? (item as { id?: unknown }).id : undefined;
+      const match = id !== undefined
+        ? seed.find((x) => x && typeof x === "object" && (x as { id?: unknown }).id === id)
+        : seed[i];
+      return match === undefined ? item : retireWording(item, match);
+    });
+  }
+  if (stored && typeof stored === "object") {
+    if (!seed || typeof seed !== "object" || Array.isArray(seed)) return stored;
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(stored)) {
+      out[k] = k in seed ? retireWording(v, (seed as Record<string, unknown>)[k]) : v;
+    }
+    return out;
+  }
+  return stored;
 }
 
 /* Projects added to the seed after the live document was first saved. The
