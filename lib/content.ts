@@ -154,6 +154,7 @@ const RETIRED = new Set([
   "I came up through backend engineering, and that hasn't gone anywhere: Java, Spring Boot and the databases underneath still decide whether a system behaves once real people arrive. What changed is the front of the job. Most of what I ship now is a site, a design file or a cut, put together fast because the tooling finally allows it.",
   "Israel Oni — Benin City, Nigeria",
   "cut",
+  "WordPress · Next.js · Spring Boot",
   // The four services, before they were rewritten around AI.
   "Sites shipped fast, on WordPress and AI.",
   "WordPress and AI, so founders stop waiting on a build.",
