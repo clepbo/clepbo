@@ -12,9 +12,9 @@ export async function generateMetadata(): Promise<Metadata> {
       title: site.title,
       description: site.description,
       type: "website",
-      images: [{ url: "/assets/media/og.png", width: 1200, height: 630 }],
+      images: [{ url: "/assets/media/og-studio.png", width: 1200, height: 630, alt: site.title }],
     },
-    twitter: { card: "summary_large_image" },
+    twitter: { card: "summary_large_image", images: ["/assets/media/og-studio.png"] },
     metadataBase: new URL(process.env.SITE_URL ?? "https://israeloni.vercel.app"),
   };
 }
