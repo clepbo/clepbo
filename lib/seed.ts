@@ -2084,7 +2084,7 @@ export const SEED: Content = {
       },
       {
         "label": "Builds on",
-        "value": "WordPress · Next.js · Spring Boot"
+        "value": "WordPress · Claude"
       },
       {
         "label": "Designs in",
