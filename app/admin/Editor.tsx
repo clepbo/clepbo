@@ -2,14 +2,25 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Content, Project, ProjectContext, Version } from "@/lib/types";
+import ThemeToggle from "../ThemeToggle";
 import "./admin.css";
 
-type Tab = "site" | "channels" | "rack" | "work" | "says" | "path" | "about" | "contact" | "history";
-const TABS: [Tab, string][] = [
-  ["site", "Site"], ["channels", "Channels"], ["work", "Work"], ["says", "Testimonials"],
-  ["rack", "The rack"], ["path", "Signal path"], ["about", "About"], ["contact", "Contact"],
-  ["history", "History"],
+type Tab = "site" | "channels" | "rack" | "work" | "says" | "about" | "contact" | "history";
+const TABS: [Tab, string, string][] = [
+  ["site", "Site", "Hero, title and footer"],
+  ["work", "Work", "Projects and case studies"],
+  ["channels", "Services", "What I build"],
+  ["rack", "Toolkit", "The tools strip"],
+  ["about", "About", "Your story and facts"],
+  ["says", "Testimonials", "Client quotes"],
+  ["contact", "Contact", "Email, links and the form"],
+  ["history", "History", "Restore an earlier save"],
 ];
+
+const pad = (n: number) => String(n).padStart(2, "0");
+const isUrl = (n: string) => /^https?:\/\//.test(n);
+const stillSrc = (n: string) => (isUrl(n) ? n : `/assets/media/stills/${n}.jpg`);
+const markSrc = (n: string) => (isUrl(n) ? n : `/assets/media/marks/${/\./.test(n) ? n : `${n}.png`}`);
 
 const AI_MODES = [
   ["tighten", "Tighten"], ["rewrite", "Rewrite"], ["expand", "Expand"], ["proofread", "Fix"],
@@ -63,44 +74,61 @@ export default function Editor({ initial }: { initial: Content }) {
 
   const shared = { edit, say };
 
+  const initials = doc.site.name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+  const counts: Partial<Record<Tab, number>> = {
+    work: doc.work.projects.filter((p) => !p.hidden).length,
+    channels: doc.channels.filter((c) => !c.hidden).length,
+    rack: doc.rack.tools.filter((t) => !t.hidden).length,
+    says: (doc.testimonials?.items ?? []).filter((t) => !t.hidden).length,
+  };
+
   return (
     <div className="adm">
       <header className="adm__bar">
-        <span className="adm__name">The desk · admin</span>
-        <span className="adm__mono" style={{ color: dirty ? "var(--warn)" : "var(--mute)" }}>
-          {dirty ? "Unsaved changes" : `v${doc.version} saved`}
+        <a className="adm__brand" href="/" target="_blank" rel="noopener" title="Open the site">
+          <span className="adm__mark" aria-hidden="true">{initials}</span>
+          <span className="adm__brandtxt"><b>{doc.site.name}</b><small>Studio</small></span>
+        </a>
+        <span className={`adm__state${dirty ? " is-dirty" : ""}`} role="status">
+          <i aria-hidden="true" />{dirty ? "Unsaved changes" : `Published · v${doc.version}`}
         </span>
         <span className="adm__spacer" />
-        <a className="adm__btn" href="/" target="_blank" rel="noopener">View site</a>
-        <button className="adm__btn" onClick={signOut}>Sign out</button>
+        <span className="adm__theme"><ThemeToggle /></span>
+        <a className="adm__btn adm__btn--ghost adm__hide-sm" href="/" target="_blank" rel="noopener">View site ↗</a>
+        <button className="adm__btn adm__btn--ghost adm__hide-sm" onClick={signOut}>Sign out</button>
         <button className="adm__btn adm__btn--go" onClick={save} disabled={saving || !dirty}>
-          {saving ? "Saving…" : "Save & publish"}
+          {saving ? "Publishing…" : "Save & publish"}
         </button>
       </header>
 
       <div className="adm__body">
-        <nav className="adm__nav">
-          {TABS.map(([id, label]) => (
+        <nav className="adm__nav" aria-label="Sections">
+          <p className="adm__navlabel">Content</p>
+          {TABS.map(([id, label, hint]) => (
             <button key={id} className="adm__tab" aria-current={tab === id} onClick={() => setTab(id)}>
-              {label}
+              <span className="adm__tabtxt"><b>{label}</b><small>{hint}</small></span>
+              {counts[id] !== undefined && <span className="adm__count">{counts[id]}</span>}
             </button>
           ))}
+          <div className="adm__navfoot">
+            <a href="/" target="_blank" rel="noopener">View site ↗</a>
+            <button onClick={signOut}>Sign out</button>
+          </div>
         </nav>
 
-        <main className="adm__main">
+        <main className="adm__main" key={tab}>
           {tab === "site" && <SiteTab doc={doc} {...shared} />}
           {tab === "channels" && <ChannelsTab doc={doc} {...shared} />}
           {tab === "work" && <WorkTab doc={doc} {...shared} />}
           {tab === "says" && <SaysTab doc={doc} {...shared} />}
           {tab === "history" && <HistoryTab say={say} onRestore={(d) => { setDoc(d); setDirty(false); }} />}
           {tab === "rack" && <RackTab doc={doc} {...shared} />}
-          {tab === "path" && <PathTab doc={doc} {...shared} />}
           {tab === "about" && <AboutTab doc={doc} {...shared} />}
           {tab === "contact" && <ContactTab doc={doc} {...shared} />}
         </main>
       </div>
 
-      {toast && <p className={`adm__toast${toast.bad ? " adm__toast--bad" : ""}`}>{toast.msg}</p>}
+      {toast && <p className={`adm__toast${toast.bad ? " adm__toast--bad" : ""}`} role="status">{toast.msg}</p>}
     </div>
   );
 }
@@ -112,6 +140,7 @@ type Shared = { edit: (fn: (d: Content) => void) => void; say: (m: string, bad?:
 function Head({ title, note }: { title: string; note: string }) {
   return (
     <div className="adm__head">
+      <p className="adm__eyebrow"><i aria-hidden="true" />Editing</p>
       <h2>{title}</h2>
       <p>{note}</p>
     </div>
@@ -219,7 +248,7 @@ function PairList({
             onChange={(e) => onChange(items.map((r, j) => (j === i ? { ...r, label: e.target.value } : r)))} />
           <input type="text" aria-label={valName} value={row.value}
             onChange={(e) => onChange(items.map((r, j) => (j === i ? { ...r, value: e.target.value } : r)))} />
-          <button className="adm__btn" type="button" onClick={() => onChange(items.filter((_, j) => j !== i))}>Del</button>
+          <button className="adm__btn" type="button" onClick={() => onChange(items.filter((_, j) => j !== i))}>Remove</button>
         </div>
       ))}
       <button className="adm__btn" type="button" onClick={() => onChange([...items, { label: "", value: "" }])}>Add row</button>
@@ -279,14 +308,13 @@ function SiteTab({ doc, edit, say }: { doc: Content } & Shared) {
   const s = doc.site;
   return (
     <>
-      <Head title="Site" note="Your name, the hero, the page title and the footer." />
+      <Head title="Site" note="Your name, the hero at the top of the page, what search engines show, and the footer." />
       <div className="row">
         <Field label="Name" value={s.name} onChange={(v) => edit((d) => { d.site.name = v; })} />
-        <Field label="Rail subtitle" value={s.role} onChange={(v) => edit((d) => { d.site.role = v; })} />
-        <Field label="Location" value={s.location} onChange={(v) => edit((d) => { d.site.location = v; })} />
-        <Field label="Clock timezone" value={s.timezone} onChange={(v) => edit((d) => { d.site.timezone = v; })} />
-      </div>
-      <Field label="Browser title" value={s.title} onChange={(v) => edit((d) => { d.site.title = v; })} />
+        <Field label="Tagline under the hero" value={s.role} onChange={(v) => edit((d) => { d.site.role = v; })} />
+        <Field label="Where you work (search engines only)" value={s.location} onChange={(v) => edit((d) => { d.site.location = v; })} />
+              </div>
+      <Field label="Browser tab and search title" value={s.title} onChange={(v) => edit((d) => { d.site.title = v; })} />
       <Field label="Meta description" value={s.description} area ai say={say}
         context="the search-engine description of a portfolio site"
         onChange={(v) => edit((d) => { d.site.description = v; })} />
@@ -296,9 +324,6 @@ function SiteTab({ doc, edit, say }: { doc: Content } & Shared) {
       <Field label="Intro paragraph" value={s.intro ?? ""} area ai say={say}
         context="the paragraph that fills in word by word below the hero, one or two sentences"
         onChange={(v) => edit((d) => { d.site.intro = v; })} />
-      <Field label="Standby line" value={s.standby} area ai say={say}
-        context="the line shown before a visitor picks a channel"
-        onChange={(v) => edit((d) => { d.site.standby = v; })} />
       <div className="sub"><h3>Footer</h3></div>
       <div className="row">
         <Field label="Footer left" value={doc.footer.left} onChange={(v) => edit((d) => { d.footer.left = v; })} />
@@ -336,13 +361,13 @@ function ChannelsTab({ doc, edit, say }: { doc: Content } & Shared) {
   const [open, setOpen] = useState<number | null>(null);
   return (
     <>
-      <Head title="Channels" note="The strips on the front panel, their copy, and the colour each one lights the page with." />
+      <Head title="Services" note="The services in “What I build”: their copy, the list under each, and the colour that tints them across the site." />
       {doc.channels.map((c, i) => (
         <div className={`card2${c.hidden ? " card2--off" : ""}`} key={c.id}>
           <div className="card2__top">
-            <span className="card2__grip">CH {String(c.id).padStart(2, "0")}</span>
+            <span className="card2__grip">{pad(i + 1)}</span>
             <span className="sw" style={{ background: c.colour }} />
-            <span className="card2__name">{c.word} {c.sub}</span>
+            <span className="card2__name">{c.name}</span>
             <span className="card2__acts">
               <button onClick={() => edit((d) => { d.channels = move(d.channels, i, -1); })}>↑</button>
               <button onClick={() => edit((d) => { d.channels = move(d.channels, i, 1); })}>↓</button>
@@ -356,43 +381,43 @@ function ChannelsTab({ doc, edit, say }: { doc: Content } & Shared) {
             <div className="card2__open">
               <div className="row">
                 <Field label="Name" value={c.name} onChange={(v) => edit((d) => { d.channels[i].name = v; })} />
-                <Field label="Big word" value={c.word} onChange={(v) => edit((d) => { d.channels[i].word = v; })} />
-                <Field label="Sub" value={c.sub} onChange={(v) => edit((d) => { d.channels[i].sub = v; })} />
+                <Field label="Short name" value={c.word} onChange={(v) => edit((d) => { d.channels[i].word = v; })} />
+                <Field label="Short name, second part" value={c.sub} onChange={(v) => edit((d) => { d.channels[i].sub = v; })} />
               </div>
-              <Field label="One line" value={c.line} ai say={say} context="the one-line summary on a service channel strip"
+              <Field label="One line" value={c.line} ai say={say} context="the one-line summary of a service"
                 onChange={(v) => edit((d) => { d.channels[i].line = v; })} />
-              <StringList label="Tags" items={c.tags} onChange={(v) => edit((d) => { d.channels[i].tags = v; })} />
+              <StringList label="Tags (shown in the animation)" items={c.tags} onChange={(v) => edit((d) => { d.channels[i].tags = v; })} />
 
-              <div className="sub"><h3>Colours &amp; meter</h3></div>
+              <div className="sub"><h3>Colour &amp; animation</h3></div>
               <div className="row">
-                {(["colour", "panel", "panel2", "panel3", "ink"] as const).map((k) => (
+                {(["colour"] as const).map((k) => (
                   <label className="fld" key={k}>
-                    <span className="fld__top"><span className="fld__label">{k}</span></span>
+                    <span className="fld__top"><span className="fld__label">Accent colour</span></span>
                     <div style={{ display: "flex", gap: ".4rem" }}>
-                      <input type="color" value={c[k]} aria-label={`${k} colour`} style={{ width: "2.6rem", padding: 0, background: "none", border: "1px solid var(--rule)" }}
+                      <input type="color" value={c[k]} aria-label={`${k} colour`} className="fld__swatch"
                         onChange={(e) => edit((d) => { d.channels[i][k] = e.target.value; })} />
                       <input type="text" value={c[k]} onChange={(e) => edit((d) => { d.channels[i][k] = e.target.value; })} />
                     </div>
                   </label>
                 ))}
                 <label className="fld">
-                  <span className="fld__top"><span className="fld__label">Meter</span></span>
+                  <span className="fld__top"><span className="fld__label">Animation beside it</span></span>
                   <select value={c.wave} onChange={(e) => edit((d) => { d.channels[i].wave = e.target.value as typeof c.wave; })}>
-                    <option value="step">Stepped clock line</option>
-                    <option value="grid">Artboard lattice</option>
-                    <option value="vu">Metering bars</option>
-                    <option value="ramp">Climbing ramp</option>
+                    <option value="step">A website being built</option>
+                    <option value="grid">A product design canvas</option>
+                    <option value="vu">A video edit timeline</option>
+                    <option value="ramp">An API and data flow</option>
                   </select>
                 </label>
               </div>
 
-              <div className="sub"><h3>The brief below</h3></div>
-              <Field label="Headline" value={c.brief.head} ai say={say} context="the headline of a service channel's detail section"
+              <div className="sub"><h3>The text in “What I build”</h3></div>
+              <Field label="Headline" value={c.brief.head} ai say={say} context="the headline of a service"
                 onChange={(v) => edit((d) => { d.channels[i].brief.head = v; })} />
-              <Field label="Body" value={c.brief.body} area rows={5} ai say={say} context="the body paragraph of a service channel"
+              <Field label="Body" value={c.brief.body} area rows={5} ai say={say} context="the body paragraph describing a service"
                 onChange={(v) => edit((d) => { d.channels[i].brief.body = v; })} />
-              <StringList label="Capability list" items={c.brief.list} onChange={(v) => edit((d) => { d.channels[i].brief.list = v; })} />
-              <PairList label="Channel spec" items={c.brief.spec} onChange={(v) => edit((d) => { d.channels[i].brief.spec = v; })} />
+              <StringList label="What it covers (the chips)" items={c.brief.list} onChange={(v) => edit((d) => { d.channels[i].brief.list = v; })} />
+              <PairList label="Facts under the animation (first two show)" items={c.brief.spec} onChange={(v) => edit((d) => { d.channels[i].brief.spec = v; })} />
             </div>
           )}
         </div>
@@ -419,7 +444,7 @@ function WorkTab({ doc, edit, say }: { doc: Content } & Shared) {
 
   return (
     <>
-      <Head title="Work" note="Every card on the site. Hide one to take it off the page without deleting it." />
+      <Head title="Work" note="Every project on the site, in order. Drafts and anything you hide stay here without showing on the page." />
       <div className="row" style={{ gridTemplateColumns: "1fr", marginBottom: "1rem" }}>
         <Field label="Section note" value={doc.work.note} onChange={(v) => edit((d) => { d.work.note = v; })} />
       </div>
@@ -429,9 +454,17 @@ function WorkTab({ doc, edit, say }: { doc: Content } & Shared) {
       {projects.map((p, i) => (
         <div className={`card2${p.hidden ? " card2--off" : ""}`} key={p.id}>
           <div className="card2__top">
-            <span className="card2__grip">{String(i + 1).padStart(2, "0")}</span>
-            <span className="card2__name">{p.title}</span>
-            <span className="card2__kind">{p.ch.map((c) => `CH 0${c}`).join(" + ")}</span>
+            <span className="card2__grip">{pad(i + 1)}</span>
+            <Thumb project={p} />
+            <span className="card2__name">
+              {p.title}
+              <small>{p.kind}{p.status ? ` · ${p.status}` : ""}</small>
+            </span>
+            <span className="card2__kind">
+              {p.ch.map((id) => doc.channels.find((c) => c.id === id)).filter(Boolean).map((c) => (
+                <span className="dot" key={c!.id} title={c!.name} style={{ background: c!.colour }} />
+              ))}
+            </span>
             <span className="card2__acts">
               <button onClick={() => edit((d) => { d.work.projects = move(d.work.projects, i, -1); })}>↑</button>
               <button onClick={() => edit((d) => { d.work.projects = move(d.work.projects, i, 1); })}>↓</button>
@@ -540,6 +573,19 @@ function FromLink({
   );
 }
 
+/* A small picture of each project in the list: its first screen, else its logo. */
+function Thumb({ project: p }: { project: Project }) {
+  const still = p.shots?.[0] ?? (p.media.type === "still" ? p.media.stills[0] : undefined);
+  if (still) return <img className="thumb" src={stillSrc(still)} alt="" loading="lazy" />;
+  if (p.brand?.mark) return <span className="thumb thumb--mark"><img src={markSrc(p.brand.mark)} alt="" loading="lazy" /></span>;
+  return <span className="thumb thumb--blank" aria-hidden="true" />;
+}
+
+function ToolThumb({ icon }: { icon: string }) {
+  if (!icon || icon === "cut") return <span className="thumb thumb--tool" aria-hidden="true" />;
+  return <span className="thumb thumb--tool"><img src={isUrl(icon) ? icon : `/assets/icons/${icon}.svg`} alt="" /></span>;
+}
+
 function ProjectForm({ doc, index, edit, say }: { doc: Content; index: number } & Shared) {
   const p = doc.work.projects[index];
   const set = (fn: (x: Project) => void) => edit((d) => fn(d.work.projects[index]));
@@ -554,15 +600,15 @@ function ProjectForm({ doc, index, edit, say }: { doc: Content; index: number } 
       </div>
 
       <div className="fld">
-        <span className="fld__top"><span className="fld__label">Channels</span></span>
+        <span className="fld__top"><span className="fld__label">Services — the first one sets the card&apos;s colour</span></span>
         <div className="chips">
-          {doc.channels.map((c) => (
+          {doc.channels.filter((c) => !c.hidden || p.ch.includes(c.id)).map((c) => (
             <label className="chip" key={c.id}>
               <input type="checkbox" checked={p.ch.includes(c.id)}
                 onChange={(e) => set((x) => {
                   x.ch = e.target.checked ? [...x.ch, c.id].sort() : x.ch.filter((n) => n !== c.id);
                 })} />
-              CH 0{c.id} {c.word}
+              <span className="dot" style={{ background: c.colour }} />{c.name}
             </label>
           ))}
         </div>
@@ -711,7 +757,7 @@ function CaseForm({ doc, index, edit, say }: { doc: Content; index: number } & S
               <span className="card2__acts">
                 <button onClick={() => set((x) => { x.features = move(x.features!, i, -1); })}>↑</button>
                 <button onClick={() => set((x) => { x.features = move(x.features!, i, 1); })}>↓</button>
-                <button onClick={() => set((x) => { x.features!.splice(i, 1); })}>Del</button>
+                <button onClick={() => set((x) => { x.features!.splice(i, 1); })}>Remove</button>
               </span>
             </div>
             <div style={{ padding: "0 .9rem .9rem" }}>
@@ -737,7 +783,7 @@ function CaseForm({ doc, index, edit, say }: { doc: Content; index: number } & S
               <span className="card2__acts">
                 <button onClick={() => set((x) => { x.process = move(x.process, i, -1); })}>↑</button>
                 <button onClick={() => set((x) => { x.process = move(x.process, i, 1); })}>↓</button>
-                <button onClick={() => set((x) => { x.process.splice(i, 1); })}>Del</button>
+                <button onClick={() => set((x) => { x.process.splice(i, 1); })}>Remove</button>
               </span>
             </div>
             <div style={{ padding: "0 .9rem .9rem" }}>
@@ -760,7 +806,7 @@ function CaseForm({ doc, index, edit, say }: { doc: Content; index: number } & S
               <span className="card2__acts">
                 <button onClick={() => set((x) => { x.decisions = move(x.decisions, i, -1); })}>↑</button>
                 <button onClick={() => set((x) => { x.decisions = move(x.decisions, i, 1); })}>↓</button>
-                <button onClick={() => set((x) => { x.decisions.splice(i, 1); })}>Del</button>
+                <button onClick={() => set((x) => { x.decisions.splice(i, 1); })}>Remove</button>
               </span>
             </div>
             <div style={{ padding: "0 .9rem .9rem" }}>
@@ -982,7 +1028,7 @@ function SaysTab({ doc, edit, say }: { doc: Content } & Shared) {
               <button onClick={() => edit((d) => { d.testimonials.items[i].hidden = !d.testimonials.items[i].hidden; })}>
                 {t.hidden ? "Show" : "Hide"}
               </button>
-              <button onClick={() => edit((d) => { d.testimonials.items.splice(i, 1); })}>Del</button>
+              <button onClick={() => edit((d) => { d.testimonials.items.splice(i, 1); })}>Remove</button>
             </span>
           </div>
           <div className="card2__open">
@@ -994,9 +1040,9 @@ function SaysTab({ doc, edit, say }: { doc: Content } & Shared) {
               <Field label="Role and company" value={t.role} onChange={(v) => edit((d) => { d.testimonials.items[i].role = v; })} />
             </div>
             <div className="fld">
-              <span className="fld__top"><span className="fld__label">Speaks to which channels</span></span>
+              <span className="fld__top"><span className="fld__label">Which services it speaks to</span></span>
               <div className="chips">
-                {doc.channels.map((c) => (
+                {doc.channels.filter((c) => !c.hidden || (t.ch ?? []).includes(c.id)).map((c) => (
                   <label className="chip" key={c.id}>
                     <input type="checkbox" checked={Boolean(t.ch?.includes(c.id))}
                       onChange={(e) => edit((d) => {
@@ -1005,7 +1051,7 @@ function SaysTab({ doc, edit, say }: { doc: Content } & Shared) {
                           ? [...list, c.id].sort()
                           : list.filter((n) => n !== c.id);
                       })} />
-                    CH 0{c.id} {c.word}
+                    <span className="dot" style={{ background: c.colour }} />{c.name}
                   </label>
                 ))}
               </div>
@@ -1085,25 +1131,26 @@ function RackTab({ doc, edit }: { doc: Content } & Shared) {
   const tools = doc.rack.tools;
   return (
     <>
-      <Head title="The rack" note="The tools shown under the channels. Each lights up only on the channels you tick." />
+      <Head title="Toolkit" note="The tools in the moving strips. Tick the services each one is used for; the first sets its tint." />
       <Field label="Section note" value={doc.rack.note} onChange={(v) => edit((d) => { d.rack.note = v; })} />
       {tools.map((t, i) => (
         <div className={`card2${t.hidden ? " card2--off" : ""}`} key={i}>
           <div className="card2__top">
-            <span className="card2__grip">{String(i + 1).padStart(2, "0")}</span>
+            <span className="card2__grip">{pad(i + 1)}</span>
+            <ToolThumb icon={t.icon} />
             <input type="text" value={t.name} aria-label="Tool name"
               onChange={(e) => edit((d) => { d.rack.tools[i].name = e.target.value; })} />
-            <input type="text" value={t.icon} aria-label="Icon file" style={{ maxWidth: "9rem" }}
+            <input type="text" value={t.icon} aria-label="Icon file" className="card2__icon"
               onChange={(e) => edit((d) => { d.rack.tools[i].icon = e.target.value; })} />
             <span className="chips" style={{ margin: 0 }}>
-              {doc.channels.map((c) => (
+              {doc.channels.filter((c) => !c.hidden || t.ch.includes(c.id)).map((c) => (
                 <label className="chip" key={c.id}>
                   <input type="checkbox" checked={t.ch.includes(c.id)}
                     onChange={(e) => edit((d) => {
                       const list = d.rack.tools[i].ch;
                       d.rack.tools[i].ch = e.target.checked ? [...list, c.id].sort() : list.filter((n) => n !== c.id);
                     })} />
-                  {c.id}
+                  <span className="dot" style={{ background: c.colour }} />{c.word}
                 </label>
               ))}
             </span>
@@ -1113,7 +1160,7 @@ function RackTab({ doc, edit }: { doc: Content } & Shared) {
               <button onClick={() => edit((d) => { d.rack.tools[i].hidden = !d.rack.tools[i].hidden; })}>
                 {t.hidden ? "Show" : "Hide"}
               </button>
-              <button onClick={() => edit((d) => { d.rack.tools.splice(i, 1); })}>Del</button>
+              <button className="is-danger" onClick={() => edit((d) => { d.rack.tools.splice(i, 1); })}>Delete</button>
             </span>
           </div>
         </div>
@@ -1122,35 +1169,6 @@ function RackTab({ doc, edit }: { doc: Content } & Shared) {
         onClick={() => edit((d) => { d.rack.tools.push({ icon: "figma", name: "New tool", ch: [] }); })}>
         Add a tool
       </button>
-    </>
-  );
-}
-
-function PathTab({ doc, edit, say }: { doc: Content } & Shared) {
-  return (
-    <>
-      <Head title="Signal path" note="The four stages every job runs through." />
-      <Field label="Section note" value={doc.path.note} onChange={(v) => edit((d) => { d.path.note = v; })} />
-      {doc.path.steps.map((s, i) => (
-        <div className="card2" key={i}>
-          <div className="card2__top">
-            <span className="card2__grip">{String(i + 1).padStart(2, "0")}</span>
-            <input type="text" value={s.name} aria-label="Stage name"
-              onChange={(e) => edit((d) => { d.path.steps[i].name = e.target.value; })} />
-            <span className="card2__acts">
-              <button onClick={() => edit((d) => { d.path.steps = move(d.path.steps, i, -1); })}>↑</button>
-              <button onClick={() => edit((d) => { d.path.steps = move(d.path.steps, i, 1); })}>↓</button>
-              <button onClick={() => edit((d) => { d.path.steps.splice(i, 1); })}>Del</button>
-            </span>
-          </div>
-          <div style={{ padding: "0 .9rem .9rem" }}>
-            <Field label="What happens" value={s.body} area ai say={say} context="a stage in a freelance project process"
-              onChange={(v) => edit((d) => { d.path.steps[i].body = v; })} />
-          </div>
-        </div>
-      ))}
-      <button className="adm__btn adm__btn--go"
-        onClick={() => edit((d) => { d.path.steps.push({ name: "New stage", body: "" }); })}>Add a stage</button>
     </>
   );
 }
@@ -1179,7 +1197,7 @@ function ContactTab({ doc, edit, say }: { doc: Content } & Shared) {
   const c = doc.contact;
   return (
     <>
-      <Head title="Contact" note="The patch bay at the bottom of the page." />
+      <Head title="Contact" note="The section at the end of the page: the heading, your email and links, and the enquiry form." />
       <Field label="Headline" value={c.title} ai say={say} context="the headline of a contact section"
         onChange={(v) => edit((d) => { d.contact.title = v; })} />
       <Field label="Body" value={c.body} area ai say={say} context="the paragraph above a contact email address"
@@ -1192,7 +1210,7 @@ function ContactTab({ doc, edit, say }: { doc: Content } & Shared) {
             onChange={(e) => edit((d) => { d.contact.links[i].label = e.target.value; })} />
           <input type="text" value={l.href} aria-label="URL"
             onChange={(e) => edit((d) => { d.contact.links[i].href = e.target.value; })} />
-          <button className="adm__btn" onClick={() => edit((d) => { d.contact.links.splice(i, 1); })}>Del</button>
+          <button className="adm__btn" onClick={() => edit((d) => { d.contact.links.splice(i, 1); })}>Remove</button>
         </div>
       ))}
       <button className="adm__btn"

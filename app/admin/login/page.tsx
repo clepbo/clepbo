@@ -33,10 +33,11 @@ export default function Login() {
     <div className="adm">
       <div className="login">
         <form className="login__box" onSubmit={submit}>
-          <h1>The back of the desk</h1>
-          <p>Sign in to edit the site.</p>
+          <span className="adm__mark login__mark" aria-hidden="true">IO</span>
+          <h1>Your studio</h1>
+          <p>Sign in to edit the portfolio.</p>
           <label className="fld">
-            <span className="fld__top"><span className="fld__label">Admin password</span></span>
+            <span className="fld__top"><span className="fld__label">Password</span></span>
             <input
               type="password"
               value={password}
@@ -48,7 +49,8 @@ export default function Login() {
           <button className="adm__btn adm__btn--go" type="submit" disabled={busy || !password}>
             {busy ? "Checking…" : "Sign in"}
           </button>
-          {error && <p className="login__err">{error}</p>}
+          {error && <p className="login__err" role="alert">{error}</p>}
+          <a className="login__back" href="/">← Back to the site</a>
         </form>
       </div>
     </div>
