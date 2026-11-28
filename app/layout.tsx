@@ -21,32 +21,33 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#16181A" },
-    { media: "(prefers-color-scheme: light)", color: "#F2F0EA" },
+    { media: "(prefers-color-scheme: dark)", color: "#141412" },
+    { media: "(prefers-color-scheme: light)", color: "#FAFAF7" },
   ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" data-channel="0">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Settle the theme before first paint so the page never flashes. */}
         <script
           dangerouslySetInnerHTML={{
             __html:
               "(function(){try{var t=localStorage.getItem('desk-theme');" +
-              "if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';}" +
+              "if(t!=='light'&&t!=='dark'){t=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}" +
               "document.documentElement.dataset.theme=t;}catch(e){" +
-              "document.documentElement.dataset.theme='dark';}})();",
+              "document.documentElement.dataset.theme='light';}})();",
           }}
         />
-        {/* Linked rather than imported: the desk's CSS ships exactly as written,
+        {/* Linked rather than imported: the stylesheet ships exactly as written,
             with nothing in the build pipeline able to alter it. */}
+        <link rel="preload" href="/assets/fonts/Archivo-100-900-latin.woff2" as="font" type="font/woff2" crossOrigin="" />
         <link rel="stylesheet" href="/assets/css/fonts.css" />
-        <link rel="stylesheet" href="/assets/css/console.css" />
+        <link rel="stylesheet" href="/assets/css/studio.css" />
         <link
           rel="icon"
-          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%2316181A'/><circle cx='16' cy='16' r='6' fill='%2335D6C4'/></svg>"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231D1C19'/><circle cx='16' cy='16' r='6' fill='%23A98BFF'/></svg>"
         />
       </head>
       <body>

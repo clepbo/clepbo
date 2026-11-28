@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 
 const KEY = "desk-theme";
 
-/** A panel switch, not a sun and a moon. The label reads the position it is
- *  currently in; the accessible name says what pressing it will do. */
+/** A small switch. The label reads the position it is currently in; the
+ *  accessible name says what pressing it will do. */
 export default function ThemeToggle() {
-  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [theme, setTheme] = useState<"dark" | "light">("light");
 
   // The inline script in the document head has already set this before paint.
   useEffect(() => {
@@ -31,8 +31,8 @@ export default function ThemeToggle() {
       type="button"
       onClick={flip}
       aria-pressed={theme === "light"}
-      aria-label={`Switch to the ${theme === "light" ? "dark" : "light"} desk`}
-      title={`Switch to the ${theme === "light" ? "dark" : "light"} desk`}
+      aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+      title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
     >
       <span className="tog__track" aria-hidden="true"><span className="tog__cap" /></span>
       <span className="tog__label" aria-hidden="true">{theme === "light" ? "Light" : "Dark"}</span>

@@ -9,7 +9,9 @@ to open a file again.
 ```
 app/                     the site and the admin
   page.tsx               the desk, rendered from the content document
-  Desk.tsx               all the interactivity — channels, meters, monitor
+  Studio.tsx             the homepage — hero, work, services, contact
+  Stage.tsx              the animated mockups beside each service
+  motion.tsx             cursor, reveals, word fills, tilt
   admin/                 the editor
   api/                   session, content, upload, ai
 lib/

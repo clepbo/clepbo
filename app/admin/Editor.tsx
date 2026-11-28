@@ -279,7 +279,7 @@ function SiteTab({ doc, edit, say }: { doc: Content } & Shared) {
   const s = doc.site;
   return (
     <>
-      <Head title="Site" note="The rail, the page title, and the standby line." />
+      <Head title="Site" note="Your name, the hero, the page title and the footer." />
       <div className="row">
         <Field label="Name" value={s.name} onChange={(v) => edit((d) => { d.site.name = v; })} />
         <Field label="Rail subtitle" value={s.role} onChange={(v) => edit((d) => { d.site.role = v; })} />
@@ -290,6 +290,12 @@ function SiteTab({ doc, edit, say }: { doc: Content } & Shared) {
       <Field label="Meta description" value={s.description} area ai say={say}
         context="the search-engine description of a portfolio site"
         onChange={(v) => edit((d) => { d.site.description = v; })} />
+      <Field label="Hero headline" value={s.headline ?? ""} area ai say={say}
+        context="the big headline at the top of a portfolio homepage, under ten words"
+        onChange={(v) => edit((d) => { d.site.headline = v; })} />
+      <Field label="Intro paragraph" value={s.intro ?? ""} area ai say={say}
+        context="the paragraph that fills in word by word below the hero, one or two sentences"
+        onChange={(v) => edit((d) => { d.site.intro = v; })} />
       <Field label="Standby line" value={s.standby} area ai say={say}
         context="the line shown before a visitor picks a channel"
         onChange={(v) => edit((d) => { d.site.standby = v; })} />
