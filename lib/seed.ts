@@ -28,7 +28,7 @@ export const SEED: Content = {
       "name": "Web & build",
       "word": "Web",
       "sub": "& build",
-      "line": "Sites shipped fast, on WordPress and AI.",
+      "line": "AI-powered websites, live in weeks.",
       "tags": [
         "WordPress",
         "AI-assisted",
@@ -42,15 +42,15 @@ export const SEED: Content = {
       "panel3": "#1D2E30",
       "ink": "#04201D",
       "brief": {
-        "head": "WordPress and AI, so founders stop waiting on a build.",
-        "body": "Most founders don't need a bespoke codebase. They need the thing live, working, and editable by their own team — this quarter, not next. So I build on WordPress and lean on AI for the hours that were never the craft, which is how a real site lands in weeks instead of months. When WordPress is the wrong answer, I say so and build it properly instead.",
+        "head": "AI-built websites, so you stop waiting on a build.",
+        "body": "Most businesses don't need a bespoke codebase. They need the site live, working and editable by their own team — this quarter, not next. I build on WordPress or Next.js and put AI to work on the code, the content and the repetitive hours, which is how a real site lands in weeks instead of months. Where it helps, the site gets AI of its own: an assistant that answers customers, or search that understands what people mean.",
         "list": [
           "Marketing sites and landing pages",
           "WooCommerce storefronts",
           "Next.js when a CMS would fight you",
-          "AI-assisted build and content",
-          "Hosting, domains and handover",
-          "Rescuing a build someone abandoned"
+          "AI chat assistants and smart search",
+          "AI-drafted content, edited by a human",
+          "Hosting, domains and handover"
         ],
         "spec": [
           {
@@ -63,7 +63,7 @@ export const SEED: Content = {
           },
           {
             "label": "Good fit",
-            "value": "Founders and startups who need it live, not perfect"
+            "value": "Businesses and individuals who need it live, not perfect"
           },
           {
             "label": "Also",
@@ -77,12 +77,12 @@ export const SEED: Content = {
       "name": "Product & UI/UX",
       "word": "Product",
       "sub": "& UI/UX",
-      "line": "The screens and flows, drawn before anyone builds them.",
+      "line": "Products designed with AI, before anyone builds them.",
       "tags": [
         "Figma",
         "User flows",
         "Design systems",
-        "Prototypes"
+        "AI prototyping"
       ],
       "wave": "grid",
       "colour": "#A98BFF",
@@ -91,14 +91,14 @@ export const SEED: Content = {
       "panel3": "#272138",
       "ink": "#150A2A",
       "brief": {
-        "head": "Draw it before you build it.",
-        "body": "The expensive mistakes in software are made before a line of code exists — in the flow nobody mapped, the state nobody drew, the screen that quietly assumes the user already knows something. I work those out in Figma first, at the point where changing your mind still costs an afternoon rather than a sprint.",
+        "head": "Design it with AI before you build it.",
+        "body": "The expensive mistakes in software are made before a line of code exists — in the flow nobody mapped, the state nobody drew. I work those out in Figma first, using AI to sort the research, explore layouts and turn sketches into clickable prototypes in days, so you can test the idea while changing your mind still costs an afternoon. If your product has AI features, I design how they behave too: what they say, what they do when they're unsure, and how people correct them.",
         "list": [
           "User flows and journeys",
           "Wireframes through to high fidelity",
-          "Design systems and components",
-          "Interactive prototypes",
-          "Developer handoff",
+          "AI-assisted research and rapid prototypes",
+          "Designing AI features people trust",
+          "Design systems and developer handoff",
           "A design review of what you already have"
         ],
         "spec": [
@@ -126,12 +126,12 @@ export const SEED: Content = {
       "name": "Video & motion",
       "word": "Video",
       "sub": "& motion",
-      "line": "Footage goes in. A story that holds attention comes out.",
+      "line": "Footage in. AI does the grunt work. A story comes out.",
       "tags": [
         "Editing",
         "Short-form",
         "Motion graphics",
-        "Colour"
+        "AI-assisted edit"
       ],
       "wave": "vu",
       "colour": "#FF5A36",
@@ -140,13 +140,13 @@ export const SEED: Content = {
       "panel3": "#2E1F1B",
       "ink": "#240A03",
       "brief": {
-        "head": "The cut is where the story actually happens.",
-        "body": "Editing, pacing, sound and motion. Short-form built for the scroll, long-form series that hold their shape week after week, plus titles and animated graphics that match the rest of your identity instead of fighting it. Send me the raw files and what the video is for — I'll come back with the shape it should take.",
+        "head": "AI does the grunt work. The cut is still where the story happens.",
+        "body": "Editing, pacing, sound and motion. AI now handles the hours nobody misses — transcripts, captions, first assemblies, noise clean-up, finding the best moments in a long recording — so the time goes into the decisions that keep people watching. Short-form built for the scroll, long-form series that hold their shape week after week, and titles and motion that match the rest of your identity. Send me the raw files and what the video is for.",
         "list": [
           "Video editing, long and short",
           "Reels and short-form for social",
+          "AI captions, transcripts and clip-finding",
           "Motion graphics and animated titles",
-          "Colour and sound pass",
           "Event, outreach and highlight films",
           "Podcast cuts and clip packages"
         ],
@@ -175,11 +175,11 @@ export const SEED: Content = {
       "name": "Solutions",
       "word": "Solutions",
       "sub": "& systems",
-      "line": "A process that's broken, turned into something that runs.",
+      "line": "Broken processes, rebuilt with AI and automation.",
       "tags": [
         "Internal tools",
         "Integrations",
-        "Automation",
+        "AI automation",
         "APIs"
       ],
       "wave": "ramp",
@@ -189,15 +189,15 @@ export const SEED: Content = {
       "panel3": "#2D2616",
       "ink": "#241802",
       "brief": {
-        "head": "Sometimes the ask isn't a website. It's \"this is broken.\"",
-        "body": "Records kept in three places that disagree. A report someone rebuilds by hand every Monday. A process that only works because one person remembers it. I map what's actually happening, scope the fix in writing, and build the thing that removes the problem — backed by real engineering rather than a plugin and a prayer.",
+        "head": "Your process, automated — with AI where it earns its place.",
+        "body": "Records kept in three places that disagree. A report someone rebuilds by hand every Monday. Documents someone retypes into a spreadsheet. I map what's actually happening, scope the fix in writing, then build the tool, integration or automation that removes the problem — with AI reading documents, drafting replies and summarising the noise where it genuinely helps, and solid engineering everywhere else.",
         "list": [
           "Discovery and honest scoping",
+          "AI automations and assistants for your team",
           "Internal tools and dashboards",
+          "AI document reading and data extraction",
           "REST APIs and integrations",
-          "Automating the manual, repeated work",
-          "Management systems",
-          "Technical advice before you commit budget"
+          "Management systems"
         ],
         "spec": [
           {

@@ -84,6 +84,32 @@ const RETIRED = new Set([
   "Patch bay", "Tell me which channel you need.",
   "Say what you're trying to get done and when you need it. If it isn't something I should be doing, I'll say so and point you at someone better.",
   "Built by hand. No template.",
+  // The four services, before they were rewritten around AI.
+  "Sites shipped fast, on WordPress and AI.",
+  "WordPress and AI, so founders stop waiting on a build.",
+  "Most founders don't need a bespoke codebase. They need the thing live, working, and editable by their own team — this quarter, not next. So I build on WordPress and lean on AI for the hours that were never the craft, which is how a real site lands in weeks instead of months. When WordPress is the wrong answer, I say so and build it properly instead.",
+  "Founders and startups who need it live, not perfect",
+  "The screens and flows, drawn before anyone builds them.",
+  "Draw it before you build it.",
+  "The expensive mistakes in software are made before a line of code exists — in the flow nobody mapped, the state nobody drew, the screen that quietly assumes the user already knows something. I work those out in Figma first, at the point where changing your mind still costs an afternoon rather than a sprint.",
+  "Footage goes in. A story that holds attention comes out.",
+  "The cut is where the story actually happens.",
+  "Editing, pacing, sound and motion. Short-form built for the scroll, long-form series that hold their shape week after week, plus titles and animated graphics that match the rest of your identity instead of fighting it. Send me the raw files and what the video is for — I'll come back with the shape it should take.",
+  "A process that's broken, turned into something that runs.",
+  "Sometimes the ask isn't a website. It's \"this is broken.\"",
+  "Records kept in three places that disagree. A report someone rebuilds by hand every Monday. A process that only works because one person remembers it. I map what's actually happening, scope the fix in writing, and build the thing that removes the problem — backed by real engineering rather than a plugin and a prayer.",
+]);
+
+/* Whole lists from the old services. A list is only swapped when it is still
+   exactly the old default, so a list the author edited is never merged into. */
+const RETIRED_LISTS = new Set([
+  "[\"Marketing sites and landing pages\",\"WooCommerce storefronts\",\"Next.js when a CMS would fight you\",\"AI-assisted build and content\",\"Hosting, domains and handover\",\"Rescuing a build someone abandoned\"]",
+  "[\"Figma\",\"User flows\",\"Design systems\",\"Prototypes\"]",
+  "[\"User flows and journeys\",\"Wireframes through to high fidelity\",\"Design systems and components\",\"Interactive prototypes\",\"Developer handoff\",\"A design review of what you already have\"]",
+  "[\"Editing\",\"Short-form\",\"Motion graphics\",\"Colour\"]",
+  "[\"Video editing, long and short\",\"Reels and short-form for social\",\"Motion graphics and animated titles\",\"Colour and sound pass\",\"Event, outreach and highlight films\",\"Podcast cuts and clip packages\"]",
+  "[\"Internal tools\",\"Integrations\",\"Automation\",\"APIs\"]",
+  "[\"Discovery and honest scoping\",\"Internal tools and dashboards\",\"REST APIs and integrations\",\"Automating the manual, repeated work\",\"Management systems\",\"Technical advice before you commit budget\"]",
 ]);
 
 function retireWording(stored: unknown, seed: unknown): unknown {
@@ -92,6 +118,7 @@ function retireWording(stored: unknown, seed: unknown): unknown {
   }
   if (Array.isArray(stored)) {
     if (!Array.isArray(seed)) return stored;
+    if (stored.every((x) => typeof x === "string") && RETIRED_LISTS.has(JSON.stringify(stored))) return seed;
     return stored.map((item, i) => {
       const id = item && typeof item === "object" ? (item as { id?: unknown }).id : undefined;
       const match = id !== undefined
