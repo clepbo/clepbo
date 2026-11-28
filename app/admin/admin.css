@@ -160,3 +160,15 @@ html[data-theme="light"] .adm {
 html[data-theme="light"] .adm__btn--go:hover { color: #F5F3ED; }
 html[data-theme="light"] .adm__btn--warn:hover { color: #F5F3ED; }
 html[data-theme="light"] .adm__toast { background: #F7F5F0; }
+
+/* ---- add a project from a link ---- */
+.curate { border: 1px solid var(--go); background: color-mix(in srgb, var(--go) 6%, var(--sur)); padding: 1.1rem 1.1rem .4rem; margin-bottom: 1rem; }
+.curate__head h3 { margin: 0 0 .35rem; font-size: 1rem; }
+.curate__head p { margin: 0 0 1rem; color: var(--dim); font-size: .9rem; line-height: 1.5; max-width: 60rem; }
+.curate__hint { color: var(--dim); font-size: .85rem; margin: .6rem 0 .8rem; }
+.curate .adm__btn { margin-bottom: .9rem; }
+.curate__result { border-top: 1px solid var(--rule); margin: .4rem 0 .8rem; padding-top: .9rem; font-size: .92rem; line-height: 1.5; }
+.curate__result p { margin: 0 0 .6rem; }
+.curate__result ul { margin: 0 0 .8rem 1.1rem; padding: 0; }
+.curate__result li { margin-bottom: .3rem; }
+.curate__label { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--dim); }

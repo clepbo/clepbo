@@ -423,7 +423,8 @@ function WorkTab({ doc, edit, say }: { doc: Content } & Shared) {
       <div className="row" style={{ gridTemplateColumns: "1fr", marginBottom: "1rem" }}>
         <Field label="Section note" value={doc.work.note} onChange={(v) => edit((d) => { d.work.note = v; })} />
       </div>
-      <button className="adm__btn adm__btn--go" onClick={add} style={{ marginBottom: "1rem" }}>Add a project</button>
+      <FromLink doc={doc} edit={edit} say={say} onDrafted={(id) => setOpen(id)} />
+      <button className="adm__btn" onClick={add} style={{ marginBottom: "1rem" }}>Or add a blank project</button>
 
       {projects.map((p, i) => (
         <div className={`card2${p.hidden ? " card2--off" : ""}`} key={p.id}>
@@ -444,6 +445,98 @@ function WorkTab({ doc, edit, say }: { doc: Content } & Shared) {
         </div>
       ))}
     </>
+  );
+}
+
+/* Paste a site or a repo; Claude reads it and drafts the whole project.
+   The draft arrives hidden, so nothing reaches the site until it's checked. */
+function FromLink({
+  edit, say, onDrafted,
+}: { doc: Content; onDrafted: (id: string) => void } & Shared) {
+  const [links, setLinks] = useState("");
+  const [notes, setNotes] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
+  const [result, setResult] = useState<{ title: string; review: string[]; problems: string[]; read: string[]; pictures: number } | null>(null);
+
+  useEffect(() => {
+    if (!busy) return;
+    const started = Date.now();
+    const t = setInterval(() => setElapsed(Math.round((Date.now() - started) / 1000)), 1000);
+    return () => clearInterval(t);
+  }, [busy]);
+
+  async function draft() {
+    if (!links.trim() || busy) return;
+    setBusy(true); setElapsed(0); setResult(null);
+    try {
+      const res = await fetch("/api/curate", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ links, notes }),
+      });
+      const body = await res.json().catch(() => ({ error: "The server didn't answer properly." }));
+      if (!res.ok) throw new Error(body.error ?? "Drafting failed.");
+      const project = body.project as Project;
+      edit((d) => { d.work.projects.unshift(project); });
+      onDrafted(project.id);
+      setResult({ title: project.title, review: body.review ?? [], problems: body.problems ?? [], read: body.read ?? [], pictures: body.pictures ?? 0 });
+      setLinks(""); setNotes("");
+      say("Draft added at the top, hidden. Review it, press Show, then Save & publish.");
+    } catch (err) {
+      say(err instanceof Error ? err.message : "Drafting failed.", true);
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  const stage = elapsed < 15 ? "Reading the links…" : elapsed < 60 ? "Claude is drafting the project…" : "Taking screenshots…";
+
+  return (
+    <div className="curate">
+      <div className="curate__head">
+        <h3>Add a project from a link</h3>
+        <p>
+          Paste the website, the GitHub repository, or both. Claude reads them — the pages, the README, the docs
+          and who made which commits — then drafts the card, the story and the case study, with screenshots and
+          the logo. Nothing goes live until you&apos;ve checked it.
+        </p>
+      </div>
+      <label className="fld">
+        <span className="fld__top"><span className="fld__label">Links — one per line</span></span>
+        <textarea rows={3} value={links} disabled={busy} onChange={(e) => setLinks(e.target.value)}
+          placeholder={"https://example.com\nhttps://github.com/you/repo"} />
+      </label>
+      <label className="fld">
+        <span className="fld__top"><span className="fld__label">Anything it should know? (optional)</span></span>
+        <textarea rows={2} value={notes} disabled={busy} onChange={(e) => setNotes(e.target.value)}
+          placeholder="e.g. I designed the dashboard in Figma; the marketing site was built by me with AI." />
+      </label>
+      <button className="adm__btn adm__btn--go" type="button" onClick={draft} disabled={busy || !links.trim()}>
+        {busy ? `${stage} ${elapsed}s` : "Draft the project"}
+      </button>
+      {busy && <p className="curate__hint">This usually takes one to two minutes. Keep this tab open.</p>}
+
+      {result && (
+        <div className="curate__result">
+          <p><strong>{result.title}</strong> was drafted from {result.read.length} source{result.read.length === 1 ? "" : "s"}
+            {result.pictures ? `, with ${result.pictures} screenshot${result.pictures === 1 ? "" : "s"}` : ", without screenshots"}.
+            It&apos;s hidden — open it below, check it, press <em>Show</em>, then <em>Save &amp; publish</em>.</p>
+          {result.review.length > 0 && (
+            <>
+              <p className="curate__label">Worth checking before you publish</p>
+              <ul>{result.review.map((r, i) => <li key={i}>{r}</li>)}</ul>
+            </>
+          )}
+          {result.problems.length > 0 && (
+            <>
+              <p className="curate__label">Couldn&apos;t read</p>
+              <ul>{result.problems.map((r, i) => <li key={i}>{r}</li>)}</ul>
+            </>
+          )}
+        </div>
+      )}
+    </div>
   );
 }
 
