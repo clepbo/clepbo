@@ -133,7 +133,7 @@ export default function Studio({ content }: { content: Content }) {
                           aria-label={`Open ${b.name}`}
                           data-cursor="View"
                         >
-                          <img src={markSrc(b.mark)} alt="" loading="lazy" decoding="async" />
+                          <ClientMark src={markSrc(b.mark)} />
                         </button>
                       </li>
                     ))}
@@ -328,6 +328,93 @@ const BRAND: Record<string, string> = {
   openai: "#10A37F", claude: "#D97757", git: "#F05032", github: "var(--ink)",
   miro: "#E8B500", jira: "#0052CC", clickup: "#7B68EE", capcut: "var(--ink)",
 };
+
+/* ============================================================
+   Client marks — logo files arrive with every kind of padding and
+   proportion. Each one is trimmed to its ink and sized to the same
+   visual area, so a square badge and a long wordmark read as equals.
+   ============================================================ */
+
+type Mark = { src: string; ratio: number; light: boolean };
+const markCache = new Map<string, Promise<Mark>>();
+
+function measureMark(src: string): Promise<Mark> {
+  const hit = markCache.get(src);
+  if (hit) return hit;
+  const job = new Promise<Mark>((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.decoding = "async";
+    img.onerror = () => resolve({ src, ratio: 2.4, light: false });
+    img.onload = () => {
+      const natural = (img.naturalWidth || 240) / (img.naturalHeight || 100);
+      try {
+        const scale = Math.min(1, 480 / Math.max(img.naturalWidth || 480, img.naturalHeight || 480));
+        const w = Math.max(1, Math.round((img.naturalWidth || 480) * scale));
+        const h = Math.max(1, Math.round((img.naturalHeight || 480 / natural) * scale));
+        const c = document.createElement("canvas");
+        c.width = w; c.height = h;
+        const ctx = c.getContext("2d", { willReadFrequently: true })!;
+        ctx.drawImage(img, 0, 0, w, h);
+        const d = ctx.getImageData(0, 0, w, h).data;
+        // How bright is the ink? A white-on-transparent mark needs inverting on paper.
+        let sum = 0, n = 0;
+        for (let i = 0; i < d.length; i += 4) {
+          if (d[i + 3] > 40) { sum += 0.3 * d[i] + 0.59 * d[i + 1] + 0.11 * d[i + 2]; n++; }
+        }
+        const light = n > 0 && sum / n > 215;
+        // Ink is anything visible that is not near-white paper (unless the mark is white).
+        let x0 = w, y0 = h, x1 = -1, y1 = -1;
+        for (let y = 0; y < h; y++) {
+          for (let x = 0; x < w; x++) {
+            const i = (y * w + x) * 4;
+            if (d[i + 3] <= 40) continue;
+            if (!light && d[i] > 236 && d[i + 1] > 236 && d[i + 2] > 236) continue;
+            if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y;
+          }
+        }
+        if (x1 < x0 || y1 < y0) { resolve({ src, ratio: natural, light }); return; }
+        const cw = x1 - x0 + 1, ch = y1 - y0 + 1;
+        const out = document.createElement("canvas");
+        out.width = cw; out.height = ch;
+        out.getContext("2d")!.drawImage(c, x0, y0, cw, ch, 0, 0, cw, ch);
+        resolve({ src: out.toDataURL("image/png"), ratio: cw / ch, light });
+      } catch {
+        // A logo served without CORS can't be read; size it by its frame instead.
+        resolve({ src, ratio: natural, light: false });
+      }
+    };
+    img.src = src;
+  });
+  markCache.set(src, job);
+  return job;
+}
+
+function ClientMark({ src }: { src: string }) {
+  const [mark, setMark] = useState<Mark | null>(null);
+  useEffect(() => {
+    let live = true;
+    measureMark(src).then((m) => { if (live) setMark(m); });
+    return () => { live = false; };
+  }, [src]);
+
+  // Same area for every mark, inside sensible bounds.
+  const area = 1900;
+  const ratio = mark?.ratio ?? 2.4;
+  let h = Math.sqrt(area / ratio), w = h * ratio;
+  if (h > 46) { h = 46; w = h * ratio; }
+  if (w > 132) { w = 132; h = w / ratio; }
+
+  return (
+    <img
+      className={`clients__img${mark?.light ? " is-light" : ""}`}
+      src={mark?.src ?? src}
+      alt=""
+      decoding="async"
+      style={{ width: Math.round(w), height: Math.round(h), opacity: mark ? undefined : 0 }}
+    />
+  );
+}
 
 /* ============================================================
    Nav — a floating pill that tucks away on the way down
@@ -676,7 +763,9 @@ function Services({ channels }: { channels: Channel[] }) {
                   {c.brief.list.map((li) => <li key={li}>{li}</li>)}
                 </ul>
                 <div className="step__stage stage" aria-hidden="true">
-                  {i === active && <Stage channel={c} key={`m-${c.id}`} />}
+                  {/* Always drawn on a phone so no step is left with an empty box;
+                      re-keyed when it becomes active so its animation replays. */}
+                  <Stage channel={c} key={`m-${c.id}-${i === active}`} />
                 </div>
               </div>
             </li>

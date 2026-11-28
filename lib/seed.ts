@@ -518,6 +518,160 @@ export const SEED: Content = {
         }
       },
       {
+        "id": "esg-horizon",
+        "ch": [
+          2,
+          1
+        ],
+        "kind": "Product design · Website",
+        "client": "ESG Horizon",
+        "title": "ESG Horizon",
+        "line": "IFRS-ready ESG reporting for Africa. I designed the product and lead its site with AI.",
+        "story": "ESG Horizon is an ESG reporting platform for Nigeria and Africa: it collects sustainability data, calculates greenhouse gas emissions across Scope 1, 2 and 3, and prepares IFRS S1 and S2 aligned, audit-ready reports. I designed the product end to end in Figma — flows, states, components and the dead ends you only find by drawing them. On the marketing site at esghorizon.africa, I lead the AI-assisted work: the demo landing page, the SEO pages, analytics, the Teasoo Apps page and the blog.",
+        "media": {
+          "type": "still",
+          "stills": [
+            "esgw-home",
+            "esg-assessment",
+            "esg-emissions",
+            "esgw-problem",
+            "esgw-seo",
+            "esgw-blog"
+          ]
+        },
+        "meta": [
+          {
+            "label": "Role",
+            "value": "Product design · AI-assisted website work"
+          },
+          {
+            "label": "Product",
+            "value": "Figma, canvas of 62,181 × 70,853 px"
+          },
+          {
+            "label": "Website",
+            "value": "Next.js, Tailwind CSS, TypeScript"
+          },
+          {
+            "label": "Live",
+            "value": "esghorizon.africa"
+          }
+        ],
+        "link": "https://esghorizon.africa/",
+        "linkText": "Visit esghorizon.africa",
+        "shots": [
+          "esgw-home",
+          "esg-assessment",
+          "esg-emissions",
+          "esg-horizon-canvas",
+          "esgw-problem",
+          "esgw-features",
+          "esgw-seo",
+          "esgw-demo",
+          "esgw-apps",
+          "esgw-blog"
+        ],
+        "brand": {
+          "mark": "esghorizon",
+          "dark": true,
+          "colors": [
+            "#109b95",
+            "#f9b233",
+            "#3d9f56",
+            "#b9cdc7"
+          ],
+          "type": "Poppins"
+        },
+        "case": {
+          "problem": "ESG reporting spans five domains that share nothing. Emissions are measured in tonnes of CO₂e, community risk in incident counts, safety in injuries per 200,000 hours, business model exposure in naira at risk, governance in audit compliance. An executive needs to compare all five in one glance. A specialist needs to go all the way down into any one of them. Most ESG tools serve one of those two people and lose the other.",
+          "process": [
+            {
+              "title": "Fix the five pillars",
+              "body": "Environmental, Social Capital, Human Capital, Business Model, Leadership & Governance — the reporting frame the industry already uses, so the product doesn't invent a vocabulary its users have to learn."
+            },
+            {
+              "title": "Find the one number per pillar",
+              "body": "For each domain, worked out the single figure an executive would actually act on, and demoted everything else to the drill-down."
+            },
+            {
+              "title": "Design the card that holds all three parts",
+              "body": "A metric, a direction, and a sentence in plain English. That component repeats five times and became the spine of the whole product."
+            },
+            {
+              "title": "Build the drill-down behind each card",
+              "body": "Each pillar opens into its own dashboard — for emissions, that's Scope 1, 2 and 3 broken out by year against the 2030 target."
+            },
+            {
+              "title": "Systemise across the canvas",
+              "body": "Components, states and variants pushed out until the file covers the full flow rather than a handful of hero screens."
+            },
+            {
+              "title": "Take the product to market, with AI",
+              "body": "On the marketing site, I used AI to ship the campaign landing page, the SEO pages, analytics, the Teasoo Apps page and the blog — each change reviewed and merged as its own pull request."
+            }
+          ],
+          "decisions": [
+            {
+              "title": "One headline metric per pillar, never two",
+              "body": "Comparability beats completeness on a summary screen. The moment a card carries two numbers, the five pillars stop being scannable as a set."
+            },
+            {
+              "title": "A delta chip beside every metric",
+              "body": "Direction reads faster than magnitude. “↓ 10%” tells an executive whether to worry before they have parsed “0.45 per 200k hrs”."
+            },
+            {
+              "title": "A plain sentence under every number",
+              "body": "“Safety performance improved by 10% YoY. Zero fatalities recorded.” A number with no read is a number nobody acts on — and ESG numbers are unreadable without domain knowledge."
+            },
+            {
+              "title": "Colour-coded rule per pillar, carried down",
+              "body": "Each pillar owns a colour on its card's top edge, and that colour follows you into the drill-down, so you always know which domain you are standing in."
+            },
+            {
+              "title": "Teal for progress, amber for attention",
+              "body": "The brand teal is reserved for targets and achievement states, amber for things that need a look. Neither is ever used as decoration, so colour keeps meaning something."
+            },
+            {
+              "title": "Risk stated as words, not just scores",
+              "body": "“High Risk in 2 Regions” instead of a 7.8. A score hides its own reasoning; the phrase carries it."
+            }
+          ],
+          "outcome": "A component set and a full flow across a canvas roughly 62,000 by 71,000 pixels — the summary an executive reads in ten seconds sitting on top of the depth a specialist needs. The product now has a live marketing site at esghorizon.africa, with pages built to be found and a page built to book demos.",
+          "features": [
+            {
+              "title": "A demo landing page for campaigns",
+              "body": "The contact page became a landing page built to book demos: what a visitor gets (an IFRS S1 and S2 gap assessment), what happens after they submit, and a short form. The site's navigation and footer stay on it, so it never feels like a dead end.",
+              "shot": "esgw-demo"
+            },
+            {
+              "title": "Six SEO landing pages",
+              "body": "A first SEO pass rewrote the main pages and added six landing pages for what people actually search: ESG reporting in Nigeria, ESG reporting software, ESG data management, GHG accounting software, IFRS S1 compliance and IFRS S2 reporting.",
+              "shot": "esgw-seo"
+            },
+            {
+              "title": "A simpler hero",
+              "body": "The home page hero was cut down to a headline, a line of copy and one action: Book a Demo.",
+              "shot": "esgw-home"
+            },
+            {
+              "title": "The ESG Horizon blog",
+              "body": "A blog at esghorizon.africa/blog for practical writing on ESG reporting, IFRS S1 and S2, carbon accounting and regulation in Nigeria and across Africa, with search. It's linked from the navigation and footer, and the first articles are on their way.",
+              "shot": "esgw-blog"
+            },
+            {
+              "title": "Teasoo Apps",
+              "body": "A page for the software Teasoo Consulting builds and runs, with a picture of every product and ESG Horizon featured at the top.",
+              "shot": "esgw-apps"
+            },
+            {
+              "title": "Analytics on every page",
+              "body": "Google Tag Manager and GA4 tags on every page, so campaign traffic and demo requests can be measured."
+            }
+          ]
+        },
+        "note": "The product's Figma file is in this repository: Projects/ESG Horizon.fig. The website was first built by the Teasoo team; the work listed under What it does is mine."
+      },
+      {
         "id": "shop-timart",
         "ch": [
           1,
@@ -1595,108 +1749,6 @@ export const SEED: Content = {
             }
           ],
           "outcome": "A site with a clear voice in its typography and near-nothing else, running free on static hosting."
-        }
-      },
-      {
-        "id": "esg-horizon",
-        "ch": [
-          2
-        ],
-        "kind": "Product design · Figma",
-        "client": "ESG Horizon",
-        "title": "ESG Horizon",
-        "line": "Five kinds of risk, one comparable view.",
-        "story": "An ESG assessment and reporting platform: emissions, community incidents, worker safety, capital at risk and governance, all in one product. Designed end to end in Figma — flows, states, components and the dead ends you only find by drawing them.",
-        "media": {
-          "type": "brand"
-        },
-        "meta": [
-          {
-            "label": "Tool",
-            "value": "Figma"
-          },
-          {
-            "label": "Canvas",
-            "value": "62,181 × 70,853 px"
-          },
-          {
-            "label": "Palette",
-            "value": "#109B95 · #F9B233 · #3D9F56"
-          },
-          {
-            "label": "File",
-            "value": "ESG Horizon.fig · 15 MB"
-          }
-        ],
-        "link": "https://github.com/clepbo/clepbo/blob/main/Projects/ESG%20Horizon.fig",
-        "linkText": "Download the .fig",
-        "shots": [
-          "esg-assessment",
-          "esg-emissions",
-          "esg-horizon-canvas"
-        ],
-        "brand": {
-          "mark": "esghorizon",
-          "dark": true,
-          "colors": [
-            "#109b95",
-            "#f9b233",
-            "#3d9f56",
-            "#b9cdc7"
-          ],
-          "type": "Poppins"
-        },
-        "case": {
-          "problem": "ESG reporting spans five domains that share nothing. Emissions are measured in tonnes of CO₂e, community risk in incident counts, safety in injuries per 200,000 hours, business model exposure in naira at risk, governance in audit compliance. An executive needs to compare all five in one glance. A specialist needs to go all the way down into any one of them. Most ESG tools serve one of those two people and lose the other.",
-          "process": [
-            {
-              "title": "Fix the five pillars",
-              "body": "Environmental, Social Capital, Human Capital, Business Model, Leadership & Governance — the reporting frame the industry already uses, so the product doesn't invent a vocabulary its users have to learn."
-            },
-            {
-              "title": "Find the one number per pillar",
-              "body": "For each domain, worked out the single figure an executive would actually act on, and demoted everything else to the drill-down."
-            },
-            {
-              "title": "Design the card that holds all three parts",
-              "body": "A metric, a direction, and a sentence in plain English. That component repeats five times and became the spine of the whole product."
-            },
-            {
-              "title": "Build the drill-down behind each card",
-              "body": "Each pillar opens into its own dashboard — for emissions, that's Scope 1, 2 and 3 broken out by year against the 2030 target."
-            },
-            {
-              "title": "Systemise across the canvas",
-              "body": "Components, states and variants pushed out until the file covers the full flow rather than a handful of hero screens."
-            }
-          ],
-          "decisions": [
-            {
-              "title": "One headline metric per pillar, never two",
-              "body": "Comparability beats completeness on a summary screen. The moment a card carries two numbers, the five pillars stop being scannable as a set."
-            },
-            {
-              "title": "A delta chip beside every metric",
-              "body": "Direction reads faster than magnitude. “↓ 10%” tells an executive whether to worry before they have parsed “0.45 per 200k hrs”."
-            },
-            {
-              "title": "A plain sentence under every number",
-              "body": "“Safety performance improved by 10% YoY. Zero fatalities recorded.” A number with no read is a number nobody acts on — and ESG numbers are unreadable without domain knowledge."
-            },
-            {
-              "title": "Colour-coded rule per pillar, carried down",
-              "body": "Each pillar owns a colour on its card's top edge, and that colour follows you into the drill-down, so you always know which domain you are standing in."
-            },
-            {
-              "title": "Teal for progress, amber for attention",
-              "body": "The brand teal is reserved for targets and achievement states, amber for things that need a look. Neither is ever used as decoration, so colour keeps meaning something."
-            },
-            {
-              "title": "Risk stated as words, not just scores",
-              "body": "“High Risk in 2 Regions” instead of a 7.8. A score hides its own reasoning; the phrase carries it."
-            }
-          ],
-          "outcome": "A component set and a full flow across a canvas roughly 62,000 by 71,000 pixels — the summary an executive reads in ten seconds sitting on top of the depth a specialist needs."
         }
       },
       {

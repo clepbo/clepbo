@@ -95,6 +95,17 @@ const EDITS_IN_CODE: { id: string; run: (doc: Content) => Content }[] = [
       };
     },
   },
+  {
+    // ESG Horizon now carries its website work too; it joins the lead projects.
+    id: "2026-11-esg-site",
+    run: (doc) => {
+      const esg = doc.work.projects.find((p) => p.id === "esg-horizon");
+      if (!esg) return doc;
+      const rest = doc.work.projects.filter((p) => p.id !== "esg-horizon");
+      const at = Math.min(2, rest.length);
+      return { ...doc, work: { ...doc.work, projects: [...rest.slice(0, at), esg, ...rest.slice(at)] } };
+    },
+  },
 ];
 
 function applyEdits(doc: Content): Content {
@@ -222,7 +233,7 @@ function offerNewProjects(doc: Content): Content {
    the stored copy with the seed's once, in the same position. A project the
    author deleted is not added back. work.refreshed remembers the number
    applied, so later edits in the admin are kept until the next bump. */
-const REFRESHED_IN_CODE: Record<string, number> = { "shop-timart": 2, "eventplanna": 1 };
+const REFRESHED_IN_CODE: Record<string, number> = { "shop-timart": 2, "eventplanna": 1, "esg-horizon": 1 };
 
 function refreshProjects(doc: Content): Content {
   const done = doc.work.refreshed ?? {};

@@ -24,7 +24,7 @@ once real people start using it.
 
 **Sites** — [Teasoo Consulting](https://teasooconsulting.com/) · [EHF Africa](https://ehfoundation.africa/) · [Moatview Apartments](https://moatviewapartments.com/) · [Shina Luwoye Foundation](https://shinaluwoyefoundation.com/) · [The Thinking Room](https://the-thinking-room-pi.vercel.app/) · [MediaGiants](https://mediagiantsenterprise.com/) · [Thomas Emmanuel Ayodele](https://clepbo.github.io/Thomas-Emmanuel-Ayodele-/index.html)
 
-**Products** — [EventPlanna](https://eventplanna.com/) (product design, and a site built with AI) · [ElevatedHere](https://clepbo.github.io/ElevatedHere/index.html) (in progress) · [ESG Horizon](https://github.com/clepbo/clepbo/tree/main/Projects) (Figma)
+**Products** — [EventPlanna](https://eventplanna.com/) (product design, and a site built with AI) · [ElevatedHere](https://clepbo.github.io/ElevatedHere/index.html) (in progress) · [ESG Horizon](https://esghorizon.africa/) (product design, and AI-assisted work on its site and blog)
 
 **Systems** — [Hospital Management System](https://github.com/clepbo/Hospital_Management_System) · school marketplace
 

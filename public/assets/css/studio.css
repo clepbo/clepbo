@@ -364,18 +364,25 @@ kbd {
 
 .clients__item { padding: 0 clamp(8px, 1.4vw, 18px); }
 .clients__logo {
-  display: grid; place-items: center; height: 64px; padding: 0 18px; border-radius: 12px;
+  display: grid; place-items: center; height: 64px; padding: 0 clamp(14px, 2.4vw, 26px); border-radius: 12px;
 }
-.clients__logo img {
-  height: 38px; width: auto; max-width: 140px; object-fit: contain;
+.clients__img {
+  display: block; object-fit: contain;
   filter: grayscale(1) contrast(1.1); opacity: .55;
   transition: filter .5s var(--ease), opacity .5s var(--ease), transform .5s var(--spring);
 }
-:root[data-theme="dark"] .clients__logo img { filter: grayscale(1) invert(1) brightness(1.4); }
+/* White marks read as dark ink on paper, and stay white on the dark theme. */
+.clients__img.is-light { filter: invert(1) grayscale(1); }
+:root[data-theme="dark"] .clients__img { filter: grayscale(1) invert(1) brightness(1.4); }
+:root[data-theme="dark"] .clients__img.is-light { filter: grayscale(1); }
 /* Hover, keyboard focus or a tap on a phone: the logo in its own colours. */
-:root .clients__logo:hover img, :root .clients__logo:focus-visible img, :root .clients__logo:active img {
+:root .clients__logo:hover .clients__img, :root .clients__logo:focus-visible .clients__img, :root .clients__logo:active .clients__img {
   filter: none; opacity: 1; transform: scale(1.1);
 }
+/* A white mark has no colour to reveal on paper: show it solid instead. */
+:root:not([data-theme="dark"]) .clients__logo:hover .clients__img.is-light,
+:root:not([data-theme="dark"]) .clients__logo:focus-visible .clients__img.is-light,
+:root:not([data-theme="dark"]) .clients__logo:active .clients__img.is-light { filter: invert(1); }
 
 /* ==========================================================================
    Work
@@ -1060,3 +1067,47 @@ kbd {
 .study__step--next { text-align: right; }
 @media (max-width: 560px) { .study__nav { grid-template-columns: 1fr; } .study__step--next { text-align: left; } }
 .study__home { margin-top: 40px; text-align: center; }
+
+/* ==========================================================================
+   Phones — one rhythm for every section: the same text sizes, the same
+   content width and the same card shape, so no section looks bigger than
+   the one next to it.
+   ========================================================================== */
+@media (max-width: 640px) {
+  :root { --gutter: 18px; }
+  .section { padding-top: 72px; }
+  .head { margin-bottom: 32px; }
+  .head__title { font-size: 30px; line-height: 1.06; }
+  .head__note, .step__body, .about__side, .contact__body, .sheet__story { font-size: 16px; }
+  .intro, .about__lead { font-size: 22px; line-height: 1.28; }
+  .hero__title { font-size: 32px; }
+
+  /* Every card the same shape and type, featured or not. */
+  .card--wide .card__media, .card__media { aspect-ratio: 16 / 10; }
+  .card__title, .card--wide .card__title { font-size: 20px; }
+  .card__line { font-size: 15px; }
+  .card__body { padding: 16px 18px 20px; }
+  .grid { gap: 14px; }
+
+  /* Services: a narrower rail gives the copy the full width back. */
+  .steps { padding-left: 42px; }
+  .steps::before, .steps::after { left: 13px; }
+  .step__no { left: -42px; width: 28px; height: 28px; font-size: 10.5px; }
+  .step { padding-bottom: 56px; }
+  .step__head { font-size: 22px; }
+  .step__stage { min-height: 0; padding: 12px; }
+  .mk-canvas { height: 240px; }
+  .mk-layers { width: 92px; }
+  .mk-phone { width: 58px; height: 120px; }
+  .mk-preview { height: 140px; }
+
+  /* Contact: one card deep, so the form is as wide as everything else. */
+  .contact__card { padding: 0; gap: 14px; background: none; backdrop-filter: none; box-shadow: none; border-radius: 0; }
+  .contact__say { padding: 22px 20px; border-radius: 22px; background: var(--card); box-shadow: inset 0 0 0 1px var(--line), var(--shadow-sm); }
+  .enq { padding: 22px 20px; }
+  .contact__email { font-size: 20px; }
+
+  .facts div { grid-template-columns: 104px 1fr; }
+  .clients { padding-top: 56px; }
+  .clients__label { margin-bottom: 18px; }
+}
