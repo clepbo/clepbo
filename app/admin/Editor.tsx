@@ -571,6 +571,8 @@ function ProjectForm({ doc, index, edit, say }: { doc: Content; index: number } 
         <Field label="Link text" value={p.linkText} onChange={(v) => set((x) => { x.linkText = v; })} />
       </div>
       <Field label="Note (optional)" value={p.note ?? ""} onChange={(v) => set((x) => { x.note = v; })} />
+      <Field label="Status badge (optional, e.g. In progress)" value={p.status ?? ""}
+        onChange={(v) => set((x) => { x.status = v || undefined; })} />
 
       <ContextPanel
         ctx={p.context}

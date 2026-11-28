@@ -10,7 +10,6 @@ export default async function Page() {
     name: content.site.name,
     description: content.site.description,
     email: `mailto:${content.contact.email}`,
-    address: { "@type": "PostalAddress", addressLocality: content.site.location },
     knowsAbout: content.channels.filter((c) => !c.hidden).map((c) => c.name),
     sameAs: content.contact.links.map((l) => l.href),
   };

@@ -54,7 +54,54 @@ async function readBlob(): Promise<Content | null> {
 /* A document saved before a new section existed is still valid — fill the
    gaps from the seed rather than letting the page or the editor hit undefined. */
 function normalise(doc: Content): Content {
-  return retireWording(refreshProjects(offerNewProjects(withDefaults(doc, SEED))), SEED) as Content;
+  return retireWording(applyEdits(refreshProjects(offerNewProjects(withDefaults(doc, SEED)))), SEED) as Content;
+}
+
+/* Structural changes shipped in code, each applied to a stored document once
+   and remembered in `applied`, so anything the author changes back in the
+   admin afterwards (unhiding a project, say) stays changed. */
+const VIDEO_PROJECTS = ["moatview-film", "teaching-series", "short-form", "ehf-films", "teelens", "podcast"];
+const EDITS_IN_CODE: { id: string; run: (doc: Content) => Content }[] = [
+  {
+    // Focus on products and systems: video goes, Shedulr goes, no location.
+    id: "2026-11-focus",
+    run: (doc) => {
+      const hide = new Set([...VIDEO_PROJECTS, "shedulr"]);
+      let projects = doc.work.projects.map((p) => {
+        const next = hide.has(p.id) ? { ...p, hidden: true } : { ...p };
+        if (next.note && /^Also (on CH 03|under Video)/.test(next.note)) delete next.note;
+        return next;
+      });
+      // The two products I most want seen go first.
+      const lead = ["elevatedhere", "eventplanna"];
+      projects = [
+        ...lead.map((id) => projects.find((p) => p.id === id)).filter((p): p is Content["work"]["projects"][number] => Boolean(p)),
+        ...projects.filter((p) => !lead.includes(p.id)),
+      ];
+      return {
+        ...doc,
+        channels: doc.channels.map((c) => (c.id === 3 ? { ...c, hidden: true } : c)),
+        work: { ...doc.work, projects },
+        about: {
+          ...doc.about,
+          facts: [
+            ...(doc.about.facts.some((f) => f.label === "Works with")
+              ? [] : [{ label: "Works with", value: "Clients anywhere, remotely" }]),
+            ...doc.about.facts
+              .filter((f) => !/benin|edo state/i.test(f.value))
+              .map((f) => (f.label === "Designs in" && f.value === "Figma · DaVinci Resolve" ? { ...f, value: "Figma · Canva" } : f)),
+          ],
+        },
+      };
+    },
+  },
+];
+
+function applyEdits(doc: Content): Content {
+  const done = doc.applied ?? [];
+  let out = doc;
+  for (const e of EDITS_IN_CODE) if (!done.includes(e.id)) out = e.run(out);
+  return out === doc ? doc : { ...out, applied: [...done, ...EDITS_IN_CODE.map((e) => e.id).filter((id) => !done.includes(id))] };
 }
 
 /* Default copy from the old "desk" design. Wherever the stored document still
@@ -84,6 +131,18 @@ const RETIRED = new Set([
   "Patch bay", "Tell me which channel you need.",
   "Say what you're trying to get done and when you need it. If it isn't something I should be doing, I'll say so and point you at someone better.",
   "Built by hand. No template.",
+  // Copy that mentioned a location or video, before the focus on products and systems.
+  "AI-powered websites · products · video · systems",
+  "Benin City, NG",
+  "Israel Oni builds AI-powered digital solutions for businesses and individuals: websites, product and UI/UX design, video, and the internal systems behind them. Based in Benin City, Nigeria.",
+  "I put AI to work on the hours that were never the craft, so your website, product, video or internal tool arrives in weeks, not months — and still holds up once real people start using it.",
+  "Four ways to work with me. Pick one and the work below follows.",
+  "Sites, products, films and systems, built with AI and shipped for real clients.",
+  "I work out of Benin City, Edo State, building AI-powered digital solutions for businesses and individuals. Most people come to me for one thing — a site, a design file, a film, a system that needed fixing — and only find out later that I can do the rest too.",
+  "The through-line across all four is the same: understand the problem properly, then build one thing that works — rather than hand over something that only looks finished.",
+  "I came up through backend engineering, and that hasn't gone anywhere: Java, Spring Boot and the databases underneath still decide whether a system behaves once real people arrive. What changed is the front of the job. Most of what I ship now is a site, a design file or a cut, put together fast because the tooling finally allows it.",
+  "Israel Oni — Benin City, Nigeria",
+  "cut",
   // The four services, before they were rewritten around AI.
   "Sites shipped fast, on WordPress and AI.",
   "WordPress and AI, so founders stop waiting on a build.",
@@ -143,7 +202,7 @@ function retireWording(stored: unknown, seed: unknown): unknown {
    shipped in code would never reach a site that has been edited. Each id is
    offered once, placed at the top, and remembered in work.offered, so a
    project the author deletes in the editor stays deleted. */
-const ADDED_IN_CODE = ["tms", "teasoo-expense", "shop-timart"];
+const ADDED_IN_CODE = ["tms", "teasoo-expense", "shop-timart", "elevatedhere"];
 
 function offerNewProjects(doc: Content): Content {
   const offered = doc.work.offered ?? [];
@@ -163,7 +222,7 @@ function offerNewProjects(doc: Content): Content {
    the stored copy with the seed's once, in the same position. A project the
    author deleted is not added back. work.refreshed remembers the number
    applied, so later edits in the admin are kept until the next bump. */
-const REFRESHED_IN_CODE: Record<string, number> = { "shop-timart": 2 };
+const REFRESHED_IN_CODE: Record<string, number> = { "shop-timart": 2, "eventplanna": 1 };
 
 function refreshProjects(doc: Content): Content {
   const done = doc.work.refreshed ?? {};

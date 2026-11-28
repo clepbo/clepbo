@@ -1,15 +1,14 @@
 <h1 align="left">Israel Oni</h1>
 
-**Web &nbsp;·&nbsp; Product &nbsp;·&nbsp; Video &nbsp;·&nbsp; Solutions**
+**Building AI-powered digital solutions for businesses and individuals.**
 
-I build websites fast on WordPress and AI, design the product before anyone codes it,
-cut the video, and fix the process underneath when that turns out to be the real problem.
-One person, four channels — which is exactly how my portfolio is built.
+Websites, products and the systems behind them. I put AI to work on the hours that were
+never the craft, so the thing you need arrives in weeks, not months — and still holds up
+once real people start using it.
 
-- 📍 &nbsp;Benin City, Edo State, Nigeria
 - ✉️ &nbsp;[io.israeloni@gmail.com](mailto:io.israeloni@gmail.com)
-- 🎛️ &nbsp;Portfolio — **[The Desk](https://github.com/clepbo/clepbo)**
-- 🤝 &nbsp;Open to freelance, contract and collaboration
+- 🌐 &nbsp;Portfolio — **[israeloni.vercel.app](https://israeloni.vercel.app)**
+- 🤝 &nbsp;Open to freelance, contract and collaboration, with clients anywhere
 
 ---
 
@@ -17,20 +16,19 @@ One person, four channels — which is exactly how my portfolio is built.
 
 | | |
 |---|---|
-| **Web & build** | Marketing sites, landing pages and WooCommerce storefronts on WordPress, Next.js when a CMS would fight you. Built fast, with AI doing the hours that were never the craft — for founders who need it live, not perfect. |
-| **Product & UI/UX** | Flows, wireframes, high fidelity and design systems in Figma. The expensive mistakes get made before the first line of code; I'd rather find them on a canvas. |
-| **Video & motion** | Editing, pacing, colour and sound. Short-form built for the scroll, long-form series that hold their shape, and motion graphics that match the rest of the identity. |
-| **Solutions & systems** | Internal tools, REST APIs, integrations and automation. Java and Spring Boot when a system has to keep behaving once real people arrive. |
+| **Web & build** | Marketing sites, landing pages and WooCommerce storefronts on WordPress, Next.js when a CMS would fight you. Built with AI, and given AI of their own where it helps: assistants and search that understand people. |
+| **Product & UI/UX** | Flows, wireframes, high fidelity and design systems in Figma, with AI speeding up research and prototypes. The expensive mistakes get made before the first line of code; I'd rather find them on a canvas. |
+| **Solutions & systems** | Internal tools, REST APIs, integrations and AI automation. Java and Spring Boot when a system has to keep behaving once real people arrive. |
 
 ### Selected work
 
 **Sites** — [Teasoo Consulting](https://teasooconsulting.com/) · [EHF Africa](https://ehfoundation.africa/) · [Moatview Apartments](https://moatviewapartments.com/) · [Shina Luwoye Foundation](https://shinaluwoyefoundation.com/) · [The Thinking Room](https://the-thinking-room-pi.vercel.app/) · [MediaGiants](https://mediagiantsenterprise.com/) · [Thomas Emmanuel Ayodele](https://clepbo.github.io/Thomas-Emmanuel-Ayodele-/index.html)
 
-**Product design** — [ESG Horizon, EventPlanna and Shedulr](https://github.com/clepbo/clepbo/tree/main/Projects) (Figma files)
+**Products** — [EventPlanna](https://eventplanna.com/) (product design, and a site built with AI) · [ElevatedHere](https://clepbo.github.io/ElevatedHere/index.html) (in progress) · [ESG Horizon](https://github.com/clepbo/clepbo/tree/main/Projects) (Figma)
 
 **Systems** — [Hospital Management System](https://github.com/clepbo/Hospital_Management_System) · school marketplace
 
-### On the desk
+### Toolkit
 
 `WordPress` `Next.js` `Java` `Spring Boot` `MySQL` `Figma` `Canva`
 `DaVinci Resolve` `CapCut` `ChatGPT` `Claude` `Git` `GitHub` `Miro` `Jira` `ClickUp`
