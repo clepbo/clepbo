@@ -8,15 +8,15 @@ export const SEED: Content = {
   "updatedAt": "",
   "site": {
     "name": "Israel Oni",
-    "role": "Web · Product · Video · Solutions",
+    "role": "AI-powered websites · products · video · systems",
     "location": "Benin City, NG",
     "timezone": "Africa/Lagos",
-    "title": "Israel Oni — Web, Product, Video, Solutions",
-    "description": "Israel Oni, Benin City. Four channels: websites built fast on WordPress and AI, product and UI/UX design, video editing and motion, and digital solutions.",
-    "standby": "Four channels, one person. Patch into any of them above — the desk retunes to whichever one you're listening to, and the work below follows.",
-    "hint": "switch channel",
-    "headline": "Sites, products and video — built by one person.",
-    "intro": "I build websites fast on WordPress and AI, design the product before anyone codes it, cut the video, and fix the process underneath when that turns out to be the real problem.",
+    "title": "Israel Oni — AI-powered digital solutions for businesses and individuals",
+    "description": "Israel Oni builds AI-powered digital solutions for businesses and individuals: websites, product and UI/UX design, video, and the internal systems behind them. Based in Benin City, Nigeria.",
+    "standby": "Four ways to work with me. Pick one and the work below follows.",
+    "hint": "filter the work",
+    "headline": "Building AI-powered digital solutions for businesses and individuals.",
+    "intro": "I put AI to work on the hours that were never the craft, so your website, product, video or internal tool arrives in weeks, not months — and still holds up once real people start using it.",
     "cv": {
       "label": "",
       "url": ""
@@ -221,9 +221,9 @@ export const SEED: Content = {
     }
   ],
   "rack": {
-    "eyebrow": "The rack",
-    "title": "What's patched in",
-    "note": "Everything on the desk. Patch a channel to see what it runs on.",
+    "eyebrow": "Toolkit",
+    "title": "The AI and tools behind the work",
+    "note": "AI handles the repetitive hours. These handle the rest.",
     "tools": [
       {
         "icon": "figma",
@@ -324,8 +324,8 @@ export const SEED: Content = {
   },
   "work": {
     "eyebrow": "Selected work",
-    "title": "What's come off the desk",
-    "note": "Showing everything. Patch into a channel to filter.",
+    "title": "Solutions already at work",
+    "note": "Sites, products, films and systems, built with AI and shipped for real clients.",
     "projects": [
       {
         "id": "shop-timart",
@@ -866,7 +866,7 @@ export const SEED: Content = {
           ],
           "type": "Montserrat"
         },
-        "note": "Also on CH 03 — I cut their brand video series.",
+        "note": "Also under Video — I cut their brand video series.",
         "case": {
           "problem": "An advisory firm sells judgement, not objects. Teasoo runs six service lines — from organisational development to digital transformation — and a visitor arriving cold cannot tell which one is theirs. The old route to a conversation was buried.",
           "process": [
@@ -950,7 +950,7 @@ export const SEED: Content = {
           ],
           "type": "Roboto"
         },
-        "note": "Also on CH 03 — I shot and cut their school outreach films.",
+        "note": "Also under Video — I shot and cut their school outreach films.",
         "case": {
           "problem": "A donor wants evidence the money moves. A partner organisation wants to know who else is at the table. A beneficiary wants to know whether they qualify and what to do next. One homepage, three incompatible reading orders.",
           "process": [
@@ -1033,7 +1033,7 @@ export const SEED: Content = {
           ],
           "type": "Poppins"
         },
-        "note": "Also on CH 03 — the walkthrough film is mine too.",
+        "note": "Also under Video — the walkthrough film is mine too.",
         "case": {
           "problem": "Short-stay accommodation is chosen fast and on atmosphere. The three questions — where is it, what does it look like, how do I book — were all more than one click away, and a phone number that takes a click is a phone number nobody dials.",
           "process": [
@@ -1677,7 +1677,7 @@ export const SEED: Content = {
           },
           {
             "label": "Pair",
-            "value": "Site on CH 01"
+            "value": "Site under Web"
           }
         ],
         "video": "https://drive.google.com/file/d/1ZFh3R-CE6Bm0_Y3eK94KffU4hNxsRATo/view",
@@ -1789,7 +1789,7 @@ export const SEED: Content = {
           },
           {
             "label": "Pair",
-            "value": "Site on CH 01"
+            "value": "Site under Web"
           }
         ],
         "link": "https://ehfoundation.africa/",
@@ -1869,32 +1869,32 @@ export const SEED: Content = {
     ]
   },
   "path": {
-    "eyebrow": "Signal path",
-    "title": "How a job actually runs",
-    "note": "Same four stages on every channel.",
+    "eyebrow": "Process",
+    "title": "How a project runs",
+    "note": "The same four stages, whatever we're building.",
     "steps": [
       {
-        "name": "Patch in",
+        "name": "Discover",
         "body": "We talk. I ask what the thing has to do, who it's for, and what finished looks like to you — before anyone mentions a price."
       },
       {
-        "name": "Set levels",
+        "name": "Scope",
         "body": "Scope, timeline and cost, in writing. If something you want is a bad idea, you hear it here rather than after you've paid for it."
       },
       {
-        "name": "Build",
-        "body": "You see it while it's coming together, not at the end. Changes are cheap in the middle and expensive on the last day."
+        "name": "Build with AI",
+        "body": "AI speeds up the build; you see it while it's coming together, not at the end. Changes are cheap in the middle and expensive on the last day."
       },
       {
-        "name": "On air",
+        "name": "Launch",
         "body": "It ships. You get the files, the accounts, and a walkthrough — so nothing you own depends on me picking up the phone."
       }
     ]
   },
   "about": {
-    "eyebrow": "Operator",
+    "eyebrow": "About",
     "title": "Israel Oni",
-    "lead": "I work out of Benin City, Edo State. Most people meet me through one channel — a site, an edit, a design file, a system that needed fixing — and only find out about the rest later. That's the whole reason this page is built like a desk instead of a CV.",
+    "lead": "I work out of Benin City, Edo State, building AI-powered digital solutions for businesses and individuals. Most people come to me for one thing — a site, a design file, a film, a system that needed fixing — and only find out later that I can do the rest too.",
     "body": [
       "The through-line across all four is the same: understand the problem properly, then build one thing that works — rather than hand over something that only looks finished.",
       "I came up through backend engineering, and that hasn't gone anywhere: Java, Spring Boot and the databases underneath still decide whether a system behaves once real people arrive. What changed is the front of the job. Most of what I ship now is a site, a design file or a cut, put together fast because the tooling finally allows it."
@@ -1919,9 +1919,9 @@ export const SEED: Content = {
     ]
   },
   "contact": {
-    "eyebrow": "Patch bay",
-    "title": "Tell me which channel you need.",
-    "body": "Say what you're trying to get done and when you need it. If it isn't something I should be doing, I'll say so and point you at someone better.",
+    "eyebrow": "Contact",
+    "title": "Let's build your AI-powered solution.",
+    "body": "Tell me what you're trying to get done and when you need it. If AI isn't the right answer, or I'm not the right person, I'll say so and point you somewhere better.",
     "email": "io.israeloni@gmail.com",
     "links": [
       {
@@ -1959,7 +1959,7 @@ export const SEED: Content = {
   },
   "footer": {
     "left": "Israel Oni — Benin City, Nigeria",
-    "right": "Built by hand. No template."
+    "right": "Built with AI, finished by hand."
   },
   "testimonials": {
     "eyebrow": "What clients say",

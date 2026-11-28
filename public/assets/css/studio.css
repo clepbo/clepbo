@@ -257,26 +257,26 @@ kbd {
 .orbit { position: absolute; left: 50%; top: 50%; width: 0; height: 0; }
 .orbit__tile { position: absolute; left: 0; top: 0; will-change: transform; }
 .orbit__in {
-  position: absolute; left: -34px; top: -34px; width: 68px; height: 68px;
-  display: grid; place-items: center; border-radius: 18px;
+  position: absolute; left: -27px; top: -27px; width: 54px; height: 54px;
+  display: grid; place-items: center; border-radius: 15px;
   background: color-mix(in srgb, var(--c) 9%, var(--tile));
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--c) 18%, var(--line)), var(--shadow);
   animation: pop .9s var(--spring) both; animation-delay: calc(var(--i) * 55ms + 150ms);
   transition: transform .4s var(--spring);
 }
-.orbit__in .tool__icon { width: 34px; height: 34px; }
+.orbit__in .tool__icon { width: 26px; height: 26px; }
 @keyframes pop { from { transform: scale(0) rotate(-20deg); opacity: 0; } }
 @media (max-width: 720px) {
-  .orbit__in { left: -24px; top: -24px; width: 48px; height: 48px; border-radius: 13px; }
-  .orbit__in .tool__icon { width: 24px; height: 24px; }
+  .orbit__in { left: -20px; top: -20px; width: 40px; height: 40px; border-radius: 11px; }
+  .orbit__in .tool__icon { width: 20px; height: 20px; }
 }
 
 .hero {
   position: relative; z-index: 2; display: grid; justify-items: center; text-align: center;
-  padding: 0 var(--gutter); max-width: 820px; will-change: transform, opacity;
+  padding: 0 var(--gutter); max-width: 760px; will-change: transform, opacity;
 }
 .hero__status {
-  display: inline-flex; align-items: center; gap: 9px; margin-bottom: 26px;
+  display: inline-flex; align-items: center; gap: 9px; margin-bottom: 20px;
   padding: 6px 14px 6px 10px; border-radius: 99px; font-size: 13px; color: var(--ink-2);
   background: color-mix(in srgb, var(--card) 80%, transparent); box-shadow: inset 0 0 0 1px var(--line);
   backdrop-filter: blur(8px);
@@ -290,10 +290,10 @@ kbd {
 @keyframes ping { 75%, 100% { transform: scale(2.6); opacity: 0; } }
 @keyframes fade-up { from { opacity: 0; transform: translateY(14px); } }
 .hero__title {
-  font-size: clamp(40px, 7vw, 84px); line-height: .98; font-weight: 600; letter-spacing: -.045em;
+  font-size: clamp(32px, 5vw, 62px); line-height: 1.02; font-weight: 600; letter-spacing: -.04em;
   text-wrap: balance;
 }
-.hero__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 34px; animation: fade-up 1s var(--ease) both .75s; }
+.hero__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 28px; animation: fade-up 1s var(--ease) both .75s; }
 .hero__sub {
   margin-top: 22px; font-family: var(--mono); font-size: 12.5px; letter-spacing: .04em; color: var(--ink-3);
   text-transform: uppercase; animation: fade-up 1s var(--ease) both .9s;
@@ -304,8 +304,8 @@ kbd {
   padding: 0 var(--gutter); pointer-events: none; will-change: transform, opacity;
 }
 .intro {
-  max-width: 900px; text-align: center; text-wrap: balance;
-  font-size: clamp(26px, 3.6vw, 44px); line-height: 1.18; font-weight: 500; letter-spacing: -.03em;
+  max-width: 780px; text-align: center; text-wrap: balance;
+  font-size: clamp(22px, 2.9vw, 36px); line-height: 1.22; font-weight: 500; letter-spacing: -.025em;
 }
 
 .scene__foot {
@@ -359,13 +359,25 @@ kbd {
 @keyframes marquee { to { transform: translateX(-50%); } }
 @media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; } .marquee { overflow-x: auto; } }
 
-.clients__item { padding: 0 clamp(22px, 3.5vw, 44px); }
-.clients__item img {
-  height: 38px; width: auto; max-width: 140px; object-fit: contain;
-  filter: grayscale(1) contrast(1.1); opacity: .55; transition: filter .4s, opacity .4s, transform .4s var(--ease);
+.clients__item { padding: 0 clamp(8px, 1.4vw, 18px); }
+.clients__logo {
+  display: grid; place-items: center; height: 64px; padding: 0 18px; border-radius: 16px;
+  transition: background-color .4s var(--ease), box-shadow .4s var(--ease), transform .5s var(--spring);
 }
-:root[data-theme="dark"] .clients__item img { filter: grayscale(1) invert(1) brightness(1.4); }
-.clients__item img:hover { filter: none; opacity: 1; transform: scale(1.06); }
+.clients__logo img {
+  height: 38px; width: auto; max-width: 140px; object-fit: contain;
+  filter: grayscale(1) contrast(1.1); opacity: .55;
+  transition: filter .5s var(--ease), opacity .5s var(--ease), transform .5s var(--spring);
+}
+:root[data-theme="dark"] .clients__logo img { filter: grayscale(1) invert(1) brightness(1.4); }
+/* Hover, keyboard focus or a tap on a phone: the logo in its own colours,
+   on a white chip so dark marks still read in dark mode. */
+.clients__logo:hover, .clients__logo:focus-visible, .clients__logo:active {
+  background: #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .06), var(--shadow); transform: translateY(-3px);
+}
+:root .clients__logo:hover img, :root .clients__logo:focus-visible img, :root .clients__logo:active img {
+  filter: none; opacity: 1; transform: scale(1.08);
+}
 
 /* ==========================================================================
    Work

@@ -134,14 +134,23 @@ export default function Studio({ content }: { content: Content }) {
 
         {brands.length > 3 && (
           <section className="clients" aria-label="Clients">
-            <p className="clients__label">Trusted by founders, foundations and teams</p>
+            <p className="clients__label">Trusted by businesses, foundations and founders</p>
             <div className="marquee marquee--clients">
               <div className="marquee__track">
                 {[0, 1].map((k) => (
                   <ul className="marquee__set" aria-hidden={k === 1} key={k}>
                     {brands.map((b) => (
                       <li className="clients__item" key={b.id}>
-                        <img src={markSrc(b.mark)} alt={k === 0 ? b.name : ""} loading="lazy" decoding="async" />
+                        <button
+                          type="button"
+                          className="clients__logo"
+                          onClick={() => open(b.id)}
+                          tabIndex={k === 1 ? -1 : undefined}
+                          aria-label={`Open ${b.name}`}
+                          data-cursor="View"
+                        >
+                          <img src={markSrc(b.mark)} alt="" loading="lazy" decoding="async" />
+                        </button>
                       </li>
                     ))}
                   </ul>
@@ -202,7 +211,7 @@ export default function Studio({ content }: { content: Content }) {
           <div className="rack" aria-labelledby="rackTitle">
             <div className="rack__head" data-reveal>
               <p className="rack__eyebrow" id="rackTitle">{content.rack.title}</p>
-              <p className="rack__note">{tools.length} tools on the desk, every day.</p>
+              <p className="rack__note">{tools.length} tools in daily use.</p>
             </div>
             {[tools, [...tools].reverse()].map((row, k) => (
               <div className={`marquee marquee--tools${k ? " marquee--rev" : ""}`} key={k}>
@@ -661,7 +670,7 @@ function Services({ channels, n }: { channels: Channel[]; n: string }) {
 
   return (
     <section className="section services" id="services" aria-labelledby="servicesTitle">
-      <Head n={n} eyebrow="What I do" title="One person. Four ways to get it shipped." id="servicesTitle" colour={channels[1]?.colour ?? NEUTRAL} />
+      <Head n={n} eyebrow="What I build" title="AI-powered, end to end. Four ways I can help." id="servicesTitle" colour={channels[1]?.colour ?? NEUTRAL} />
 
       <div className="services__grid">
         <ol className="steps" ref={list}>
