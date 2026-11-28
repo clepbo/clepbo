@@ -48,6 +48,25 @@ The **History** tab keeps the last twenty versions. Restoring one publishes it
 as a *new* version rather than rewinding the counter, so the restore is itself
 undoable and the history stays a straight line.
 
+### Add a project from a link
+
+At the top of the **Work** tab, paste a website, a GitHub repository, or both,
+and add a line about what you did if it isn't obvious ("I designed the
+dashboard; the site was built by me with AI"). Press **Draft the project**.
+
+It reads the site's pages and the repository's README, docs and commit
+history — the commits decide how much of the work is credited to you — then
+Claude drafts the card, the story and the full case study in the site's
+voice, takes real screenshots and saves the logo and its colours. It takes a
+minute or two.
+
+The draft lands at the top of the list **hidden**, with a short list of
+things worth checking. Read it, fix anything, press **Show**, then
+**Save & publish**. What it read is kept as the project's background, so the
+rewrite buttons know the project too.
+
+Private repositories need `GITHUB_TOKEN` set on Vercel (see `.env.example`).
+
 ### Case studies have their own pages
 
 Any project with a case study also lives at `/work/<its-id>` — a real page you
