@@ -19,12 +19,12 @@ export default function Gallery({
         )}
       </div>
       {frames.length > 1 && (
-        <div className="monitor__strip">
+        <div className="strip">
           {frames.map((f, i) => (
             <button
               key={f}
               type="button"
-              className={`monitor__frame${i === at ? " is-on" : ""}`}
+              className={`strip__frame${i === at ? " is-on" : ""}`}
               aria-label={`Screen ${i + 1}`}
               aria-current={i === at}
               onClick={() => setAt(i)}

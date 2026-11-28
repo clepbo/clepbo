@@ -110,6 +110,10 @@ export type Content = {
     description: string;
     standby: string;       // the standby line in the brief
     hint: string;
+    /** The big line at the top of the page. */
+    headline?: string;
+    /** The paragraph that fills in word by word as the hero scrolls away. */
+    intro?: string;
     context?: ProjectContext;   // background every rewrite gets, site-wide
     cv?: { label: string; url: string };
   };

@@ -1,6 +1,5 @@
 import { getContent } from "@/lib/content";
-import ChannelStyles from "./ChannelStyles";
-import Desk from "./Desk";
+import Studio from "./Studio";
 
 export default async function Page() {
   const content = await getContent();
@@ -19,8 +18,7 @@ export default async function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <ChannelStyles channels={content.channels} />
-      <Desk content={content} />
+      <Studio content={content} />
     </>
   );
 }

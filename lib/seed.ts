@@ -15,6 +15,8 @@ export const SEED: Content = {
     "description": "Israel Oni, Benin City. Four channels: websites built fast on WordPress and AI, product and UI/UX design, video editing and motion, and digital solutions.",
     "standby": "Four channels, one person. Patch into any of them above — the desk retunes to whichever one you're listening to, and the work below follows.",
     "hint": "switch channel",
+    "headline": "Sites, products and video — built by one person.",
+    "intro": "I build websites fast on WordPress and AI, design the product before anyone codes it, cut the video, and fix the process underneath when that turns out to be the real problem.",
     "cv": {
       "label": "",
       "url": ""
