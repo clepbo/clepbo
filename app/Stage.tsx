@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import type { Channel } from "@/lib/types";
 
 /* The little animated screens beside each service. Pure markup; every bit of
@@ -37,7 +38,7 @@ function WebStage({ channel }: { channel: Channel }) {
           </div>
           <p className="mk-site-head">
             {words.map((w, i) => (
-              <span key={i} style={{ "--i": i } as React.CSSProperties}>{w} </span>
+              <Fragment key={i}><span style={{ "--i": i } as React.CSSProperties}>{w}</span>{" "}</Fragment>
             ))}
           </p>
           <div className="mk-site-cta">
